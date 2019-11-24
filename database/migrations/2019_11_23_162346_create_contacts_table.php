@@ -19,10 +19,9 @@ class CreateContactsTable extends Migration
             $table->increments('id');
             $table->string('full_name', 500);
             $table->string('email', 500);
-            $table->string('phone', 15)->nullable(true);
+            $table->string('phone', 50)->nullable(true);
             $table->string('title', 500)->nullable(true);
             $table->string('content', 2000)->nullable(true);
-            $table->string('status', 1)->comment('0:Active | 1:Inactive');
 
             $table->softDeletes();
             $table->timestamps();

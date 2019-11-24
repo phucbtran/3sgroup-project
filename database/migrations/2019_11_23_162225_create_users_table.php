@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('full_name', 500);
             $table->unsignedInteger('role_id')->comment('0:Admin | 1:SubAdmin');
             $table->foreign('role_id')->references('id')->on('roles');
-            $table->string('status', 1);
+            $table->string('status', 1)->comment('0:Active | 1:Inactive');
 
             $table->softDeletes();
             $table->timestamps();

@@ -19,9 +19,9 @@ class CreateCommentsTable extends Migration
             $table->increments('id');
             $table->string('full_name', 500);
             $table->string('email', 500);
-            $table->string('phone', 15)->nullable(true);
+            $table->string('phone', 50)->nullable(true);
             $table->unsignedInteger('post_id');
-            $table->string('type_cmt_flg');
+            $table->string('type_cmt_flg')->comment('0:Product | 1:New | 2:Cooperation');
             $table->string('content', 2000);
             $table->string('status', 1)->comment('0:Active | 1:Inactive');
 

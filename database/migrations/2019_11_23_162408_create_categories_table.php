@@ -20,7 +20,7 @@ class CreateCategoriesTable extends Migration
             $table->string('name', 500);
             $table->string('slug', 1024);
             $table->string('img_dir_path', 1024);
-            $table->unsignedInteger('cat_parent_id');
+            $table->unsignedInteger('cat_parent_id')->nullable(true);
             $table->foreign('cat_parent_id')->references('id')->on('categories');
             $table->integer('num_sort');
             $table->string('status', 1)->comment('0:Active | 1:Inactive');
