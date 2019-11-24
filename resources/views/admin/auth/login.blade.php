@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Admin | Đăng Nhập</title>
+  <title>Admin | Log in</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -25,11 +25,11 @@
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <a href="#"><b>3SGroup</b></a>
+    <a href="#"><b>Coffesign</b></a>
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
-    <p class="login-box-msg">Đăng nhập để bắt đầu phiên làm việc</p>
+    <p class="login-box-msg">Sign in to start your session</p>
 
     <form action="/admin/login" method="post">
       {{ csrf_field() }}
@@ -45,13 +45,13 @@
         <div class="col-xs-8">
           <div class="checkbox icheck">
             <label>
-              <input type="checkbox" name="remember"> Nhớ mật khẩu
+              <input type="checkbox" name="remember"> Remember Me
             </label>
           </div>
         </div>
         <!-- /.col -->
         <div class="col-xs-4">
-          <button type="submit" class="btn btn-primary btn-block btn-flat">Đăng nhập</button>
+          <button type="submit" class="btn btn-primary btn-block btn-flat">Sign in</button>
         </div>
         <!-- /.col -->
       </div>

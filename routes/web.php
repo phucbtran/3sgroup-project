@@ -9,8 +9,15 @@ Route::prefix('admin')->group(function () {
 
     //login
     Route::get('login', function () {
+        if (Auth::viaRemember() || Auth::check()) {
+            return redirect()->intended('/admin/dashboard');
+        }
         return view('admin.auth.login', ['msg' => null]);
     });
+    Route::post('login', 'Auth\LoginController@login');
+    
+    //logout
+    Route::get('logout', 'Auth\LoginController@logout');
 
     //dashboard
     Route::get('dashboard', function () {
