@@ -37,4 +37,7 @@ Route::prefix('admin')->group(function () {
         });
     });
 
+    // contact
+    Route::get('lien-he', 'ContactsController@index')->name('contact.index');
+
 });

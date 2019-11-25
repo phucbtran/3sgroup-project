@@ -48,17 +48,9 @@ class ContactsController extends Controller
      */
     public function index()
     {
-        $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
         $contacts = $this->repository->all();
 
-        if (request()->wantsJson()) {
-
-            return response()->json([
-                'data' => $contacts,
-            ]);
-        }
-
-        return view('contacts.index', compact('contacts'));
+        return view('admin.contacts.index', compact('contacts'));
     }
 
     /**
