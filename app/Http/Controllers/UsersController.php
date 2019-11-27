@@ -11,103 +11,44 @@ use App\Http\Requests\UsersCreateRequest;
 use App\Http\Requests\UsersUpdateRequest;
 use App\Repositories\UsersRepository;
 use App\Validators\UsersValidator;
+use Auth;
+use App\Entities\Users;
 
-/**
- * Class UsersController.
- *
- * @package namespace App\Http\Controllers;
- */
 class UsersController extends Controller
 {
-    /**
-     * @var UsersRepository
-     */
     protected $repository;
 
-    /**
-     * @var UsersValidator
-     */
     protected $validator;
 
-    /**
-     * UsersController constructor.
-     *
-     * @param UsersRepository $repository
-     * @param UsersValidator $validator
-     */
     public function __construct(UsersRepository $repository, UsersValidator $validator)
     {
         $this->repository = $repository;
         $this->validator  = $validator;
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
-        $users = $this->repository->all();
-
-        if (request()->wantsJson()) {
-
-            return response()->json([
-                'data' => $users,
-            ]);
-        }
-
-        return view('users.index', compact('users'));
+        $users = Users::all();
+        return view('admin.users.index', compact('users'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  UsersCreateRequest $request
-     *
-     * @return \Illuminate\Http\Response
-     *
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
-     */
-    public function store(UsersCreateRequest $request)
+    public function create(Request $request)
     {
         try {
-
-            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
-
-            $user = $this->repository->create($request->all());
-
-            $response = [
-                'message' => 'Users created.',
-                'data'    => $user->toArray(),
-            ];
-
-            if ($request->wantsJson()) {
-
-                return response()->json($response);
+            $user = new Users();
+            $data = $request->all();
+            foreach ($data['user'] as $key => $value) {
+                $user[$key] = $value;
             }
-
-            return redirect()->back()->with('message', $response['message']);
-        } catch (ValidatorException $e) {
-            if ($request->wantsJson()) {
-                return response()->json([
-                    'error'   => true,
-                    'message' => $e->getMessageBag()
-                ]);
-            }
-
-            return redirect()->back()->withErrors($e->getMessageBag())->withInput();
+            $user->save();
+            return $user;
+            return redirect()->back()->with(['status'=>'true','msg'=>'Thêm thành công']);
+        } catch (\Throwable $th) {
+            return redirect()->back()->with(['status'=>'false','msg'=>'Thêm thất bại !']);
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function show($id)
     {
         $user = $this->repository->find($id);
@@ -122,13 +63,6 @@ class UsersController extends Controller
         return view('users.show', compact('user'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         $user = $this->repository->find($id);
@@ -136,69 +70,29 @@ class UsersController extends Controller
         return view('users.edit', compact('user'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  UsersUpdateRequest $request
-     * @param  string            $id
-     *
-     * @return Response
-     *
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
-     */
-    public function update(UsersUpdateRequest $request, $id)
+    public function update(Request $request)
     {
         try {
-
-            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
-
-            $user = $this->repository->update($request->all(), $id);
-
-            $response = [
-                'message' => 'Users updated.',
-                'data'    => $user->toArray(),
-            ];
-
-            if ($request->wantsJson()) {
-
-                return response()->json($response);
+            $id = $request->id;
+            $user = Users::find($id);
+            $data = $request->all();
+            foreach ($data['user'] as $key => $value) {
+                $user[$key] = $value;
             }
-
-            return redirect()->back()->with('message', $response['message']);
-        } catch (ValidatorException $e) {
-
-            if ($request->wantsJson()) {
-
-                return response()->json([
-                    'error'   => true,
-                    'message' => $e->getMessageBag()
-                ]);
-            }
-
-            return redirect()->back()->withErrors($e->getMessageBag())->withInput();
+            $user->save();
+            return redirect()->back()->with(['status'=>'true','msg'=>'Cập nhật thành công']);
+        } catch (\Throwable $th) {
+            return redirect()->back()->with(['status'=>'false','msg'=>'Cập nhật thất bại !']);
         }
     }
 
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        $deleted = $this->repository->delete($id);
-
-        if (request()->wantsJson()) {
-
-            return response()->json([
-                'message' => 'Users deleted.',
-                'deleted' => $deleted,
-            ]);
+        $deleted = Users::where('id',$id)->first();
+        $deleted->delete();
+        if ($deleted) {
+            return redirect()->back()->with(['status'=>'success','msg'=>'Xóa thành công !']);
         }
-
-        return redirect()->back()->with('message', 'Users deleted.');
+        return redirect()->back()->with(['status'=>'false','msg'=>'Xóa thất bại !']);
     }
 }

@@ -35,7 +35,6 @@ class Users extends Model implements Transformable
         'deleted_at',
         'created_at',
         'updated_at',
-        'user_id'
     ];
 
     protected $hidden = ['password'];

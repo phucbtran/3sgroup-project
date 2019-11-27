@@ -25,7 +25,7 @@ Route::prefix('admin')->group(function () {
             return view('admin.dashboard', ['msg' => null]);
         });
 
-        //user
+        //profile
         Route::prefix('profile')->group(function(){
             Route::get('view', function () {
                 return view('admin.profile.view', ['msg' => null]);
@@ -43,6 +43,14 @@ Route::prefix('admin')->group(function () {
             Route::get('new', function (){
                 return view('admin.staticpage.new', ['msg' => null]);
             });
+        });
+
+        //users
+        Route::prefix('users')->group(function(){
+            Route::get('', 'UsersController@index');
+            Route::post('/create', 'UsersController@create');
+            Route::post('/{id}/update', 'UsersController@update');
+            Route::delete('/{id}', 'UsersController@destroy');
         });
     });
 });
