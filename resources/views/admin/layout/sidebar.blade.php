@@ -1,7 +1,6 @@
 <aside class="main-sidebar">
     <section class="sidebar">
       <ul class="sidebar-menu" data-widget="tree">
-        <li class="header">MAIN NAVIGATION</li>
         <li class="{{ Request::path() == 'admin/dashboard' ? 'active' : '' }}">
           <a href="/admin/dashboard">
             <i class="fa fa-dashboard"></i> <span>Dashboard</span>

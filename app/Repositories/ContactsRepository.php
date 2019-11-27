@@ -11,5 +11,6 @@ use Prettus\Repository\Contracts\RepositoryInterface;
  */
 interface ContactsRepository extends RepositoryInterface
 {
-    //
+    // get list contact
+    public function getListContacts();
 }

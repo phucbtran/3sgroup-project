@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use http\Exception;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -48,137 +49,11 @@ class ContactsController extends Controller
      */
     public function index()
     {
-        $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
-        $contacts = $this->repository->all();
+        $contacts = $this->repository->getListContacts();
+        $title = 'Liên hệ';
 
-        if (request()->wantsJson()) {
-
-            return response()->json([
-                'data' => $contacts,
-            ]);
-        }
-
-        return view('contacts.index', compact('contacts'));
+        return view('admin.contacts.index', compact('contacts', 'title'));
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  ContactsCreateRequest $request
-     *
-     * @return \Illuminate\Http\Response
-     *
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
-     */
-    public function store(ContactsCreateRequest $request)
-    {
-        try {
-
-            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
-
-            $contact = $this->repository->create($request->all());
-
-            $response = [
-                'message' => 'Contacts created.',
-                'data'    => $contact->toArray(),
-            ];
-
-            if ($request->wantsJson()) {
-
-                return response()->json($response);
-            }
-
-            return redirect()->back()->with('message', $response['message']);
-        } catch (ValidatorException $e) {
-            if ($request->wantsJson()) {
-                return response()->json([
-                    'error'   => true,
-                    'message' => $e->getMessageBag()
-                ]);
-            }
-
-            return redirect()->back()->withErrors($e->getMessageBag())->withInput();
-        }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $contact = $this->repository->find($id);
-
-        if (request()->wantsJson()) {
-
-            return response()->json([
-                'data' => $contact,
-            ]);
-        }
-
-        return view('contacts.show', compact('contact'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $contact = $this->repository->find($id);
-
-        return view('contacts.edit', compact('contact'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  ContactsUpdateRequest $request
-     * @param  string            $id
-     *
-     * @return Response
-     *
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
-     */
-    public function update(ContactsUpdateRequest $request, $id)
-    {
-        try {
-
-            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
-
-            $contact = $this->repository->update($request->all(), $id);
-
-            $response = [
-                'message' => 'Contacts updated.',
-                'data'    => $contact->toArray(),
-            ];
-
-            if ($request->wantsJson()) {
-
-                return response()->json($response);
-            }
-
-            return redirect()->back()->with('message', $response['message']);
-        } catch (ValidatorException $e) {
-
-            if ($request->wantsJson()) {
-
-                return response()->json([
-                    'error'   => true,
-                    'message' => $e->getMessageBag()
-                ]);
-            }
-
-            return redirect()->back()->withErrors($e->getMessageBag())->withInput();
-        }
-    }
-
 
     /**
      * Remove the specified resource from storage.
@@ -189,16 +64,14 @@ class ContactsController extends Controller
      */
     public function destroy($id)
     {
-        $deleted = $this->repository->delete($id);
-
-        if (request()->wantsJson()) {
-
-            return response()->json([
-                'message' => 'Contacts deleted.',
-                'deleted' => $deleted,
-            ]);
+        try {
+            $this->repository->delete($id);
+        } catch (Exception $e) {
+            session()->flash('msg_fail', trans('message.remove.fail'));
+            return redirect()->back();
         }
 
-        return redirect()->back()->with('message', 'Contacts deleted.');
+        session()->flash('msg_success', trans('message.remove.success'));
+        return redirect()->back();
     }
 }

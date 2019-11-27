@@ -34,6 +34,10 @@ Route::prefix('admin')->group(function () {
                 return view('admin.profile.change-password', ['msg' => null]);
             });
         });
+    //dashboard
+    Route::get('dashboard', function () {
+        return view('admin.dashboard', ['msg' => null]);
+    })->name('dashboard');
 
         //staticpage
         Route::prefix('static-pages')->group(function(){
@@ -53,4 +57,10 @@ Route::prefix('admin')->group(function () {
             Route::delete('/{id}', 'UsersController@destroy');
         });
     });
+
+    // contact
+    Route::get('lien-he', 'ContactsController@index')->name('contact.index');
+    // remove contact
+    Route::delete('lien-he/{id}', 'ContactsController@destroy')->name('contact.remove');
+
 });
