@@ -15,7 +15,7 @@ Route::prefix('admin')->group(function () {
     //dashboard
     Route::get('dashboard', function () {
         return view('admin.dashboard', ['msg' => null]);
-    });
+    })->name('dashboard');
 
     //user
     Route::prefix('profile')->group(function(){
@@ -39,5 +39,7 @@ Route::prefix('admin')->group(function () {
 
     // contact
     Route::get('lien-he', 'ContactsController@index')->name('contact.index');
+    // remove contact
+    Route::delete('lien-he/{id}', 'ContactsController@destroy')->name('contact.remove');
 
 });

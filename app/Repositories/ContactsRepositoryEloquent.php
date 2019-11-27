@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use Illuminate\Support\Facades\DB;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use App\Repositories\ContactsRepository;
@@ -44,5 +45,12 @@ class ContactsRepositoryEloquent extends BaseRepository implements ContactsRepos
     {
         $this->pushCriteria(app(RequestCriteria::class));
     }
-    
+
+    public function getListContacts() {
+        $query = Contacts::select('*')
+            ->orderBy('created_at', 'DESC')
+            ->get();
+        return $query;
+    }
+
 }

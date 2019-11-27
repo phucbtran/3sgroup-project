@@ -19,6 +19,9 @@
     <!-- AdminLTE Skins. Choose a skin from the css/skins
          folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="{{asset('assets/adminlte/dist/css/skins/_all-skins.min.css')}}">
+    <!-- notification CSS  -->
+    <link rel="stylesheet" href="{{asset("assets/adminlte/bower_components/notifications/Lobibox.min.css")}}">
+    <link rel="stylesheet" href="{{asset("assets/adminlte/bower_components/notifications/notifications.css")}}">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -68,6 +71,7 @@
 {{--end--}}
   <!-- /.content-wrapper -->
 @include('admin.layout.footer')
+<input style="display:none;" type="text" id="backButton" value="0"/>
   <!-- /.control-sidebar -->
   <!-- Add the sidebar's background. This div must be placed
        immediately after the control sidebar -->
@@ -90,19 +94,32 @@
 <script src="{{asset('assets/adminlte/dist/js/adminlte.min.js')}}"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="{{asset('assets/adminlte/dist/js/demo.js')}}"></script>
+<!-- notification JS -->
+<script src="{{asset("assets/adminlte/plugins/notifications/Lobibox.js")}}"></script>
+
+<script>
+    $(document).ready(function () {
+        var backButton = $('#backButton');
+        if (backButton.val() == "0") {
+            //Check session
+            @if (\Illuminate\Support\Facades\Session::has('msg_success'))
+            Lobibox.notify('success', {
+                msg: "{{ \Illuminate\Support\Facades\Session::get('msg_success') }}"
+            });
+            @elseif (\Illuminate\Support\Facades\Session::has('msg_fail'))
+            Lobibox.notify('error', {
+                msg: "{{ \Illuminate\Support\Facades\Session::get('msg_fail') }}"
+            });
+            @elseif (\Illuminate\Support\Facades\Session::has('msg_forbidden'))
+            Lobibox.notify('error', {
+                msg: "{{ \Illuminate\Support\Facades\Session::get('msg_forbidden') }}"
+            });
+            @endif
+            backButton.val('1');
+        }
+    });
+</script>
 
 @yield('scripts')
-{{--  notification  --}}
-  @if ( session()->get( 'status' ) === 'success')
-  <script>
-      toastr.success('{{ session()->get( "msg" ) }}')
-  </script>
-  @endif
-  @if (session()->get( 'status' ) === 'error')
-  <script>
-      toastr.error('{{ session()->get( "msg" ) }}')
-  </script>
-  @endif
-{{--  end script  --}}
 </body>
 </html>
