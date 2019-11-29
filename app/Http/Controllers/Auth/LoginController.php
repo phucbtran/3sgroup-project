@@ -27,7 +27,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/admin/dashboard';
 
     /**
      * Create a new controller instance.
@@ -42,9 +42,9 @@ class LoginController extends Controller
     public function login(Request $request){
         $remember = ($request->input('remember')) ? true : false;
         $credentials = $request->only('email', 'password');
-        if (Auth::attempt($credentials, $remember) && Auth::user()->status == 1) {
-            return redirect()->intended('/admin/dashboard');
-        } 
+        if (Auth::attempt($credentials, $remember) && Auth::user()->status == config('const.status.active')) {
+            return redirect()->intended(route('dashboard'));
+        }
         $request->flash();
         return view('admin.auth.login', ['msg' => 'Email hoặc mật khẩu không đúng!']);
     }
@@ -52,6 +52,6 @@ class LoginController extends Controller
     public function logout()
     {
         Auth::logout();
-        return redirect('/admin/login');
+        return redirect(route('login.index'));
     }
 }

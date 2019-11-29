@@ -120,6 +120,18 @@
     });
 </script>
 
+<!--Get message validation-->
+<script>
+    function labelMessage(labelName) {
+        return '<p class="validation-msg">' + labelName + '</p>';
+    }
+
+    var validation_msg = @json(\Illuminate\Support\Facades\Session::get('validation_msg'));
+    for (item in validation_msg) {
+        $('.form-' + item).append(labelMessage(validation_msg[item]));
+    }
+</script>
+
 @yield('scripts')
 </body>
 </html>
