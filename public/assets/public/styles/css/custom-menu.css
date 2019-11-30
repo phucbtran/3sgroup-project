@@ -1,0 +1,59 @@
+#header_inner ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    /* background: #1bc2a2; */
+}
+  
+#header_inner ul li {
+    display: block;
+    position: relative;
+    float: left;
+}
+  
+/* This hides the dropdowns */
+
+#header_inner li ul { display: none; }
+
+#header_inner ul li a {
+    display: block; 
+    text-decoration: none;
+    white-space: nowrap;
+    color: #fff;
+}
+
+#header_inner ul li a:hover { background: #2c3e50; }
+  
+/* Display the dropdown */
+  
+#header_inner li:hover > ul {
+    display: block;
+    position: absolute;
+}
+
+#header_inner li:hover li { float: none; }
+  
+#header_inner ul li ul li:hover a { background: #212121; }
+
+#header_inner ul li ul li a{ 
+    background: #212121; 
+    border-bottom: 1px solid #fff;
+}
+  
+#header_inner li:hover li a:hover { background: #2c3e50; }
+  
+#header_inner .main-navigation li ul li { border-top: 0; }
+  
+/* Displays second level dropdowns to the right of the first level dropdown */
+#header_inner ul ul ul {
+    left: 100%;
+    top: 0;
+}
+  
+/* Simple clearfix */
+#header_inner ul:before, ul:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+}
+
+#header_inner ul:after { clear: both; }
