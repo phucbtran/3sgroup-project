@@ -3,13 +3,7 @@
 namespace App\Http\Controllers;
 
 use http\Exception;
-use Illuminate\Http\Request;
 
-use App\Http\Requests;
-use Prettus\Validator\Contracts\ValidatorInterface;
-use Prettus\Validator\Exceptions\ValidatorException;
-use App\Http\Requests\ContactsCreateRequest;
-use App\Http\Requests\ContactsUpdateRequest;
 use App\Repositories\ContactsRepository;
 use App\Validators\ContactsValidator;
 
