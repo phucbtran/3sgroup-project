@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use http\Exception;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -16,19 +17,19 @@ use App\Entities\Users;
 
 class UsersController extends Controller
 {
-    protected $repository;
+    protected $usersRepository;
 
     protected $validator;
 
-    public function __construct(UsersRepository $repository, UsersValidator $validator)
+    public function __construct(UsersRepository $usersRepository, UsersValidator $validator)
     {
-        $this->repository = $repository;
+        $this->usersRepository = $usersRepository;
         $this->validator  = $validator;
     }
 
     public function index()
     {
-        $users = Users::all();
+        $users = $this->usersRepository->all();
         return view('admin.users.index', compact('users'));
     }
 
@@ -72,6 +73,7 @@ class UsersController extends Controller
 
     public function update(Request $request)
     {
+        dd('a');
         try {
             $id = $request->id;
             $user = Users::find($id);
@@ -88,11 +90,14 @@ class UsersController extends Controller
 
     public function destroy($id)
     {
-        $deleted = Users::where('id',$id)->first();
-        $deleted->delete();
-        if ($deleted) {
-            return redirect()->back()->with(['status'=>'success','msg'=>'Xóa thành công !']);
+        try {
+            $this->usersRepository->delete($id);
+        } catch (Exception $e) {
+            session()->flash('msg_fail', trans('message.remove.fail'));
+            return redirect()->back();
         }
-        return redirect()->back()->with(['status'=>'false','msg'=>'Xóa thất bại !']);
+
+        session()->flash('msg_success', trans('message.remove.success'));
+        return redirect()->back();
     }
 }

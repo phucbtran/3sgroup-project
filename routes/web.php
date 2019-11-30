@@ -37,10 +37,10 @@ Route::prefix('admin')->group(function () {
 
         //users
         Route::prefix('user')->group(function(){
-            Route::get('', 'UsersController@index');
-            Route::post('/create', 'UsersController@create');
-            Route::post('/{id}/update', 'UsersController@update');
-            Route::delete('/{id}', 'UsersController@destroy');
+            Route::get('', 'UsersController@index')->name('user.index');
+            Route::post('/them-moi', 'UsersController@create')->name('user.create');
+            Route::post('/cap-nhat/{id}', 'UsersController@update')->name('user.update');
+            Route::delete('/xoa/{id}', 'UsersController@destroy')->name('user.remove');
         });
 
         // contact
