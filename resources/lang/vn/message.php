@@ -13,5 +13,4 @@ return [
         'success' => 'Bạn đã thêm thành công.',
         'fail' => 'Thêm không thành công.'
     ],
-    'a' =>'ta'
 ];

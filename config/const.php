@@ -11,6 +11,6 @@ return [
     ],
     'role' => [
         'admin' => 'Admin',
-        'sub_admin' => 'SubAdmin'
+        'sub_admin' => 'Sub Admin'
     ],
 ];

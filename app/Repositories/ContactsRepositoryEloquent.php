@@ -7,7 +7,6 @@ use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use App\Repositories\ContactsRepository;
 use App\Entities\Contacts;
-use App\Validators\ContactsValidator;
 
 /**
  * Class ContactsRepositoryEloquent.
@@ -25,18 +24,6 @@ class ContactsRepositoryEloquent extends BaseRepository implements ContactsRepos
     {
         return Contacts::class;
     }
-
-    /**
-    * Specify Validator class name
-    *
-    * @return mixed
-    */
-    public function validator()
-    {
-
-        return ContactsValidator::class;
-    }
-
 
     /**
      * Boot up the repository, pushing criteria

@@ -10,7 +10,6 @@ use Prettus\Validator\Exceptions\ValidatorException;
 use App\Http\Requests\CooperationsCreateRequest;
 use App\Http\Requests\CooperationsUpdateRequest;
 use App\Repositories\CooperationsRepository;
-use App\Validators\CooperationsValidator;
 
 /**
  * Class CooperationsController.
@@ -25,20 +24,13 @@ class CooperationsController extends Controller
     protected $repository;
 
     /**
-     * @var CooperationsValidator
-     */
-    protected $validator;
-
-    /**
      * CooperationsController constructor.
      *
      * @param CooperationsRepository $repository
-     * @param CooperationsValidator $validator
      */
-    public function __construct(CooperationsRepository $repository, CooperationsValidator $validator)
+    public function __construct(CooperationsRepository $repository)
     {
         $this->repository = $repository;
-        $this->validator  = $validator;
     }
 
     /**
