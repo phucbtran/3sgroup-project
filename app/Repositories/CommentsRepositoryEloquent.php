@@ -6,7 +6,6 @@ use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use App\Repositories\CommentsRepository;
 use App\Entities\Comments;
-use App\Validators\CommentsValidator;
 
 /**
  * Class CommentsRepositoryEloquent.
@@ -26,23 +25,11 @@ class CommentsRepositoryEloquent extends BaseRepository implements CommentsRepos
     }
 
     /**
-    * Specify Validator class name
-    *
-    * @return mixed
-    */
-    public function validator()
-    {
-
-        return CommentsValidator::class;
-    }
-
-
-    /**
      * Boot up the repository, pushing criteria
      */
     public function boot()
     {
         $this->pushCriteria(app(RequestCriteria::class));
     }
-    
+
 }

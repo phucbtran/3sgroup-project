@@ -10,7 +10,6 @@ use Prettus\Validator\Exceptions\ValidatorException;
 use App\Http\Requests\CommentsCreateRequest;
 use App\Http\Requests\CommentsUpdateRequest;
 use App\Repositories\CommentsRepository;
-use App\Validators\CommentsValidator;
 
 /**
  * Class CommentsController.
@@ -25,20 +24,13 @@ class CommentsController extends Controller
     protected $repository;
 
     /**
-     * @var CommentsValidator
-     */
-    protected $validator;
-
-    /**
      * CommentsController constructor.
      *
      * @param CommentsRepository $repository
-     * @param CommentsValidator $validator
      */
-    public function __construct(CommentsRepository $repository, CommentsValidator $validator)
+    public function __construct(CommentsRepository $repository)
     {
         $this->repository = $repository;
-        $this->validator  = $validator;
     }
 
     /**

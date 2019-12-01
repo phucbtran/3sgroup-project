@@ -1,7 +1,5 @@
 @extends('admin.template')
-@section('styles')
 @section('title', 'Danh sách user')
-@endsection
 @section('content')
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -22,7 +20,10 @@
             <div class="col-xs-12">
                 <div class="box">
                     <div class="box-header">
-                        <h3 class="box-title">Danh sách user</h3>
+                        <h3 class="box-title pull-left">Danh sách user</h3>
+                        <a href="#" data-toggle="modal" data-target="#modal-add-user" class="btn btn-primary pull-right">
+                            <i class="fa fa-plus"></i>&nbsp;Thêm
+                        </a>
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
@@ -44,7 +45,7 @@
                                     <td>{{ $item['full_name'] }}</td>
                                     <td>{{ $item['email'] }}</td>
                                     <td>
-                                        @if($item['role_id'] == 0)
+                                        @if($item['role'] == 0)
                                             <span class="label label-success" title="view">{{ config('const.role.admin') }}</span>
                                         @else
                                             <span class="label label-warning">{{ config('const.role.sub_admin') }}</span>
@@ -58,7 +59,7 @@
                                         @endif
                                     </td>
                                     <td class="btn-act">
-                                        <button href="#" onclick="showDialogUpdate('update', '{{ $item->id }}', '{{ $item->full_name }}', '{{ $item->email }}', '{{ $item->role_id }}', '{{ $item->status }}');"
+                                        <button href="#" onclick="showDialogUpdate('{{ $item->id }}', '{{ $item->full_name }}', '{{ $item->email }}', '{{ $item->role }}', '{{ $item->status }}');"
                                                 class="btn btn-primary edit-record">
                                             <i class="fa fa-edit"></i>
                                         </button>
@@ -95,85 +96,155 @@
                         <!-- Modal edit user -->
                         <div class="modal fade" id="modal-update-user" tabindex="-1" role="dialog" aria-hidden="true">
                             <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">×</span></button>
-                                        <h4 class="modal-title" id="modal-update-title"></h4>
+                                <form method="POST" id="form-update" class="form-horizontal">
+                                    {{ csrf_field() }}
+                                    {{ method_field('POST') }}
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">×</span></button>
+                                            <h4 class="modal-title">Cập nhật user</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="box-body">
+                                                <div class="form-group">
+                                                    <!-- Date Time Start -->
+                                                    <label class="col-sm-3 control-label" for="datetime_start">Họ Tên<span class="lbl-required">*</span>: </label>
+                                                    <div class="col-sm-9">
+                                                        <input type="text" name="full_name" class="form-control" id="form-full_name" maxlength="500">
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <!-- Date Time Start -->
+                                                    <label class="col-sm-3 control-label" for="datetime_start">Email<span class="lbl-required">*</span>: </label>
+                                                    <div class="col-sm-9">
+                                                        <input type="email" name="email" class="form-control" id="form-email" maxlength="500">
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <!-- Date Time Start -->
+                                                    <label class="col-sm-3 control-label" for="datetime_start">Mật khẩu: </label>
+                                                    <div class="col-sm-9">
+                                                        <input type="password" name="password" class="form-control" id="form-password" maxlength="500">
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <!-- Date Time Start -->
+                                                    <label class="col-sm-3 control-label " for="datetime_start">Nhập lại mật khẩu:</label>
+                                                    <div class="col-sm-9">
+                                                        <input type="password" name="password_confirm" class="form-control" id="form-password_confirm" maxlength="500">
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label">Trạng thái: </label>
+                                                    <div class="col-sm-9">
+                                                        <select class="form-control" name="status" id="form-status">
+                                                            <option value="0">{{ config('const.status_name.active') }}</option>
+                                                            <option value="1">{{ config('const.status_name.inactive') }}</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label">Quyền: </label>
+                                                    <div class="col-sm-9">
+                                                        <select class="form-control" name="role" id="form-role">
+                                                            <option value="1">{{ config('const.role.sub_admin') }}</option>
+                                                            <option value="0">{{ config('const.role.admin') }}</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- /.box-footer -->
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Huỷ</button>
+                                            <input class="btn btn-success pull-right" type="submit" value="Cập nhật">
+                                            <input style="display:none;" type="text" id="backButton" value="0"/>
+                                        </div>
                                     </div>
-                                    <div class="modal-footer">
-                                        <form method="POST" id="form-update">
-                                            {{ csrf_field() }}
-                                            {{ method_field('POST') }}
-                                            <div class="form-group row">
-                                                <!-- Date Time Start -->
-                                                <label class="control-label col-md-3 required " for="datetime_start">Họ Tên: </label>
-                                                <div class="controls controlsDisplay col-md-7">
-                                                    <div>
-                                                        <input type="text" name="full_name" class="form-control">
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Modal edit user -->
+                        <div class="modal fade" id="modal-add-user" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <form action="{{ route('user.create') }}" method="POST" class="form-horizontal" id="form-add">
+                                    {{ csrf_field() }}
+                                    {{ method_field('POST') }}
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">×</span></button>
+                                            <h4 class="modal-title">Thêm user</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="box-body">
+                                                <div class="form-group">
+                                                    <!-- Date Time Start -->
+                                                    <label class="col-sm-3 control-label" for="datetime_start">Họ Tên<span class="lbl-required">*</span>: </label>
+                                                    <div class="col-sm-9">
+                                                        <input type="text" name="full_name" class="form-control" id="add-full_name" maxlength="500">
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <!-- Date Time Start -->
+                                                    <label class="col-sm-3 control-label" for="datetime_start">Email<span class="lbl-required">*</span>: </label>
+                                                    <div class="col-sm-9">
+                                                        <input type="email" name="email" class="form-control" id="add-email" maxlength="500">
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <!-- Date Time Start -->
+                                                    <label class="col-sm-3 control-label" for="datetime_start">Mật khẩu<span class="lbl-required">*</span>: </label>
+                                                    <div class="col-sm-9">
+                                                        <input type="password" name="password" class="form-control" id="add-password" maxlength="500">
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <!-- Date Time Start -->
+                                                    <label class="col-sm-3 control-label " for="datetime_start">Nhập lại mật khẩu<span class="lbl-required">*</span>:</label>
+                                                    <div class="col-sm-9">
+                                                        <input type="password" name="password_confirm" class="form-control" id="add-password_confirm" maxlength="500">
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label">Trạng thái: </label>
+                                                    <div class="col-sm-9">
+                                                        <select class="form-control" name="status" id="add-status">
+                                                            <option value="0">{{ config('const.status_name.active') }}</option>
+                                                            <option value="1">{{ config('const.status_name.inactive') }}</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label">Quyền: </label>
+                                                    <div class="col-sm-9">
+                                                        <select class="form-control" name="role" id="add-role">
+                                                            <option value="1">{{ config('const.role.sub_admin') }}</option>
+                                                            <option value="0">{{ config('const.role.admin') }}</option>
+                                                        </select>
                                                     </div>
                                                 </div>
                                             </div>
-
-                                            <div class="form-group row">
-                                                <!-- Date Time Start -->
-                                                <label class="control-label col-md-3 required " for="datetime_start">Email: </label>
-                                                <div class="controls controlsDisplay col-md-7">
-                                                    <div>
-                                                        <input type="email" name="email" class="form-control">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group row">
-                                                <!-- Date Time Start -->
-                                                <label class="control-label col-md-3 required" for="datetime_start">Mật khẩu: </label>
-                                                <div class="controls controlsDisplay col-md-7">
-                                                    <div>
-                                                        <input type="password" name="password" class="form-control">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group row">
-                                                <!-- Date Time Start -->
-                                                <label class="control-label col-md-3 required " for="datetime_start">Nhập lại mật khẩu:</label>
-                                                <div class="controls controlsDisplay col-md-7">
-                                                    <div>
-                                                        <input type="password" name="password_confirm" class="form-control">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group row">
-                                                <label class="control-label col-md-3">Trạng thái: </label>
-                                                <div class="controls controlsDisplay col-md-7">
-                                                    <select class="form-control" name="status">
-                                                        <option value="0">{{ config('const.status_name.active') }}</option>
-                                                        <option value="1">{{ config('const.status_name.inactive') }}</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group row">
-                                                <label class="control-label col-md-3">Quyền: </label>
-                                                <div class="controls controlsDisplay col-md-7">
-                                                    <select class="form-control" name="role_id">
-                                                        <option value="1">{{ config('const.role.sub_admin') }}</option>
-                                                        <option value="0">{{ config('const.role.admin') }}</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group row">
-                                                <div class="controls col-md-10">
-                                                    <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Huỷ</button>
-                                                    <input class="btn btn-success pull-right" type="submit" id="btn-submit-update">
-                                                </div>
-                                            </div>
-                                        </form>
+                                            <!-- /.box-footer -->
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Huỷ</button>
+                                            <input class="btn btn-success pull-right" type="submit" value="Thêm">
+                                        </div>
                                     </div>
-                                </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -186,6 +257,8 @@
   </div>
 @endsection
 @section('scripts')
+    <script src="{{asset('assets/adminlte/common-js/validation/user.js')}}"></script>
+
     <script>
         $(function () {
             $('#data-tables-list').DataTable({
@@ -205,16 +278,23 @@
             $('#confirm-delete').modal('toggle');
         }
 
-        function showDialogUpdate(typeModal, id, fullName, email, roleId, status) {
-            if (typeModal === 'update') {
-                $('#modal-update-title').text('Cập nhật user');
-                $('#btn-submit-update').val('Cập nhật');
-            } else {
-                $('#modal-update-title').text('Thêm user');
-                $('#btn-submit-update').val('Thêm');
-            }
+        function showDialogUpdate(id, fullName, email, role, status) {
+            resetModal();
+            $('#form-full_name').val(fullName);
+            $('#form-email').val(email);
+            $('#form-role').val(role);
+            $('#form-status').val(status);
             $('#form-update').attr('action', '/admin/user/cap-nhat/' + id);
+
             $('#modal-update-user').modal('toggle');
+        }
+
+        function resetModal() {
+            $('#form-full_name').val('');
+            $('#form-email').val('');
+            $('#form-role').val('');
+            $('#form-status').val('');
+            $('#form-update').attr('action', '');
         }
     </script>
 @endsection

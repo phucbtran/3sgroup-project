@@ -6,7 +6,6 @@ use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use App\Repositories\NewsRepository;
 use App\Entities\News;
-use App\Validators\NewsValidator;
 
 /**
  * Class NewsRepositoryEloquent.
@@ -26,23 +25,11 @@ class NewsRepositoryEloquent extends BaseRepository implements NewsRepository
     }
 
     /**
-    * Specify Validator class name
-    *
-    * @return mixed
-    */
-    public function validator()
-    {
-
-        return NewsValidator::class;
-    }
-
-
-    /**
      * Boot up the repository, pushing criteria
      */
     public function boot()
     {
         $this->pushCriteria(app(RequestCriteria::class));
     }
-    
+
 }
