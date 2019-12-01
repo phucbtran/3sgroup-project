@@ -51,7 +51,7 @@
                                             <td>{{ $contact->title }}</td>
                                             <td>{{ $contact->content }}</td>
                                             <td>
-                                                <button href="#" data-toggle="modal" data-target="#confirmDelete{{ $contact->id }}" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></button>
+                                                <button href="#" data-toggle="modal" data-target="#confirmDelete{{ $contact->id }}" class="btn btn-danger btn-delete-user"><i class="fa fa-remove"></i></button>
                                                 <!-- Modal -->
                                                 <div class="modal fade" id="confirmDelete{{ $contact->id }}" role="dialog" tabindex="-1">
                                                     <div class="modal-dialog">
