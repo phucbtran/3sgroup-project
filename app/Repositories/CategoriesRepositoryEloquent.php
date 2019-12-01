@@ -6,7 +6,6 @@ use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use App\Repositories\CategoriesRepository;
 use App\Entities\Categories;
-use App\Validators\CategoriesValidator;
 
 /**
  * Class CategoriesRepositoryEloquent.
@@ -26,23 +25,11 @@ class CategoriesRepositoryEloquent extends BaseRepository implements CategoriesR
     }
 
     /**
-    * Specify Validator class name
-    *
-    * @return mixed
-    */
-    public function validator()
-    {
-
-        return CategoriesValidator::class;
-    }
-
-
-    /**
      * Boot up the repository, pushing criteria
      */
     public function boot()
     {
         $this->pushCriteria(app(RequestCriteria::class));
     }
-    
+
 }

@@ -10,7 +10,6 @@ use Prettus\Validator\Exceptions\ValidatorException;
 use App\Http\Requests\SlidesCreateRequest;
 use App\Http\Requests\SlidesUpdateRequest;
 use App\Repositories\SlidesRepository;
-use App\Validators\SlidesValidator;
 
 /**
  * Class SlidesController.
@@ -25,20 +24,13 @@ class SlidesController extends Controller
     protected $repository;
 
     /**
-     * @var SlidesValidator
-     */
-    protected $validator;
-
-    /**
      * SlidesController constructor.
      *
      * @param SlidesRepository $repository
-     * @param SlidesValidator $validator
      */
-    public function __construct(SlidesRepository $repository, SlidesValidator $validator)
+    public function __construct(SlidesRepository $repository)
     {
         $this->repository = $repository;
-        $this->validator  = $validator;
     }
 
     /**

@@ -17,7 +17,7 @@ Route::prefix('admin')->group(function () {
     Route::post('login', 'Auth\LoginController@login')->name('login.login');
 
     //logout
-    Route::get('logout', 'Auth\LoginController@logout');
+    Route::get('logout', 'Auth\LoginController@logout')->name('logout');
 
     Route::group(['prefix' => '',  'middleware' => 'checkAuth'], function(){
         //dashboard
@@ -26,14 +26,7 @@ Route::prefix('admin')->group(function () {
         })->name('dashboard');
 
         //profile
-        Route::prefix('profile')->group(function(){
-            Route::get('view', function () {
-                return view('admin.profile.view', ['msg' => null]);
-            });
-            Route::get('change-password', function (){
-                return view('admin.profile.change-password', ['msg' => null]);
-            });
-        });
+        Route::post('trang-ca-nhan', 'UsersController@updateProfile')->name('profile.update');
 
         //users
         Route::prefix('user')->group(function(){

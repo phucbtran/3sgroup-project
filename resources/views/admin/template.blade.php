@@ -22,6 +22,8 @@
     <!-- notification CSS  -->
     <link rel="stylesheet" href="{{asset("assets/adminlte/bower_components/notifications/Lobibox.min.css")}}">
     <link rel="stylesheet" href="{{asset("assets/adminlte/bower_components/notifications/notifications.css")}}">
+    <!-- common -->
+    <link rel="stylesheet" href="{{asset('assets/adminlte/common-css/style.css')}}">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -32,30 +34,6 @@
 
     <!-- Google Font -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-<style>
-  /* add error css */
-  input.valid {
-    border-color: #468847 !important;
-    background-image: url(/assets/adminlte/dist/img/data_image_validate_ok.png);
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-    background-repeat: no-repeat;
-    background-position: right;
-    background-position-x: 97%;
-  }
-  input.error {
-    border-color: #b94a48 !important;
-    background-image: url(/assets/adminlte/dist/img/data_image_check_not_ok.png);
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-    background-repeat: no-repeat;
-    background-position: right;
-    background-position-x: 97%;
-  }
-  .form-group label.required::after {
-    content: "*";
-    color: #b94a48;
-    margin-left: 5px;
-  }
-</style>
 @yield('styles')
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
@@ -71,7 +49,7 @@
 {{--end--}}
   <!-- /.content-wrapper -->
 @include('admin.layout.footer')
-<input style="display:none;" type="text" id="backButton" value="0"/>
+<input style="display:none;" type="text" id="back-button" value="0"/>
   <!-- /.control-sidebar -->
   <!-- Add the sidebar's background. This div must be placed
        immediately after the control sidebar -->
@@ -96,10 +74,14 @@
 <script src="{{asset('assets/adminlte/dist/js/demo.js')}}"></script>
 <!-- notification JS -->
 <script src="{{asset("assets/adminlte/plugins/notifications/Lobibox.js")}}"></script>
+<!-- validation -->
+<script src="{{asset("assets/adminlte/bower_components/form-validation/jquery.form.min.js")}}"></script>
+<script src="{{asset("assets/adminlte/bower_components/form-validation/jquery.validate.min.js")}}"></script>
+<script src="{{asset('assets/adminlte/common-js/validation/profile.js')}}"></script>
 
 <script>
     $(document).ready(function () {
-        var backButton = $('#backButton');
+        var backButton = $('#back-button');
         if (backButton.val() == "0") {
             //Check session
             @if (\Illuminate\Support\Facades\Session::has('msg_success'))
@@ -114,22 +96,14 @@
             Lobibox.notify('error', {
                 msg: "{{ \Illuminate\Support\Facades\Session::get('msg_forbidden') }}"
             });
+            @elseif (!empty($errors->first()))
+            Lobibox.notify('error', {
+                msg: "{{ trans('message.edit.fail') }}"
+            });
             @endif
             backButton.val('1');
         }
     });
-</script>
-
-<!--Get message validation-->
-<script>
-    function labelMessage(labelName) {
-        return '<p class="validation-msg">' + labelName + '</p>';
-    }
-
-    var validation_msg = @json(\Illuminate\Support\Facades\Session::get('validation_msg'));
-    for (item in validation_msg) {
-        $('.form-' + item).append(labelMessage(validation_msg[item]));
-    }
 </script>
 
 @yield('scripts')

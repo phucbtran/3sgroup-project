@@ -42,7 +42,8 @@ class LoginController extends Controller
     public function login(Request $request){
         $remember = ($request->input('remember')) ? true : false;
         $credentials = $request->only('email', 'password');
-        if (Auth::attempt($credentials, $remember) && Auth::user()->status == config('const.status.active')) {
+        if (Auth::attempt($credentials, $remember) && Auth::user()->status == config('const.status.active') &&
+            empty(Auth::user()->deleted_at)) {
             return redirect()->intended(route('dashboard'));
         }
         $request->flash();

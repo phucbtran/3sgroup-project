@@ -28,9 +28,9 @@
                 </div>
               </div>
               <!-- /.box-header -->
-              
+
             <div class="row">
-              <div class="col-md-8 col-sm-12 col-xs-12">	   
+              <div class="col-md-8 col-sm-12 col-xs-12">
                   <div class="box-body profile-body">
                     <fieldset>
                       <table class="profile-table">
@@ -46,9 +46,9 @@
                     </fieldset>
                   </div>
               </div>
-              <div class="col-md-4 col-sm-12 col-xs-12 text-center box-body box-profile">	
+              <div class="col-md-4 col-sm-12 col-xs-12 text-center box-body box-profile">
                 <div class="">
-                    <img src="{{asset('assets/img/user.jpg')}}">
+                    <img src="">
                 </div>
               </div>
             </div>

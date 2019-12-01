@@ -6,7 +6,6 @@ use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use App\Repositories\RolesRepository;
 use App\Entities\Roles;
-use App\Validators\RolesValidator;
 
 /**
  * Class RolesRepositoryEloquent.
@@ -25,7 +24,7 @@ class RolesRepositoryEloquent extends BaseRepository implements RolesRepository
         return Roles::class;
     }
 
-    
+
 
     /**
      * Boot up the repository, pushing criteria
@@ -34,5 +33,5 @@ class RolesRepositoryEloquent extends BaseRepository implements RolesRepository
     {
         $this->pushCriteria(app(RequestCriteria::class));
     }
-    
+
 }

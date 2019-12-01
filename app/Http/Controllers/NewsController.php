@@ -10,7 +10,6 @@ use Prettus\Validator\Exceptions\ValidatorException;
 use App\Http\Requests\NewsCreateRequest;
 use App\Http\Requests\NewsUpdateRequest;
 use App\Repositories\NewsRepository;
-use App\Validators\NewsValidator;
 
 /**
  * Class NewsController.
@@ -25,20 +24,13 @@ class NewsController extends Controller
     protected $repository;
 
     /**
-     * @var NewsValidator
-     */
-    protected $validator;
-
-    /**
      * NewsController constructor.
      *
      * @param NewsRepository $repository
-     * @param NewsValidator $validator
      */
-    public function __construct(NewsRepository $repository, NewsValidator $validator)
+    public function __construct(NewsRepository $repository)
     {
         $this->repository = $repository;
-        $this->validator  = $validator;
     }
 
     /**
