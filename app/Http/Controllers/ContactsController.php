@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use http\Exception;
 
 use App\Repositories\ContactsRepository;
-use App\Validators\ContactsValidator;
 
 /**
  * Class ContactsController.
@@ -20,20 +19,13 @@ class ContactsController extends Controller
     protected $repository;
 
     /**
-     * @var ContactsValidator
-     */
-    protected $validator;
-
-    /**
      * ContactsController constructor.
      *
      * @param ContactsRepository $repository
-     * @param ContactsValidator $validator
      */
-    public function __construct(ContactsRepository $repository, ContactsValidator $validator)
+    public function __construct(ContactsRepository $repository)
     {
         $this->repository = $repository;
-        $this->validator  = $validator;
     }
 
     /**
@@ -60,7 +52,7 @@ class ContactsController extends Controller
     {
         try {
             $this->repository->delete($id);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             session()->flash('msg_fail', trans('message.remove.fail'));
             return redirect()->back();
         }

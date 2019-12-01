@@ -2,7 +2,7 @@ $("#form-login").validate({
     rules: {
         email: {
             required: true,
-            // email: true
+            email: true
         },
         password: {
             required: true
@@ -11,7 +11,7 @@ $("#form-login").validate({
     messages: {
         email: {
             required: 'Vui lòng nhập email.',
-            // email: 'Email không đúng định dạng.'
+            email: 'Email không đúng định dạng.'
         },
         password: {
             required: 'Vui lòng nhập mật khẩu.'

@@ -3,91 +3,93 @@
 namespace App\Http\Controllers;
 
 use http\Exception;
-use Illuminate\Http\Request;
 
-use App\Http\Requests;
-use Prettus\Validator\Contracts\ValidatorInterface;
-use Prettus\Validator\Exceptions\ValidatorException;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\UsersCreateRequest;
 use App\Http\Requests\UsersUpdateRequest;
+use App\Http\Requests\ProfileUpdateRequest;
 use App\Repositories\UsersRepository;
-use App\Validators\UsersValidator;
-use Auth;
-use App\Entities\Users;
 
 class UsersController extends Controller
 {
+    /**
+     * @var UsersRepository
+     */
     protected $usersRepository;
 
-    protected $validator;
-
-    public function __construct(UsersRepository $usersRepository, UsersValidator $validator)
+    /**
+     * UsersController constructor.
+     *
+     * @param UsersRepository $usersRepository
+     */
+    public function __construct(UsersRepository $usersRepository)
     {
         $this->usersRepository = $usersRepository;
-        $this->validator  = $validator;
     }
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
         $users = $this->usersRepository->all();
         return view('admin.users.index', compact('users'));
     }
 
-    public function create(Request $request)
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  UsersCreateRequest  $request
+     * @return Response
+     */
+    public function create(UsersCreateRequest $request)
     {
         try {
-            $user = new Users();
-            $data = $request->all();
-            foreach ($data['user'] as $key => $value) {
-                $user[$key] = $value;
-            }
-            $user->save();
-            return $user;
-            return redirect()->back()->with(['status'=>'true','msg'=>'Thêm thành công']);
-        } catch (\Throwable $th) {
-            return redirect()->back()->with(['status'=>'false','msg'=>'Thêm thất bại !']);
+            $password = bcrypt($request->password);
+            $request->offsetSet('password', $password);
+            $this->usersRepository->create($request->except('id'));
+
+            session()->flash('msg_success', trans('message.add.success'));
+            return redirect(route('user.index'));
+        } catch (\Exception $e) {
+            session()->flash('msg_fail', trans('message.add.fail'));
+            return redirect(route('user.index'));
         }
     }
 
-
-    public function show($id)
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  UsersUpdateRequest  $request
+     * @param  int  $id
+     * @return Response
+     */
+    public function update(UsersUpdateRequest $request, $id)
     {
-        $user = $this->repository->find($id);
-
-        if (request()->wantsJson()) {
-
-            return response()->json([
-                'data' => $user,
-            ]);
-        }
-
-        return view('users.show', compact('user'));
-    }
-
-    public function edit($id)
-    {
-        $user = $this->repository->find($id);
-
-        return view('users.edit', compact('user'));
-    }
-
-    public function update(Request $request)
-    {
-        dd('a');
         try {
-            $id = $request->id;
-            $user = Users::find($id);
-            $data = $request->all();
-            foreach ($data['user'] as $key => $value) {
-                $user[$key] = $value;
+            if (empty($request->password)) {
+                $this->usersRepository->update($request->except('id', 'password'), $id);
+            } else {
+                $password = bcrypt($request->password);
+                $request->offsetSet('password', $password);
+                $this->usersRepository->update($request->except('id'), $id);
             }
-            $user->save();
-            return redirect()->back()->with(['status'=>'true','msg'=>'Cập nhật thành công']);
-        } catch (\Throwable $th) {
-            return redirect()->back()->with(['status'=>'false','msg'=>'Cập nhật thất bại !']);
+            session()->flash('msg_success', trans('message.edit.success'));
+            return redirect(route('user.index'));
+        } catch (\Exception $e) {
+            session()->flash('msg_fail', trans('message.edit.fail'));
+            return redirect(route('user.index'));
         }
     }
 
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return Response
+     */
     public function destroy($id)
     {
         try {
@@ -99,5 +101,30 @@ class UsersController extends Controller
 
         session()->flash('msg_success', trans('message.remove.success'));
         return redirect()->back();
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  ProfileUpdateRequest  $request
+     * @return Response
+     */
+    public function updateProfile(ProfileUpdateRequest $request)
+    {
+        try {
+            $id = Auth::id();
+            if (empty($request->password)) {
+                $this->usersRepository->update($request->only('full_name'), $id);
+            } else {
+                $password = bcrypt($request->password);
+                $request->offsetSet('password', $password);
+                $this->usersRepository->update($request->only('full_name', 'password'), $id);
+            }
+            session()->flash('msg_success', trans('message.edit.success'));
+            return redirect()->back();
+        } catch (\Exception $e) {
+            session()->flash('msg_fail', trans('message.edit.fail'));
+            return redirect()->back();
+        }
     }
 }

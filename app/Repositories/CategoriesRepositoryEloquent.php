@@ -2,11 +2,11 @@
 
 namespace App\Repositories;
 
+use Illuminate\Support\Facades\DB;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use App\Repositories\CategoriesRepository;
 use App\Entities\Categories;
-use App\Validators\CategoriesValidator;
 
 /**
  * Class CategoriesRepositoryEloquent.
@@ -26,23 +26,28 @@ class CategoriesRepositoryEloquent extends BaseRepository implements CategoriesR
     }
 
     /**
-    * Specify Validator class name
-    *
-    * @return mixed
-    */
-    public function validator()
-    {
-
-        return CategoriesValidator::class;
-    }
-
-
-    /**
      * Boot up the repository, pushing criteria
      */
     public function boot()
     {
         $this->pushCriteria(app(RequestCriteria::class));
     }
-    
+
+    public function getListCategory() {
+        $query = DB::table('categories as c1')
+            ->select('c1.id as id1', 'c2.id as id2', 'c3.id as id3')
+            ->leftJoin('categories as c2', function ($join) {
+                $join->on('c1.cat_parent_id', '=', 'c2.id');
+            })
+            ->leftJoin('categories as c3', function ($join) {
+                $join->on('c2.cat_parent_id', '=', 'c3.id');
+            })
+            ->orderBy('c1.group_id', 'ASC')
+            ->orderBy('c1.num_sort', 'ASC')
+//            ->get()
+        ;
+        dd($query->toSql());
+        return $query;
+    }
+
 }

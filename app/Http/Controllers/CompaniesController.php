@@ -10,7 +10,6 @@ use Prettus\Validator\Exceptions\ValidatorException;
 use App\Http\Requests\CompanyCreateRequest;
 use App\Http\Requests\CompanyUpdateRequest;
 use App\Repositories\CompanyRepository;
-use App\Validators\CompanyValidator;
 
 /**
  * Class CompaniesController.
@@ -25,20 +24,13 @@ class CompaniesController extends Controller
     protected $repository;
 
     /**
-     * @var CompanyValidator
-     */
-    protected $validator;
-
-    /**
      * CompaniesController constructor.
      *
      * @param CompanyRepository $repository
-     * @param CompanyValidator $validator
      */
-    public function __construct(CompanyRepository $repository, CompanyValidator $validator)
+    public function __construct(CompanyRepository $repository)
     {
         $this->repository = $repository;
-        $this->validator  = $validator;
     }
 
     /**

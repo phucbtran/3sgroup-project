@@ -1,5 +1,5 @@
 @extends('admin.template')
-@section('title', 'Danh sách user')
+@section('title', 'Danh sách danh mục')
 @section('content')
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -9,7 +9,7 @@
           </h1>
           <ol class="breadcrumb">
               <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
-              <li><a href="#">User</a></li>
+              <li><a href="#">Danh mục</a></li>
               <li class="active">Danh sách</li>
           </ol>
       </section>
@@ -20,7 +20,7 @@
             <div class="col-xs-12">
                 <div class="box">
                     <div class="box-header">
-                        <h3 class="box-title pull-left">Danh sách user</h3>
+                        <h3 class="box-title pull-left">Danh sách danh mục</h3>
                         <a href="#" data-toggle="modal" data-target="#modal-add-user" class="btn btn-primary pull-right">
                             <i class="fa fa-plus"></i>&nbsp;Thêm
                         </a>
@@ -31,9 +31,8 @@
                             <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Họ tên</th>
-                                <th>Email</th>
-                                <th>Quyền</th>
+                                <th>Tên danh mục</th>
+                                <th>Danh mục cha</th>
                                 <th>Trạng thái</th>
                                 <th>Action</th>
                             </tr>
@@ -42,19 +41,19 @@
                             @foreach ($users as $item)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $item->full_name }}</td>
-                                    <td>{{ $item->email }}</td>
+                                    <td>{{ $item['full_name'] }}</td>
+                                    <td>{{ $item['email'] }}</td>
                                     <td>
-                                        @if($item->role == 0)
+                                        @if($item['role'] == 0)
                                             <span class="label label-success" title="view">{{ config('const.role.admin') }}</span>
                                         @else
                                             <span class="label label-warning">{{ config('const.role.sub_admin') }}</span>
                                         @endif
                                     </td>
                                     <td>
-                                        @if($item->status == 0)
+                                        @if($item['status'] == 0)
                                             <span class="label label-success">{{ config('const.status_name.active') }}</span>
-                                        @elseif($item->status == 1)
+                                        @elseif($item['status'] == 1)
                                             <span class="label label-danger">{{ config('const.status_name.inactive') }}</span>
                                         @endif
                                     </td>
