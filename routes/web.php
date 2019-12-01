@@ -40,5 +40,13 @@ Route::prefix('admin')->group(function () {
         Route::get('lien-he', 'ContactsController@index')->name('contact.index');
         // remove contact
         Route::delete('lien-he/{id}', 'ContactsController@destroy')->name('contact.remove');
+
+        //categories
+        Route::prefix('danh-muc')->group(function(){
+            Route::get('', 'CategoriesController@index')->name('categories.index');
+            Route::post('/them-moi', 'CategoriesController@create')->name('categories.create');
+            Route::post('/cap-nhat/{id}', 'CategoriesController@update')->name('categories.update');
+            Route::delete('/xoa/{id}', 'CategoriesController@destroy')->name('categories.remove');
+        });
     });
 });

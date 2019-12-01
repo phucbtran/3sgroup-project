@@ -17,9 +17,10 @@ class CreateCategoriesTable extends Migration
 	{
 		Schema::create('categories', function(Blueprint $table) {
             $table->increments('id');
+            $table->integer('level');
+            $table->integer('group_id');
             $table->string('name', 500);
             $table->string('slug', 1024);
-            $table->string('img_dir_path', 1024);
             $table->unsignedInteger('cat_parent_id')->nullable(true);
             $table->foreign('cat_parent_id')->references('id')->on('categories');
             $table->integer('num_sort');
