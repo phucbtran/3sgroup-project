@@ -11,6 +11,7 @@
     <link rel='stylesheet' id='flatsome-main-css' href='{{asset('assets/public/styles/css/flatsome.css?ver=3.4.2')}}' type='text/css' media='all' />
     <link rel='stylesheet' id='flatsome-shop-css' href='{{asset('assets/public/styles/css/flatsome-shop.css?ver=3.4.2')}}' type='text/css' media='all' />
     <link rel='stylesheet' id='flatsome-style-css' href='{{asset('assets/public/styles/css/style.css?ver=3.4.2')}}' type='text/css' media='all' />
+    <link rel='stylesheet' id='flatsome-style-css' href='{{asset('assets/public/styles/css/custom-menu.css')}}' type='text/css' media='all' />
 @endsection
 
 @section('content')

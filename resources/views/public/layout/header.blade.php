@@ -65,18 +65,17 @@
                         </div>
 
                         <!-- Left Elements -->
-                        <div class="flex-col hide-for-medium flex-left
-            flex-grow">
+                        <div class="flex-col hide-for-medium flex-leftflex-grow">
                             <ul class="header-nav header-nav-main nav nav-left  nav-line-bottom nav-size-medium nav-spacing-large nav-uppercase">
                             </ul>
                         </div>
 
                         <!-- Right Elements -->
-                        <div class="flex-col hide-for-medium flex-right">
+                        <div class="flex-col hide-for-medium flex-right" id="header_inner">
                             <ul class="header-nav header-nav-main nav nav-right  nav-line-bottom nav-size-medium nav-spacing-large nav-uppercase">
                                 <li id="menu-item-24" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-16 current_page_item active  menu-item-24"><a href="" class="menu-image-title-after nav-top-link"><span class="menu-image-title">Trang chủ</span></a></li>
-                                <li id="menu-item-393" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children  menu-item-393 has-dropdown"><a href="gioi-thieu/tong-quan-ve-cong-ty/" class="menu-image-title-after nav-top-link"><span class="menu-image-title">Giới thiệu</span></a>
-                                    <ul class='nav-dropdown nav-dropdown-simple'>
+                                <li id="menu-item-393" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children  menu-item-393 has-dropdown"><a href="javascript:void(0)" class="menu-image-title-after nav-top-link"><span class="menu-image-title">Giới thiệu</span></a>
+                                    <ul class='nav-dropdown nav-dropdown-simple sub-menu'>
                                         <li id="menu-item-184" class="menu-item menu-item-type-post_type menu-item-object-page  menu-item-184"><a href="gioi-thieu/tong-quan-ve-cong-ty/" class="menu-image-title-after"><span class="menu-image-title">Tổng quan về công ty</span></a></li>
                                         <li id="menu-item-182" class="menu-item menu-item-type-post_type menu-item-object-page  menu-item-182"><a href="gioi-thieu/lich-su-hinh-thanh/" class="menu-image-title-after"><span class="menu-image-title">Lịch sử hình thành</span></a></li>
                                         <li id="menu-item-183" class="menu-item menu-item-type-post_type menu-item-object-page  menu-item-183"><a href="gioi-thieu/tam-nhin-su-menh/" class="menu-image-title-after"><span class="menu-image-title">Tầm nhìn – Sứ mệnh</span></a></li>
@@ -93,7 +92,7 @@
                                 </li>
                                 <li id="menu-item-131" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children  menu-item-131 has-dropdown"><a href="cua-hang/" class="menu-image-title-after nav-top-link"><span class="menu-image-title">Sản phẩm</span></a>
                                     <ul class='nav-dropdown nav-dropdown-simple'>
-                                        <li id="menu-item-159" class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-has-children  menu-item-159 nav-dropdown-col"><a href="danh-muc/trang-phuc-nam/" class="menu-image-title-after"><span class="menu-image-title">Trang phục nam</span></a>
+                                        <li id="menu-item-159" class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-has-children  menu-item-159 "><a href="danh-muc/trang-phuc-nam/" class=""><span class="menu-image-title">Trang phục nam</span></a>
                                             <ul class='nav-column nav-dropdown-simple'>
                                                 <li id="menu-item-165" class="menu-item menu-item-type-taxonomy menu-item-object-product_cat  menu-item-165"><a href="danh-muc/trang-phuc-nam/veston-nam/" class="menu-image-title-after"><span class="menu-image-title">Veston nam</span></a></li>
                                                 <li id="menu-item-164" class="menu-item menu-item-type-taxonomy menu-item-object-product_cat  menu-item-164"><a href="danh-muc/trang-phuc-nam/so-mi-nam/" class="menu-image-title-after"><span class="menu-image-title">Sơ mi nam</span></a></li>
@@ -103,7 +102,7 @@
                                                 <li id="menu-item-162" class="menu-item menu-item-type-taxonomy menu-item-object-product_cat  menu-item-162"><a href="danh-muc/trang-phuc-nam/do-lot-nam/" class="menu-image-title-after"><span class="menu-image-title">Đồ lót nam</span></a></li>
                                             </ul>
                                         </li>
-                                        <li id="menu-item-166" class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-has-children  menu-item-166 nav-dropdown-col"><a href="danh-muc/trang-phuc-nu/" class="menu-image-title-after"><span class="menu-image-title">Trang phục nữ</span></a>
+                                        <li id="menu-item-166" class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-has-children  menu-item-166 "><a href="danh-muc/trang-phuc-nu/" class="menu-image-title-after"><span class="menu-image-title">Trang phục nữ</span></a>
                                             <ul class='nav-column nav-dropdown-simple'>
                                                 <li id="menu-item-172" class="menu-item menu-item-type-taxonomy menu-item-object-product_cat  menu-item-172"><a href="danh-muc/trang-phuc-nu/so-mi-nu/" class="menu-image-title-after"><span class="menu-image-title">Sơ mi nữ</span></a></li>
                                                 <li id="menu-item-168" class="menu-item menu-item-type-taxonomy menu-item-object-product_cat  menu-item-168"><a href="danh-muc/trang-phuc-nu/ao-thun-nu/" class="menu-image-title-after"><span class="menu-image-title">Áo thun nữ</span></a></li>
@@ -113,7 +112,7 @@
                                                 <li id="menu-item-169" class="menu-item menu-item-type-taxonomy menu-item-object-product_cat  menu-item-169"><a href="danh-muc/trang-phuc-nu/ao-vest-nu/" class="menu-image-title-after"><span class="menu-image-title">Áo vest nữ</span></a></li>
                                             </ul>
                                         </li>
-                                        <li id="menu-item-153" class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-has-children  menu-item-153 nav-dropdown-col"><a href="danh-muc/pierre-cardin/" class="menu-image-title-after"><span class="menu-image-title">Pierre Cardin</span></a>
+                                        <li id="menu-item-153" class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-has-children  menu-item-153 "><a href="danh-muc/pierre-cardin/" class="menu-image-title-after"><span class="menu-image-title">Pierre Cardin</span></a>
                                             <ul class='nav-column nav-dropdown-simple'>
                                                 <li id="menu-item-155" class="menu-item menu-item-type-taxonomy menu-item-object-product_cat  menu-item-155"><a href="danh-muc/pierre-cardin/ao-so-mi/" class="menu-image-title-after"><span class="menu-image-title">Áo sơ mi</span></a></li>
                                                 <li id="menu-item-158" class="menu-item menu-item-type-taxonomy menu-item-object-product_cat  menu-item-158"><a href="danh-muc/pierre-cardin/veston/" class="menu-image-title-after"><span class="menu-image-title">Veston</span></a></li>
@@ -122,7 +121,7 @@
                                                 <li id="menu-item-154" class="menu-item menu-item-type-taxonomy menu-item-object-product_cat  menu-item-154"><a href="danh-muc/pierre-cardin/ao-khoac/" class="menu-image-title-after"><span class="menu-image-title">Áo khoác</span></a></li>
                                             </ul>
                                         </li>
-                                        <li id="menu-item-142" class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-has-children  menu-item-142 nav-dropdown-col"><a href="danh-muc/phu-kien-phieu-qua-tang/" class="menu-image-title-after"><span class="menu-image-title">Phụ kiện &#8211; Phiếu quà tặng</span></a>
+                                        <li id="menu-item-142" class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-has-children  menu-item-142 "><a href="danh-muc/phu-kien-phieu-qua-tang/" class="menu-image-title-after"><span class="menu-image-title">Phụ kiện &#8211; Phiếu quà tặng</span></a>
                                             <ul class='nav-column nav-dropdown-simple'>
                                                 <li id="menu-item-145" class="menu-item menu-item-type-taxonomy menu-item-object-product_cat  menu-item-145"><a href="danh-muc/phu-kien-phieu-qua-tang/giay/" class="menu-image-title-after"><span class="menu-image-title">Giày</span></a></li>
                                                 <li id="menu-item-149" class="menu-item menu-item-type-taxonomy menu-item-object-product_cat  menu-item-149"><a href="danh-muc/phu-kien-phieu-qua-tang/tat/" class="menu-image-title-after"><span class="menu-image-title">Tất</span></a></li>
@@ -136,7 +135,7 @@
                                                 <li id="menu-item-143" class="menu-item menu-item-type-taxonomy menu-item-object-product_cat  menu-item-143"><a href="danh-muc/phu-kien-phieu-qua-tang/ca-vat/" class="menu-image-title-after"><span class="menu-image-title">Cà vạt</span></a></li>
                                             </ul>
                                         </li>
-                                        <li id="menu-item-137" class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-has-children  menu-item-137 nav-dropdown-col"><a href="danh-muc/khuyen-mai/" class="menu-image-title-after"><span class="menu-image-title">Khuyến mãi</span></a>
+                                        <li id="menu-item-137" class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-has-children  menu-item-137 "><a href="danh-muc/khuyen-mai/" class="menu-image-title-after"><span class="menu-image-title">Khuyến mãi</span></a>
                                             <ul class='nav-column nav-dropdown-simple'>
                                                 <li id="menu-item-140" class="menu-item menu-item-type-taxonomy menu-item-object-product_cat  menu-item-140"><a href="danh-muc/khuyen-mai/trang-phuc-nam-khuyen-mai/" class="menu-image-title-after"><span class="menu-image-title">Trang phục nam</span></a></li>
                                                 <li id="menu-item-141" class="menu-item menu-item-type-taxonomy menu-item-object-product_cat  menu-item-141"><a href="danh-muc/khuyen-mai/trang-phuc-nu-khuyen-mai/" class="menu-image-title-after"><span class="menu-image-title">Trang phục nữ</span></a></li>
