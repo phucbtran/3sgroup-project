@@ -8,13 +8,10 @@ use Faker\Factory as Faker;
 class UserSeeder extends Seeder
 {
     protected $usersRepository;
-    protected $rolesRepository;
 
-    public function __construct(UsersRepository $usersRepository,
-                                RolesRepository $rolesRepository)
+    public function __construct(UsersRepository $usersRepository)
     {
         $this->usersRepository = $usersRepository;
-        $this->rolesRepository = $rolesRepository;
     }
 
     /**
@@ -25,13 +22,12 @@ class UserSeeder extends Seeder
     public function run()
     {
         $faker = Faker::create();
-        $roleId = $this->rolesRepository->all()->pluck('id');
 
         $this->usersRepository->create([
             'email' => 'admin@gmail.com',
             'password' => bcrypt('12345678'),
             'full_name' => 'Tran Cong Phuc',
-            'role_id' => $this->rolesRepository->findByField('name', 'admin')->first()->id,
+            'role' => '0',
             'status' => '0'
         ]);
 
@@ -40,7 +36,7 @@ class UserSeeder extends Seeder
                 'email' => $faker->email,
                 'password' => bcrypt('12345678'),
                 'full_name' => $faker->name,
-                'role_id' => $roleId[rand(0, count($roleId) - 1)],
+                'role' => rand(0, 1),
                 'status' => '0'
             ]);
         }
