@@ -1,7 +1,5 @@
 @extends('admin.template')
-@section('title')
-    {{ $title }}
-@endsection
+@section('title', 'Liên hệ')
 @section('styles')
 @endsection
 @section('content')
