@@ -4,13 +4,11 @@ namespace App\Http\Controllers;
 
 use http\Exception;
 
-use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\UsersCreateRequest;
 use App\Http\Requests\UsersUpdateRequest;
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Repositories\UsersRepository;
-use App\Entities\Users;
 
 class UsersController extends Controller
 {

@@ -5,3 +5,7 @@
 .lbl-required {
     color: red;
 }
+
+.highlight-cat-parent td {
+    color: red;
+}

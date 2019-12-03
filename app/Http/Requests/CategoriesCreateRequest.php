@@ -13,7 +13,7 @@ class CategoriesCreateRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,16 @@ class CategoriesCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => 'required|max:500',
+            'num_sort' => 'required|integer|digits_between:min:1,10',
+            'status' => 'in:0,1'
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+
         ];
     }
 }

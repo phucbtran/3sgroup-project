@@ -11,5 +11,5 @@ use Prettus\Repository\Contracts\RepositoryInterface;
  */
 interface CategoriesRepository extends RepositoryInterface
 {
-    //
+    public function getListCategory();
 }

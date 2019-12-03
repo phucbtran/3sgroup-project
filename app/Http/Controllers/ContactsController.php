@@ -36,9 +36,8 @@ class ContactsController extends Controller
     public function index()
     {
         $contacts = $this->repository->getListContacts();
-        $title = 'Liên hệ';
 
-        return view('admin.contacts.index', compact('contacts', 'title'));
+        return view('admin.contacts.index', compact('contacts'));
     }
 
     /**

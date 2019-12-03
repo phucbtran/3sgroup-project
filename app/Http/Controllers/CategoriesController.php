@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
-use App\Http\Requests;
-use Prettus\Validator\Contracts\ValidatorInterface;
-use Prettus\Validator\Exceptions\ValidatorException;
+use http\Exception;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use App\Http\Requests\CategoriesCreateRequest;
 use App\Http\Requests\CategoriesUpdateRequest;
 use App\Repositories\CategoriesRepository;
@@ -40,17 +38,16 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
-        $categories = $this->repository->all();
+        $categories = $this->repository
+            ->orderBy('group_id')
+            ->orderBy('cat_parent_id')
+            ->orderBy('num_sort')
+            ->all()
+        ;
 
-        if (request()->wantsJson()) {
+        $parentCategories = $this->repository->findByField('cat_parent_id', null);
 
-            return response()->json([
-                'data' => $categories,
-            ]);
-        }
-
-        return view('categories.index', compact('categories'));
+        return view('admin.categories.index', compact('categories', 'parentCategories'));
     }
 
     /**
@@ -59,73 +56,28 @@ class CategoriesController extends Controller
      * @param  CategoriesCreateRequest $request
      *
      * @return \Illuminate\Http\Response
-     *
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function store(CategoriesCreateRequest $request)
     {
         try {
-
-            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
-
-            $category = $this->repository->create($request->all());
-
-            $response = [
-                'message' => 'Categories created.',
-                'data'    => $category->toArray(),
-            ];
-
-            if ($request->wantsJson()) {
-
-                return response()->json($response);
+            if (empty($request->cat_parent_id)) {
+                $statement = DB::select("show table status like 'categories'");
+                $groupId = response()->json(['id' => $statement[0]->Auto_increment])->getData('id')['id'];
+            } else {
+                $groupId = $request->cat_parent_id;
             }
 
-            return redirect()->back()->with('message', $response['message']);
-        } catch (ValidatorException $e) {
-            if ($request->wantsJson()) {
-                return response()->json([
-                    'error'   => true,
-                    'message' => $e->getMessageBag()
-                ]);
-            }
+            $request->offsetSet('cat_parent_id', null);
+            $request->offsetSet('group_id', $groupId);
+            $request->offsetSet('slug', Str::slug($request->name, '-'));
+            $this->repository->create($request->except('id'));
 
-            return redirect()->back()->withErrors($e->getMessageBag())->withInput();
+            session()->flash('msg_success', trans('message.add.success'));
+            return redirect()->back();
+        } catch (\Exception $e) {
+            session()->flash('msg_fail', trans('message.add.fail'));
+            return redirect()->back();
         }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $category = $this->repository->find($id);
-
-        if (request()->wantsJson()) {
-
-            return response()->json([
-                'data' => $category,
-            ]);
-        }
-
-        return view('categories.show', compact('category'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $category = $this->repository->find($id);
-
-        return view('categories.edit', compact('category'));
     }
 
     /**
@@ -135,39 +87,24 @@ class CategoriesController extends Controller
      * @param  string            $id
      *
      * @return Response
-     *
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function update(CategoriesUpdateRequest $request, $id)
     {
         try {
-
-            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
-
-            $category = $this->repository->update($request->all(), $id);
-
-            $response = [
-                'message' => 'Categories updated.',
-                'data'    => $category->toArray(),
-            ];
-
-            if ($request->wantsJson()) {
-
-                return response()->json($response);
+            if (empty($request->cat_parent_id)) {
+                $groupId = $id;
+            } else {
+                $groupId = $request->cat_parent_id;
             }
+            $request->offsetSet('group_id', $groupId);
+            $request->offsetSet('slug', Str::slug($request->name, '-'));
+            $this->repository->update($request->except('id'), $id);
 
-            return redirect()->back()->with('message', $response['message']);
-        } catch (ValidatorException $e) {
-
-            if ($request->wantsJson()) {
-
-                return response()->json([
-                    'error'   => true,
-                    'message' => $e->getMessageBag()
-                ]);
-            }
-
-            return redirect()->back()->withErrors($e->getMessageBag())->withInput();
+            session()->flash('msg_success', trans('message.edit.success'));
+            return redirect()->back();
+        } catch (\Exception $e) {
+            session()->flash('msg_fail', trans('message.edit.fail'));
+            return redirect()->back();
         }
     }
 
@@ -181,16 +118,14 @@ class CategoriesController extends Controller
      */
     public function destroy($id)
     {
-        $deleted = $this->repository->delete($id);
-
-        if (request()->wantsJson()) {
-
-            return response()->json([
-                'message' => 'Categories deleted.',
-                'deleted' => $deleted,
-            ]);
+        try {
+            $this->repository->delete($id);
+        } catch (Exception $e) {
+            session()->flash('msg_fail', trans('message.remove.fail'));
+            return redirect()->back();
         }
 
-        return redirect()->back()->with('message', 'Categories deleted.');
+        session()->flash('msg_success', trans('message.remove.success'));
+        return redirect()->back();
     }
 }
