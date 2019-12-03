@@ -17,7 +17,6 @@ class CategorySeeder extends Seeder
     private $data = [
         '0' => [
             'name' => '3S Edu',
-            'level' => 1,
             'group_id' => 1,
             'slug' => '3s-edu',
             'cat_parent_id' => null,
@@ -26,7 +25,6 @@ class CategorySeeder extends Seeder
         ],
         '1' => [
             'name' => 'Store',
-            'level' => 1,
             'group_id' => 2,
             'slug' => 'store',
             'cat_parent_id' => null,
@@ -35,7 +33,6 @@ class CategorySeeder extends Seeder
         ],
         '2' => [
             'name' => 'Investment',
-            'level' => 1,
             'group_id' => 3,
             'slug' => 'investment',
             'cat_parent_id' => null,
@@ -44,7 +41,6 @@ class CategorySeeder extends Seeder
         ],
         '3' => [
             'name' => 'Commerce',
-            'level' => 1,
             'group_id' => 4,
             'slug' => 'commerce',
             'cat_parent_id' => null,
@@ -53,7 +49,6 @@ class CategorySeeder extends Seeder
         ],
         '4' => [
             'name' => 'Real Property',
-            'level' => 1,
             'group_id' => 5,
             'slug' => 'real-property',
             'cat_parent_id' => null,
@@ -80,7 +75,6 @@ class CategorySeeder extends Seeder
         for ($i = 0; $i < 5; $i++) {
             $name = $faker->name;
             $this->categoriesRepository->create([
-                'level' => 2,
                 'group_id' => 1,
                 'name' => $name,
                 'slug' => Str::slug($name, '-'),
@@ -93,11 +87,10 @@ class CategorySeeder extends Seeder
         for ($i = 0; $i < 5; $i++) {
             $name = $faker->name;
             $this->categoriesRepository->create([
-                'level' => 3,
-                'group_id' => 1,
+                'group_id' => 2,
                 'name' => $name,
                 'slug' => Str::slug($name, '-'),
-                'cat_parent_id' => 6,
+                'cat_parent_id' => 2,
                 'num_sort' => $i,
                 'status' => 0,
             ]);

@@ -1,11 +1,11 @@
 @extends('admin.template')
-@section('title', 'Danh sách danh mục')
+@section('title', 'Danh mục')
 @section('content')
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
       <section class="content-header">
           <h1>
-              User
+              Danh mục
           </h1>
           <ol class="breadcrumb">
               <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
@@ -21,7 +21,7 @@
                 <div class="box">
                     <div class="box-header">
                         <h3 class="box-title pull-left">Danh sách danh mục</h3>
-                        <a href="#" data-toggle="modal" data-target="#modal-add-user" class="btn btn-primary pull-right">
+                        <a href="#" data-toggle="modal" data-target="#modal-add-category" class="btn btn-primary pull-right">
                             <i class="fa fa-plus"></i>&nbsp;Thêm
                         </a>
                     </div>
@@ -33,32 +33,27 @@
                                 <th>ID</th>
                                 <th>Tên danh mục</th>
                                 <th>Danh mục cha</th>
+                                <th>Vị trí</th>
                                 <th>Trạng thái</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach ($users as $item)
-                                <tr>
-                                    <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $item['full_name'] }}</td>
-                                    <td>{{ $item['email'] }}</td>
+                            @foreach ($categories as $item)
+                                <tr class="{{ isset($item->parent) ? '' : 'highlight-cat-parent' }}">
+                                    <td>{{ $item->id }}</td>
+                                    <td>{{ $item->name }}</td>
+                                    <td>{{ isset($item->parent) ? $item->parent->name : '-' }}</td>
+                                    <td>{{ $item->num_sort }}</td>
                                     <td>
-                                        @if($item['role'] == 0)
-                                            <span class="label label-success" title="view">{{ config('const.role.admin') }}</span>
-                                        @else
-                                            <span class="label label-warning">{{ config('const.role.sub_admin') }}</span>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @if($item['status'] == 0)
+                                        @if($item->status == 0)
                                             <span class="label label-success">{{ config('const.status_name.active') }}</span>
-                                        @elseif($item['status'] == 1)
+                                        @elseif($item->status == 1)
                                             <span class="label label-danger">{{ config('const.status_name.inactive') }}</span>
                                         @endif
                                     </td>
                                     <td class="btn-act">
-                                        <button href="#" onclick="showDialogUpdate('{{ $item->id }}', '{{ $item->full_name }}', '{{ $item->email }}', '{{ $item->role }}', '{{ $item->status }}');"
+                                        <button href="#" onclick="showDialogUpdate('{{ $item->id }}', '{{ $item->name }}', '{{ isset($item->parent) ? $item->parent->id : '' }}', '{{ $item->num_sort }}', '{{ $item->status }}');"
                                                 class="btn btn-primary edit-record">
                                             <i class="fa fa-edit"></i>
                                         </button>
@@ -92,8 +87,8 @@
                             </div>
                         </div>
 
-                        <!-- Modal edit user -->
-                        <div class="modal fade" id="modal-update-user" tabindex="-1" role="dialog" aria-hidden="true">
+                        <!-- Modal edit category -->
+                        <div class="modal fade" id="modal-update-category" tabindex="-1" role="dialog" aria-hidden="true">
                             <div class="modal-dialog" role="document">
                                 <form method="POST" id="form-update" class="form-horizontal">
                                     {{ csrf_field() }}
@@ -102,39 +97,36 @@
                                         <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">×</span></button>
-                                            <h4 class="modal-title">Cập nhật user</h4>
+                                            <h4 class="modal-title">Cập nhật danh mục</h4>
                                         </div>
                                         <div class="modal-body">
                                             <div class="box-body">
                                                 <div class="form-group">
                                                     <!-- Date Time Start -->
-                                                    <label class="col-sm-3 control-label" for="datetime_start">Họ Tên<span class="lbl-required">*</span>: </label>
+                                                    <label class="col-sm-3 control-label" for="datetime_start">Tên danh mục<span class="lbl-required">*</span>:</label>
                                                     <div class="col-sm-9">
-                                                        <input type="text" name="full_name" class="form-control" id="form-full_name" maxlength="500">
+                                                        <input type="text" name="name" class="form-control" id="form-name" maxlength="500">
                                                     </div>
                                                 </div>
 
                                                 <div class="form-group">
                                                     <!-- Date Time Start -->
-                                                    <label class="col-sm-3 control-label" for="datetime_start">Email<span class="lbl-required">*</span>: </label>
+                                                    <label class="col-sm-3 control-label" for="datetime_start">Danh mục cha: </label>
                                                     <div class="col-sm-9">
-                                                        <input type="email" name="email" class="form-control" id="form-email" maxlength="500">
+                                                        <select class="form-control" name="cat_parent_id" id="form-cat_parent_id">
+                                                            <option value="">-- Chọn danh mục --</option>
+                                                            @foreach ($parentCategories as $item)
+                                                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                                            @endforeach
+                                                        </select>
                                                     </div>
                                                 </div>
 
                                                 <div class="form-group">
                                                     <!-- Date Time Start -->
-                                                    <label class="col-sm-3 control-label" for="datetime_start">Mật khẩu: </label>
+                                                    <label class="col-sm-3 control-label" for="datetime_start">Vị trí<span class="lbl-required">*</span>:</label>
                                                     <div class="col-sm-9">
-                                                        <input type="password" name="password" class="form-control" id="form-password" maxlength="500">
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <!-- Date Time Start -->
-                                                    <label class="col-sm-3 control-label " for="datetime_start">Nhập lại mật khẩu:</label>
-                                                    <div class="col-sm-9">
-                                                        <input type="password" name="password_confirm" class="form-control" id="form-password_confirm" maxlength="500">
+                                                        <input type="number" name="num_sort" class="form-control" id="form-num_sort" maxlength="10">
                                                     </div>
                                                 </div>
 
@@ -144,16 +136,6 @@
                                                         <select class="form-control" name="status" id="form-status">
                                                             <option value="0">{{ config('const.status_name.active') }}</option>
                                                             <option value="1">{{ config('const.status_name.inactive') }}</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label class="col-sm-3 control-label">Quyền: </label>
-                                                    <div class="col-sm-9">
-                                                        <select class="form-control" name="role" id="form-role">
-                                                            <option value="1">{{ config('const.role.sub_admin') }}</option>
-                                                            <option value="0">{{ config('const.role.admin') }}</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -170,68 +152,55 @@
                             </div>
                         </div>
 
-                        <!-- Modal edit user -->
-                        <div class="modal fade" id="modal-add-user" tabindex="-1" role="dialog" aria-hidden="true">
+                        <!-- Modal add category -->
+                        <div class="modal fade" id="modal-add-category" tabindex="-1" role="dialog" aria-hidden="true">
                             <div class="modal-dialog" role="document">
-                                <form action="{{ route('user.create') }}" method="POST" class="form-horizontal" id="form-add">
+                                <form action="{{ route('categories.store') }}" method="POST" id="form-add-category" class="form-horizontal">
                                     {{ csrf_field() }}
                                     {{ method_field('POST') }}
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">×</span></button>
-                                            <h4 class="modal-title">Thêm user</h4>
+                                            <h4 class="modal-title">Thêm danh mục</h4>
                                         </div>
                                         <div class="modal-body">
                                             <div class="box-body">
                                                 <div class="form-group">
                                                     <!-- Date Time Start -->
-                                                    <label class="col-sm-3 control-label" for="datetime_start">Họ Tên<span class="lbl-required">*</span>: </label>
+                                                    <label class="col-sm-3 control-label" for="datetime_start">Tên danh mục<span class="lbl-required">*</span>:</label>
                                                     <div class="col-sm-9">
-                                                        <input type="text" name="full_name" class="form-control" id="add-full_name" maxlength="500">
+                                                        <input type="text" name="name" class="form-control" id="form-add-name" maxlength="500">
                                                     </div>
                                                 </div>
 
                                                 <div class="form-group">
                                                     <!-- Date Time Start -->
-                                                    <label class="col-sm-3 control-label" for="datetime_start">Email<span class="lbl-required">*</span>: </label>
+                                                    <label class="col-sm-3 control-label" for="datetime_start">Danh mục cha: </label>
                                                     <div class="col-sm-9">
-                                                        <input type="email" name="email" class="form-control" id="add-email" maxlength="500">
+                                                        <select class="form-control" name="cat_parent_id" id="form-add-cat_parent_id">
+                                                            <option value="">-- Chọn danh mục --</option>
+                                                            @foreach ($parentCategories as $item)
+                                                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                                            @endforeach
+                                                        </select>
                                                     </div>
                                                 </div>
 
                                                 <div class="form-group">
                                                     <!-- Date Time Start -->
-                                                    <label class="col-sm-3 control-label" for="datetime_start">Mật khẩu<span class="lbl-required">*</span>: </label>
+                                                    <label class="col-sm-3 control-label" for="datetime_start">Vị trí<span class="lbl-required">*</span>:</label>
                                                     <div class="col-sm-9">
-                                                        <input type="password" name="password" class="form-control" id="add-password" maxlength="500">
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <!-- Date Time Start -->
-                                                    <label class="col-sm-3 control-label " for="datetime_start">Nhập lại mật khẩu<span class="lbl-required">*</span>:</label>
-                                                    <div class="col-sm-9">
-                                                        <input type="password" name="password_confirm" class="form-control" id="add-password_confirm" maxlength="500">
+                                                        <input type="number" name="num_sort" class="form-control" id="form-add-num_sort" maxlength="10">
                                                     </div>
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="col-sm-3 control-label">Trạng thái: </label>
                                                     <div class="col-sm-9">
-                                                        <select class="form-control" name="status" id="add-status">
+                                                        <select class="form-control" name="status" id="form-add-status">
                                                             <option value="0">{{ config('const.status_name.active') }}</option>
                                                             <option value="1">{{ config('const.status_name.inactive') }}</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label class="col-sm-3 control-label">Quyền: </label>
-                                                    <div class="col-sm-9">
-                                                        <select class="form-control" name="role" id="add-role">
-                                                            <option value="1">{{ config('const.role.sub_admin') }}</option>
-                                                            <option value="0">{{ config('const.role.admin') }}</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -256,7 +225,7 @@
   </div>
 @endsection
 @section('scripts')
-    <script src="{{asset('assets/adminlte/common-js/validation/user.js')}}"></script>
+    <script src="{{asset('assets/adminlte/common-js/validation/category.js')}}"></script>
 
     <script>
         $(function () {
@@ -264,36 +233,37 @@
                 'paging'      : true,
                 'lengthChange': true,
                 'searching'   : false,
-                'ordering'    : true,
+                'ordering'    : false,
                 'info'        : true,
-                'autoWidth'   : false
-            })
+                'autoWidth'   : false,
+            });
         })
     </script>
 
     <script>
         function showDialogDelete(id) {
-            $('#form-delete').attr('action', '/admin/user/xoa/' + id);
+            $('#form-delete').attr('action', '/admin/danh-muc/xoa/' + id);
             $('#confirm-delete').modal('toggle');
         }
 
-        function showDialogUpdate(id, fullName, email, role, status) {
+        function showDialogUpdate(id, name, parentId, numSort, status) {
             resetModal();
-            $('#form-full_name').val(fullName);
-            $('#form-email').val(email);
-            $('#form-role').val(role);
+            $('#form-name').val(name);
+            $('#form-cat_parent_id').val(parentId);
+            $('#form-num_sort').val(numSort);
             $('#form-status').val(status);
-            $('#form-update').attr('action', '/admin/user/cap-nhat/' + id);
+            $('#form-update').attr('action', '/admin/danh-muc/cap-nhat/' + id);
 
-            $('#modal-update-user').modal('toggle');
+            $('#modal-update-category').modal('toggle');
         }
 
         function resetModal() {
-            $('#form-full_name').val('');
-            $('#form-email').val('');
-            $('#form-role').val('');
+            $('#form-name').val('');
+            $('#form-cat_parent_id').val('');
+            $('#form-num_sort').val();
             $('#form-status').val('');
             $('#form-update').attr('action', '');
+            $('#modal-update-category').find('em.invalid').remove();
         }
     </script>
 @endsection

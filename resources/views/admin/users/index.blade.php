@@ -1,5 +1,5 @@
 @extends('admin.template')
-@section('title', 'Danh sách user')
+@section('title', 'User')
 @section('content')
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -295,6 +295,7 @@
             $('#form-role').val('');
             $('#form-status').val('');
             $('#form-update').attr('action', '');
+            $('#modal-update-user').find('em.invalid').remove();
         }
     </script>
 @endsection

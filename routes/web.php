@@ -44,7 +44,7 @@ Route::prefix('admin')->group(function () {
         //categories
         Route::prefix('danh-muc')->group(function(){
             Route::get('', 'CategoriesController@index')->name('categories.index');
-            Route::post('/them-moi', 'CategoriesController@create')->name('categories.create');
+            Route::post('/them-moi', 'CategoriesController@store')->name('categories.store');
             Route::post('/cap-nhat/{id}', 'CategoriesController@update')->name('categories.update');
             Route::delete('/xoa/{id}', 'CategoriesController@destroy')->name('categories.remove');
         });

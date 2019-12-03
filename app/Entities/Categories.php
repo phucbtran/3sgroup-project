@@ -28,7 +28,6 @@ class Categories extends Model implements Transformable
         'id',
         'name',
         'slug',
-        'level',
         'group_id',
         'cat_parent_id',
         'num_sort',
@@ -40,4 +39,13 @@ class Categories extends Model implements Transformable
         'user_id'
     ];
 
+    public function children()
+    {
+        return $this->hasMany(Categories::class, 'cat_parent_id', 'id');
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(Categories::class, 'cat_parent_id');
+    }
 }
