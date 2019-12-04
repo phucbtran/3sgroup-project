@@ -11,5 +11,5 @@ use Prettus\Repository\Contracts\RepositoryInterface;
  */
 interface CommentsRepository extends RepositoryInterface
 {
-    //
+    public function getListComment($typeComment);
 }

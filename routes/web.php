@@ -48,5 +48,15 @@ Route::prefix('admin')->group(function () {
             Route::post('/cap-nhat/{id}', 'CategoriesController@update')->name('categories.update');
             Route::delete('/xoa/{id}', 'CategoriesController@destroy')->name('categories.remove');
         });
+
+        //comment
+        Route::prefix('binh-luan')->group(function(){
+            Route::get('san-pham', 'CommentsController@indexProductComment')->name('comments.product');
+            Route::get('hop-tac', 'CommentsController@indexCooperationComment')->name('comments.cooperation');
+            Route::get('tin-tuc', 'CommentsController@indexNewComment')->name('comments.new');
+            Route::post('/them-moi', 'CommentsController@store')->name('comments.store');
+            Route::post('/cap-nhat/{id}', 'CommentsController@update')->name('comments.update');
+            Route::delete('/xoa/{id}', 'CommentsController@destroy')->name('comments.remove');
+        });
     });
 });

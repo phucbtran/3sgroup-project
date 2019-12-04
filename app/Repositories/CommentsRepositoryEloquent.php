@@ -32,4 +32,11 @@ class CommentsRepositoryEloquent extends BaseRepository implements CommentsRepos
         $this->pushCriteria(app(RequestCriteria::class));
     }
 
+    public function getListComment($typeComment) {
+        $query = Comments::select('*')
+            ->where('type_cmt_flg', $typeComment)
+            ->orderBy('created_at', 'DESC')
+            ->get();
+        return $query;
+    }
 }
