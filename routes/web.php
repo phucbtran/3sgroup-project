@@ -4,6 +4,12 @@ Route::get('/', function(){
     return view('public.home');
 })->where('any', '.*');
 
+Route::get('/lien-he', function(){
+    return view('public.contact');
+});
+
+Route::post('/lien-he', 'ContactsController@create');
+
 //====admin=====
 Route::prefix('admin')->group(function () {
 

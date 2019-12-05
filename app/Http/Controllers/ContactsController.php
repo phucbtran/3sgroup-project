@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use http\Exception;
+use Exception;
 
 use App\Repositories\ContactsRepository;
+use GuzzleHttp\Psr7\Request;
+use App\Entities\Contacts;
+
 
 /**
  * Class ContactsController.
@@ -57,6 +60,33 @@ class ContactsController extends Controller
         }
 
         session()->flash('msg_success', trans('message.remove.success'));
+        return redirect()->back();
+    }
+
+
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int $id
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create(Request $request)
+    {
+        try {
+            $data = $request->all();
+            $contact = new Contacts();
+            foreach($data['contact'] as $key => $value){
+                $data[$key] = $value;
+            }
+            $contact->save();
+        } catch (\Exception $e) {
+            session()->flash('msg_fail', trans('message.add.fail'));
+            return redirect()->back();
+        }
+
+        session()->flash('msg_success', trans('message.add.success'));
         return redirect()->back();
     }
 }
