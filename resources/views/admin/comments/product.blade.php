@@ -49,11 +49,11 @@
                                             <td>{{ $comment->phone }}</td>
                                             <td>{{ isset($comment->product) ? $comment->product->name : '' }}</td>
                                             <td>{{ $comment->content }}</td>
-                                            <td>
+                                            <td id="row-status-{{ $comment->id }}">
                                                 @if($comment->status == 0)
-                                                    <span class="label label-success">{{ config('const.status_name.active') }}</span>
+                                                    <a href="javascript:changeStatus('{{ $comment->id }}', '1');" class="label label-success">{{ config('const.status_name.active') }}</a>
                                                 @elseif($comment->status == 1)
-                                                    <span class="label label-danger">{{ config('const.status_name.inactive') }}</span>
+                                                    <a href="javascript:changeStatus('{{ $comment->id }}', '0');" class="label label-danger">{{ config('const.status_name.inactive') }}</a>
                                                 @endif
                                             </td>
                                             <td>
@@ -107,7 +107,32 @@
                 'ordering'    : true,
                 'info'        : true,
                 'autoWidth'   : false
-            })
-        })
+            });
+        });
+
+        function changeStatus(id, status) {
+            var url = '/admin/binh-luan/cap-nhat/' + id;
+            var token = '{{csrf_token()}}';
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: {
+                    'status': status,
+                    '_method': 'POST',
+                    _token: token,
+                },
+                success: function (msg) {
+                    var html = '';
+                    if (msg.msg === 'success') {
+                        if (status === '0') {
+                            html = '<a href="javascript:changeStatus('+ id +', \'1\');" class="label label-success">{{ config("const.status_name.active") }}</a>';
+                        } else {
+                            html = '<a href="javascript:changeStatus('+ id +', \'0\');" class="label label-danger">{{ config("const.status_name.inactive") }}</a>';
+                        }
+                        $('#row-status-' + id).html(html);
+                    }
+                }
+            });
+        }
     </script>
 @endsection

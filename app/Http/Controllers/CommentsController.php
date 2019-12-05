@@ -5,9 +5,6 @@ namespace App\Http\Controllers;
 use http\Exception;
 use Illuminate\Http\Request;
 
-use App\Http\Requests;
-use Prettus\Validator\Contracts\ValidatorInterface;
-use Prettus\Validator\Exceptions\ValidatorException;
 use App\Repositories\CommentsRepository;
 
 /**
@@ -71,44 +68,18 @@ class CommentsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  CommentsUpdateRequest $request
-     * @param  string            $id
+     * @param  Request $request
      *
      * @return Response
-     *
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
-    public function update(CommentsUpdateRequest $request, $id)
+    public function update(Request $request, $id)
     {
         try {
-
-            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
-
-            $comment = $this->repository->update($request->all(), $id);
-
-            $response = [
-                'message' => 'Comments updated.',
-                'data'    => $comment->toArray(),
-            ];
-
-            if ($request->wantsJson()) {
-
-                return response()->json($response);
-            }
-
-            return redirect()->back()->with('message', $response['message']);
-        } catch (ValidatorException $e) {
-
-            if ($request->wantsJson()) {
-
-                return response()->json([
-                    'error'   => true,
-                    'message' => $e->getMessageBag()
-                ]);
-            }
-
-            return redirect()->back()->withErrors($e->getMessageBag())->withInput();
+            $this->repository->update($request->only('status'), $id);
+        } catch (Exception $e) {
+            return response(['msg' => 'fail']);
         }
+        return response(['msg' => 'success']);
     }
 
 
