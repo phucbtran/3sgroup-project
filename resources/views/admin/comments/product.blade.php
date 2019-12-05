@@ -23,13 +23,41 @@
                 <div class="col-xs-12">
                     <div class="box">
                         <div class="box-header">
-                            <h3 class="box-title">Danh sách bình luận</h3>
+                            <h3 class="box-title pull-left">Danh sách bình luận</h3>
+                            <a href="#" data-toggle="modal" data-target="#confirm-delete-all"
+                               class="btn btn-danger pull-right"
+                               id="btn-delete-all">
+                                <i class="fa fa-trash-o"></i>&nbsp;Xóa
+                            </a>
+                            <div class="modal fade" id="confirm-delete-all" role="dialog" tabindex="-1">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h3 class="modal-title">Xác nhận</h3>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Bạn có chắc chắn muốn xoá không?</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <form action="{{ route('comments.remove_all') }}" method="POST">
+                                                {{ csrf_field() }}
+                                                {{ method_field('DELETE') }}
+                                                <input type="hidden" name="id[]" id="txt-list-id">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Huỷ</button>
+                                                <button class="btn btn-danger">Đồng ý</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
                             <table id="data-tables-list" class="table table-bordered table-striped">
                                 <thead>
                                 <tr>
+                                    <th></th>
                                     <th>Thời gian</th>
                                     <th>Họ tên</th>
                                     <th>Email</th>
@@ -43,21 +71,22 @@
                                 <tbody id="detail-data-table">
                                     @foreach($comments as $comment)
                                         <tr>
+                                            <td>{{ $comment->id }}</td>
                                             <td>{{ $comment->created_at->format('Y/m/d H:i:s') }}</td>
                                             <td>{{ $comment->full_name }}</td>
                                             <td>{{ $comment->email }}</td>
                                             <td>{{ $comment->phone }}</td>
                                             <td>{{ isset($comment->product) ? $comment->product->name : '' }}</td>
                                             <td>{{ $comment->content }}</td>
-                                            <td>
+                                            <td id="row-status-{{ $comment->id }}">
                                                 @if($comment->status == 0)
-                                                    <span class="label label-success">{{ config('const.status_name.active') }}</span>
+                                                    <a href="javascript:changeStatus('{{ $comment->id }}', '1');" class="label label-success">{{ config('const.status_name.active') }}</a>
                                                 @elseif($comment->status == 1)
-                                                    <span class="label label-danger">{{ config('const.status_name.inactive') }}</span>
+                                                    <a href="javascript:changeStatus('{{ $comment->id }}', '0');" class="label label-danger">{{ config('const.status_name.inactive') }}</a>
                                                 @endif
                                             </td>
                                             <td>
-                                                <button href="#" data-toggle="modal" data-target="#confirmDelete{{ $comment->id }}" class="btn btn-danger btn-delete-user"><i class="fa fa-remove"></i></button>
+                                                <button href="#" data-toggle="modal" data-target="#confirmDelete{{ $comment->id }}" class="btn btn-danger btn-xs btn-delete-user"><i class="fa fa-remove"></i></button>
                                                 <!-- Modal -->
                                                 <div class="modal fade" id="confirmDelete{{ $comment->id }}" role="dialog" tabindex="-1">
                                                     <div class="modal-dialog">
@@ -106,8 +135,49 @@
                 'searching'   : false,
                 'ordering'    : true,
                 'info'        : true,
-                'autoWidth'   : false
-            })
-        })
+                'autoWidth'   : false,
+                'columnDefs': [
+                    {
+                        'targets': 0,
+                        'checkboxes': true
+                    }
+                ],
+                'order': [[1, 'asc']]
+            });
+        });
+
+        function changeStatus(id, status) {
+            var url = '/admin/binh-luan/cap-nhat/' + id;
+            var token = '{{csrf_token()}}';
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: {
+                    'status': status,
+                    '_method': 'POST',
+                    _token: token,
+                },
+                success: function (msg) {
+                    var html = '';
+                    if (msg.msg === 'success') {
+                        if (status === '0') {
+                            html = '<a href="javascript:changeStatus('+ id +', \'1\');" class="label label-success">{{ config("const.status_name.active") }}</a>';
+                        } else {
+                            html = '<a href="javascript:changeStatus('+ id +', \'0\');" class="label label-danger">{{ config("const.status_name.inactive") }}</a>';
+                        }
+                        $('#row-status-' + id).html(html);
+                    }
+                }
+            });
+        }
+        
+        $('#btn-delete-all').click(function () {
+            var rows_selected = $('#detail-data-table').column(0).checkboxes.selected();
+
+            // Iterate over all selected checkboxes
+            $.each(rows_selected, function(index, rowId){
+
+            });
+        });
     </script>
 @endsection
