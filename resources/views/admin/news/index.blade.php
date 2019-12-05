@@ -59,10 +59,9 @@
                                         @endif
                                     </td>
                                     <td class="btn-act">
-                                        <button href="#" data-toggle="modal" data-target="#modal-update-slide-{{ $item['id'] }}"
-                                                class="btn btn-primary edit-record">
+                                    <a href="/admin/tin-tuc/cap-nhat/{{ $item['id'] }}" class="btn btn-primary edit-record">
                                             <i class="fa fa-edit"></i>
-                                        </button>
+                                        </a>
                                         <button href="#" onclick="showDialogDelete({{ $item->id }});" class="btn btn-danger btn-delete-user"><i class="fa fa-remove"></i></button>
                                     </td>
                                 </tr>
@@ -117,7 +116,7 @@
     </script>
     <script>
         function showDialogDelete(id) {
-            $('#form-delete').attr('action', '/admin/news/xoa/' + id);
+            $('#form-delete').attr('action', '/admin/tin-tuc/xoa/' + id);
             $('#confirm-delete').modal('toggle');
         }
     </script>

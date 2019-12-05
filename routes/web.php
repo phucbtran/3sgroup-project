@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\NewsController;
+
 Route::get('/', function(){
     return view('public.home');
 })->where('any', '.*');
@@ -56,6 +58,7 @@ Route::prefix('admin')->group(function () {
             Route::get('/them-moi', function(){
                 return view('admin.news.add');
             })->name('news.store');
+            Route::get('/cap-nhat/{id}', 'NewsController@getNewsByID')->name('news.detail');
             Route::post('/cap-nhat/{id}', 'NewsController@update')->name('news.update');
             Route::delete('/xoa/{id}', 'NewsController@destroy')->name('news.remove');
         });

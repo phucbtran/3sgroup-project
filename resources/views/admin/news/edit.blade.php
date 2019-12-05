@@ -15,7 +15,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Công Ty
+        Tin tức
       </h1>
     </section>
 
@@ -28,7 +28,7 @@
                 <div id="legend">
                     <legend class="">Thêm mới</legend>
                 </div>
-                <form id="form-record" action="/admin/tin-tuc/them-moi" method="post" enctype="multipart/form-data" class="form-horizontal">
+                <form id="form-record" action="/admin/tin-tuc/cap-nhat/{{ $news['id'] }}" method="post" enctype="multipart/form-data" class="form-horizontal">
                     {{ csrf_field() }}
                     {{ method_field('POST') }}
 
@@ -37,7 +37,7 @@
                         <label class="control-label col-md-3 required " for="datetime_start">Tên tin tức:</label>
                         <div class="controls controlsDisplay col-md-7">
                             <div>
-                                <input type="text" name="name" placeholder="" class="form-control">
+                                <input value="{{ $news['title_name'] }}" type="text" name="news[title_name]" placeholder="" class="form-control">
                             </div>
                         </div>
                     </div>
@@ -48,32 +48,34 @@
                         <label class="control-label col-md-3 required " for="datetime_start">Tiêu đề:</label>
                         <div class="controls controlsDisplay col-md-7">
                             <div>
-                                <input type="text" name="first_name" placeholder="" class="form-control">
+                                <input value="{{ $news['meta_title'] }}" type="text" name="news[meta_title]" placeholder="" class="form-control">
                             </div>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <!-- Avata -->
-                        <label class="control-label col-md-3" for="avata">Hình ảnh</label>
-                        <div class="controls col-md-7">
-                            <input type="file" id="avata" name="image" placeholder="" class="form-control">
-                        </div>
-                    </div>    
+                      <!-- Avata -->
+                      <label class="control-label col-md-3" for="avata">Hình ảnh</label>
+                      <div class="controls col-md-7">
+                        <img class="img-responsive pad" src="{{$news['img_dir_path']}}" alt="Photo" >
+                        <input type="hidden" value="{{$news['img_dir_path']}}" name="image_old">
+                        <input type="file" id="avata" name="image" placeholder="" class="form-control">
+                      </div>
+                  </div>   
    
                     <div class="form-group row">
                         <!-- Date Time Start -->
                         <label class="control-label col-md-3" for="datetime_start">Nội dung :</label>
                         <div class="controls controlsDisplay col-md-7">
-                        <textarea id="content_ckeditor" name="description" class="form-control" rows="3" placeholder="Enter ..."></textarea></div>
+                        <textarea id="content_ckeditor" name="news[content]" class="form-control" rows="3" placeholder="Enter ...">{{ $news['content'] }}</textarea></div>
                     </div>
 
                     <div class="form-group row">
                       <label class="control-label col-md-3">Trạng thái: </label>
                       <div class="controls controlsDisplay col-md-7">
-                        <select class="form-control" name="status">                        
-                          <option value="1">Active</option>
-                          <option value="0">Inactive</option>
+                        <select class="form-control" name="news[status]">                        
+                          <option value="1" @if($news['status'] == 1)  selected @endif>Active</option>
+                          <option value="0" @if($news['status'] == 0) selected @endif>Inactive</option>
                         </select>
                       </div>
                     </div>
@@ -81,7 +83,7 @@
                     <div class="form-group row">
                       <div class="controls col-md-10">
                           <a style="margin-left:10px;" href="/admin/tin-tuc" class="btn btn-info cancelBtt pull-right">Huỷ bỏ</a>
-                          <input class="btn btn-success pull-right" type="submit" name="btn_submit" value="Thêm mới">
+                          <input class="btn btn-success pull-right" type="submit" name="btn_submit" value="Cập nhật">
                       </div>
                     </div>           
                 </form>
@@ -95,10 +97,15 @@
   </div>
 @endsection
 @section('scripts')
-<script src="/vendor/unisharp/laravel-ckeditor/ckeditor.js"></script>
 <script>
-    CKEDITOR.replace( 'content_ckeditor' );
+  CKEDITOR.replace( 'content_ckeditor', {
+  filebrowserBrowseUrl: '{{ asset('ckfinder/ckfinder.html') }}',
+  filebrowserImageBrowseUrl: '{{ asset('ckfinder/ckfinder.html?type=Images') }}',
+  filebrowserFlashBrowseUrl: '{{ asset('ckfinder/ckfinder.html?type=Flash') }}',
+  filebrowserUploadUrl: '{{ asset('ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files') }}',
+  filebrowserImageUploadUrl: '{{ asset('ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images') }}',
+  filebrowserFlashUploadUrl: '{{ asset('ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash') }}'
+} );
 </script>
-<script>
-</script>
+{{-- <script> CKEDITOR.replace('content_ckeditor'); </script>  --}}
 @endsection

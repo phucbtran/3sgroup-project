@@ -15,7 +15,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Công Ty
+        Tin tức
       </h1>
     </section>
 
@@ -37,7 +37,7 @@
                         <label class="control-label col-md-3 required " for="datetime_start">Tên tin tức:</label>
                         <div class="controls controlsDisplay col-md-7">
                             <div>
-                                <input type="text" name="name" placeholder="" class="form-control">
+                                <input type="text" name="news[title_name]" placeholder="" class="form-control">
                             </div>
                         </div>
                     </div>
@@ -48,7 +48,7 @@
                         <label class="control-label col-md-3 required " for="datetime_start">Tiêu đề:</label>
                         <div class="controls controlsDisplay col-md-7">
                             <div>
-                                <input type="text" name="first_name" placeholder="" class="form-control">
+                                <input type="text" name="news[meta_title]" placeholder="" class="form-control">
                             </div>
                         </div>
                     </div>
@@ -65,13 +65,13 @@
                         <!-- Date Time Start -->
                         <label class="control-label col-md-3" for="datetime_start">Nội dung :</label>
                         <div class="controls controlsDisplay col-md-7">
-                        <textarea id="content_ckeditor" name="description" class="form-control" rows="3" placeholder="Enter ..."></textarea></div>
+                        <textarea id="content_ckeditor" name="news[content]" class="form-control" rows="3" placeholder="Enter ..."></textarea></div>
                     </div>
 
                     <div class="form-group row">
                       <label class="control-label col-md-3">Trạng thái: </label>
                       <div class="controls controlsDisplay col-md-7">
-                        <select class="form-control" name="status">                        
+                        <select class="form-control" name="news[status]">                        
                           <option value="1">Active</option>
                           <option value="0">Inactive</option>
                         </select>
@@ -95,10 +95,17 @@
   </div>
 @endsection
 @section('scripts')
-<script src="/vendor/unisharp/laravel-ckeditor/ckeditor.js"></script>
-<script>
-    CKEDITOR.replace( 'content_ckeditor' );
+<script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+<script> 
+  // CKEDITOR.replace('content_ckeditor');    
+  CKEDITOR.replace( 'content_ckeditor', {
+  filebrowserBrowseUrl: '{{ asset('ckfinder/ckfinder.html') }}',
+  filebrowserImageBrowseUrl: '{{ asset('ckfinder/ckfinder.html?type=Images') }}',
+  filebrowserFlashBrowseUrl: '{{ asset('ckfinder/ckfinder.html?type=Flash') }}',
+  filebrowserUploadUrl: '{{ asset('ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files') }}',
+  filebrowserImageUploadUrl: '{{ asset('ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images') }}',
+  filebrowserFlashUploadUrl: '{{ asset('ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash') }}'
+} );
 </script>
-<script>
-</script>
+
 @endsection
