@@ -10,7 +10,8 @@ use Prettus\Validator\Exceptions\ValidatorException;
 use App\Http\Requests\SlidesCreateRequest;
 use App\Http\Requests\SlidesUpdateRequest;
 use App\Repositories\SlidesRepository;
-use App\Validators\SlidesValidator;
+use App\Entities\Slides;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * Class SlidesController.
@@ -25,20 +26,13 @@ class SlidesController extends Controller
     protected $repository;
 
     /**
-     * @var SlidesValidator
-     */
-    protected $validator;
-
-    /**
      * SlidesController constructor.
      *
      * @param SlidesRepository $repository
-     * @param SlidesValidator $validator
      */
-    public function __construct(SlidesRepository $repository, SlidesValidator $validator)
+    public function __construct(SlidesRepository $repository)
     {
         $this->repository = $repository;
-        $this->validator  = $validator;
     }
 
     /**
@@ -48,137 +42,81 @@ class SlidesController extends Controller
      */
     public function index()
     {
-        $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
         $slides = $this->repository->all();
-
-        if (request()->wantsJson()) {
-
-            return response()->json([
-                'data' => $slides,
-            ]);
-        }
-
-        return view('slides.index', compact('slides'));
+        return view('admin.slides.index', compact('slides'));
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Create the specified resource in storage.
      *
-     * @param  SlidesCreateRequest $request
-     *
-     * @return \Illuminate\Http\Response
-     *
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
+     * @param  Request  $request
+     * @return Response
      */
-    public function store(SlidesCreateRequest $request)
+    public function create(Request $request)
     {
         try {
+            $data = $request->all();
+            $slide = new Slides();
 
-            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
-
-            $slide = $this->repository->create($request->all());
-
-            $response = [
-                'message' => 'Slides created.',
-                'data'    => $slide->toArray(),
-            ];
-
-            if ($request->wantsJson()) {
-
-                return response()->json($response);
+            foreach ($data['slide'] as $key => $value) 
+            {
+                $slide[$key] = $value;
             }
 
-            return redirect()->back()->with('message', $response['message']);
-        } catch (ValidatorException $e) {
-            if ($request->wantsJson()) {
-                return response()->json([
-                    'error'   => true,
-                    'message' => $e->getMessageBag()
-                ]);
+            if ($files = $request->file('image')) 
+            {
+                $destinationPath = 'public/images/slides';
+                $profileImage = date('d-m-Y-His') . "_" . $files->getClientOriginalName();
+                $path = $files->storeAs($destinationPath, $profileImage);
+                $url = Storage::url($path);
+                $slide->img_dir_path = asset($url);
             }
-
-            return redirect()->back()->withErrors($e->getMessageBag())->withInput();
+        
+            $slide->save();
+            session()->flash('msg_success', trans('message.add.success'));
+            return redirect(route('slides.index'));
+        } catch (\Exception $e) {
+            session()->flash('msg_fail', trans('message.add.fail'));
+            return redirect(route('slides.index'));
         }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $slide = $this->repository->find($id);
-
-        if (request()->wantsJson()) {
-
-            return response()->json([
-                'data' => $slide,
-            ]);
-        }
-
-        return view('slides.show', compact('slide'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $slide = $this->repository->find($id);
-
-        return view('slides.edit', compact('slide'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  SlidesUpdateRequest $request
-     * @param  string            $id
-     *
+     * @param  SlidesUpdateRequest  $request
+     * @param  int  $id
      * @return Response
-     *
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
-    public function update(SlidesUpdateRequest $request, $id)
+    public function update(Request $request,$id)
     {
         try {
+            $data = $request->all();
+            $slide = Slides::find($id);
 
-            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
-
-            $slide = $this->repository->update($request->all(), $id);
-
-            $response = [
-                'message' => 'Slides updated.',
-                'data'    => $slide->toArray(),
-            ];
-
-            if ($request->wantsJson()) {
-
-                return response()->json($response);
+            foreach ($data['slide'] as $key => $value) 
+            {
+                $slide[$key] = $value;
+            }
+            
+            if ($files = $request->file('image')) 
+            {
+                Storage::disk('public')->delete($slide['img_dir_path']);
+                $destinationPath = 'public/images/slides';
+                $profileImage = date('d-m-Y-His') . "_" . $files->getClientOriginalName();
+                $path = $files->storeAs($destinationPath, $profileImage);
+                $url = Storage::url($path);
+                $slide->img_dir_path = asset($url);
             }
 
-            return redirect()->back()->with('message', $response['message']);
-        } catch (ValidatorException $e) {
-
-            if ($request->wantsJson()) {
-
-                return response()->json([
-                    'error'   => true,
-                    'message' => $e->getMessageBag()
-                ]);
-            }
-
-            return redirect()->back()->withErrors($e->getMessageBag())->withInput();
+            $slide->save();
+            session()->flash('msg_success', trans('message.edit.success'));
+            return redirect(route('slides.index'));
+        } catch (\Exception $e) {
+            session()->flash('msg_fail', trans('message.edit.fail'));
+            return redirect(route('slides.index'));
         }
     }
-
 
     /**
      * Remove the specified resource from storage.
@@ -189,16 +127,16 @@ class SlidesController extends Controller
      */
     public function destroy($id)
     {
-        $deleted = $this->repository->delete($id);
-
-        if (request()->wantsJson()) {
-
-            return response()->json([
-                'message' => 'Slides deleted.',
-                'deleted' => $deleted,
-            ]);
+        try {
+            $slide = Slides::find($id);
+            Storage::disk('public')->delete($slide['img_dir_path']);
+            $slide->delete();
+        } catch (Exception $e) {
+            session()->flash('msg_fail', trans('message.remove.fail'));
+            return redirect()->back();
         }
 
-        return redirect()->back()->with('message', 'Slides deleted.');
+        session()->flash('msg_success', trans('message.remove.success'));
+        return redirect()->back();
     }
 }

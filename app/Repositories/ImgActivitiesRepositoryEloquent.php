@@ -6,7 +6,6 @@ use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use App\Repositories\ImgActivitiesRepository;
 use App\Entities\ImgActivities;
-use App\Validators\ImgActivitiesValidator;
 
 /**
  * Class ImgActivitiesRepositoryEloquent.
@@ -26,23 +25,11 @@ class ImgActivitiesRepositoryEloquent extends BaseRepository implements ImgActiv
     }
 
     /**
-    * Specify Validator class name
-    *
-    * @return mixed
-    */
-    public function validator()
-    {
-
-        return ImgActivitiesValidator::class;
-    }
-
-
-    /**
      * Boot up the repository, pushing criteria
      */
     public function boot()
     {
         $this->pushCriteria(app(RequestCriteria::class));
     }
-    
+
 }

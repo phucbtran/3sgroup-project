@@ -29,7 +29,7 @@ class Users extends Model implements Transformable
         'email',
         'password',
         'full_name',
-        'role_id',
+        'role',
         'status',
 
         'deleted_at',

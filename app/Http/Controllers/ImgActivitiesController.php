@@ -10,7 +10,6 @@ use Prettus\Validator\Exceptions\ValidatorException;
 use App\Http\Requests\ImgActivitiesCreateRequest;
 use App\Http\Requests\ImgActivitiesUpdateRequest;
 use App\Repositories\ImgActivitiesRepository;
-use App\Validators\ImgActivitiesValidator;
 
 /**
  * Class ImgActivitiesController.
@@ -25,20 +24,13 @@ class ImgActivitiesController extends Controller
     protected $repository;
 
     /**
-     * @var ImgActivitiesValidator
-     */
-    protected $validator;
-
-    /**
      * ImgActivitiesController constructor.
      *
      * @param ImgActivitiesRepository $repository
-     * @param ImgActivitiesValidator $validator
      */
-    public function __construct(ImgActivitiesRepository $repository, ImgActivitiesValidator $validator)
+    public function __construct(ImgActivitiesRepository $repository)
     {
         $this->repository = $repository;
-        $this->validator  = $validator;
     }
 
     /**

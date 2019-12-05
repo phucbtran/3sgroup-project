@@ -23,7 +23,6 @@ class RepositoryServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->app->bind(\App\Repositories\RolesRepository::class, \App\Repositories\RolesRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\UsersRepository::class, \App\Repositories\UsersRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\ContactsRepository::class, \App\Repositories\ContactsRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\CategoriesRepository::class, \App\Repositories\CategoriesRepositoryEloquent::class);

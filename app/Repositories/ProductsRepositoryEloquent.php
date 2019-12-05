@@ -6,7 +6,6 @@ use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use App\Repositories\ProductsRepository;
 use App\Entities\Products;
-use App\Validators\ProductsValidator;
 
 /**
  * Class ProductsRepositoryEloquent.
@@ -26,23 +25,11 @@ class ProductsRepositoryEloquent extends BaseRepository implements ProductsRepos
     }
 
     /**
-    * Specify Validator class name
-    *
-    * @return mixed
-    */
-    public function validator()
-    {
-
-        return ProductsValidator::class;
-    }
-
-
-    /**
      * Boot up the repository, pushing criteria
      */
     public function boot()
     {
         $this->pushCriteria(app(RequestCriteria::class));
     }
-    
+
 }

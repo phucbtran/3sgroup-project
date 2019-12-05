@@ -17,7 +17,7 @@ Route::prefix('admin')->group(function () {
     Route::post('login', 'Auth\LoginController@login')->name('login.login');
 
     //logout
-    Route::get('logout', 'Auth\LoginController@logout');
+    Route::get('logout', 'Auth\LoginController@logout')->name('logout');
 
     Route::group(['prefix' => '',  'middleware' => 'checkAuth'], function(){
         //dashboard
@@ -26,26 +26,28 @@ Route::prefix('admin')->group(function () {
         })->name('dashboard');
 
         //profile
-        Route::prefix('profile')->group(function(){
-            Route::get('view', function () {
-                return view('admin.profile.view', ['msg' => null]);
-            });
-            Route::get('change-password', function (){
-                return view('admin.profile.change-password', ['msg' => null]);
-            });
-        });
+        Route::post('trang-ca-nhan', 'UsersController@updateProfile')->name('profile.update');
 
         //users
         Route::prefix('user')->group(function(){
-            Route::get('', 'UsersController@index');
-            Route::post('/create', 'UsersController@create');
-            Route::post('/{id}/update', 'UsersController@update');
-            Route::delete('/{id}', 'UsersController@destroy');
+            Route::get('', 'UsersController@index')->name('user.index');
+            Route::post('/them-moi', 'UsersController@create')->name('user.create');
+            Route::post('/cap-nhat/{id}', 'UsersController@update')->name('user.update');
+            Route::delete('/xoa/{id}', 'UsersController@destroy')->name('user.remove');
         });
 
         // contact
         Route::get('lien-he', 'ContactsController@index')->name('contact.index');
         // remove contact
         Route::delete('lien-he/{id}', 'ContactsController@destroy')->name('contact.remove');
+
+        //slides
+        Route::prefix('slides')->group(function(){
+            Route::get('', 'SlidesController@index')->name('slides.index');
+            Route::post('/them-moi', 'SlidesController@create')->name('slides.create');
+            Route::post('/cap-nhat/{id}', 'SlidesController@update')->name('slides.update');
+            Route::get('/cap-nhat/{id}', 'SlidesController@getUpdate')->name('slides.update');
+            Route::delete('/xoa/{id}', 'SlidesController@destroy')->name('slides.remove');
+        });
     });
 });
