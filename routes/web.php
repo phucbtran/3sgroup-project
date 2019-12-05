@@ -57,6 +57,7 @@ Route::prefix('admin')->group(function () {
             Route::post('/them-moi', 'CommentsController@store')->name('comments.store');
             Route::post('/cap-nhat/{id}', 'CommentsController@update')->name('comments.update');
             Route::delete('/xoa/{id}', 'CommentsController@destroy')->name('comments.remove');
+            Route::delete('/xoa-tat-ca', 'CommentsController@destroyAll')->name('comments.remove_all');
         });
     });
 });
