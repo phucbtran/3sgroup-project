@@ -5,11 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-use Prettus\Validator\Contracts\ValidatorInterface;
-use Prettus\Validator\Exceptions\ValidatorException;
-use App\Http\Requests\NewsCreateRequest;
-use App\Http\Requests\NewsUpdateRequest;
 use App\Repositories\NewsRepository;
+use Illuminate\Support\Facades\Storage;
+use App\Entities\News;
+use Illuminate\Support\Str;
+
 
 /**
  * Class NewsController.
@@ -33,6 +33,7 @@ class NewsController extends Controller
         $this->repository = $repository;
     }
 
+
     /**
      * Display a listing of the resource.
      *
@@ -40,137 +41,97 @@ class NewsController extends Controller
      */
     public function index()
     {
-        $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
         $news = $this->repository->all();
-
-        if (request()->wantsJson()) {
-
-            return response()->json([
-                'data' => $news,
-            ]);
-        }
-
-        return view('news.index', compact('news'));
+        return view('admin.news.index', compact('news'));
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Create the specified resource in storage.
      *
-     * @param  NewsCreateRequest $request
-     *
-     * @return \Illuminate\Http\Response
-     *
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
-     */
-    public function store(NewsCreateRequest $request)
-    {
-        try {
-
-            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
-
-            $news = $this->repository->create($request->all());
-
-            $response = [
-                'message' => 'News created.',
-                'data'    => $news->toArray(),
-            ];
-
-            if ($request->wantsJson()) {
-
-                return response()->json($response);
-            }
-
-            return redirect()->back()->with('message', $response['message']);
-        } catch (ValidatorException $e) {
-            if ($request->wantsJson()) {
-                return response()->json([
-                    'error'   => true,
-                    'message' => $e->getMessageBag()
-                ]);
-            }
-
-            return redirect()->back()->withErrors($e->getMessageBag())->withInput();
-        }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $news = $this->repository->find($id);
-
-        if (request()->wantsJson()) {
-
-            return response()->json([
-                'data' => $news,
-            ]);
-        }
-
-        return view('news.show', compact('news'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $news = $this->repository->find($id);
-
-        return view('news.edit', compact('news'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  NewsUpdateRequest $request
-     * @param  string            $id
-     *
+     * @param  Request  $request
      * @return Response
-     *
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
-    public function update(NewsUpdateRequest $request, $id)
+    public function store(Request $request)
     {
         try {
+            $data = $request->all();
+            $news = new News();
 
-            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
-
-            $news = $this->repository->update($request->all(), $id);
-
-            $response = [
-                'message' => 'News updated.',
-                'data'    => $news->toArray(),
-            ];
-
-            if ($request->wantsJson()) {
-
-                return response()->json($response);
+            foreach ($data['news'] as $key => $value) 
+            {
+                $news[$key] = $value;
             }
-
-            return redirect()->back()->with('message', $response['message']);
-        } catch (ValidatorException $e) {
-
-            if ($request->wantsJson()) {
-
-                return response()->json([
-                    'error'   => true,
-                    'message' => $e->getMessageBag()
-                ]);
+       
+            if ($files = $request->file('image')) 
+            {
+                $destinationPath = 'public/images/news';
+                $profileImage = date('d-m-Y-His') . "_" . $files->getClientOriginalName();
+                $path = $files->storeAs($destinationPath, $profileImage);
+                $url = Storage::url($path);
+                $news->img_dir_path = asset($url);
             }
-
-            return redirect()->back()->withErrors($e->getMessageBag())->withInput();
+            $news->num_sort = 1;
+            $news->slug = Str::slug($data['news']['title_name']);
+            $news->save();
+            session()->flash('msg_success', trans('message.add.success'));
+            return redirect(route('news.index'));
+        } catch (\Exception $e) {
+            session()->flash('msg_fail', trans('message.add.fail'));
+            return redirect(route('news.index'));
         }
     }
 
+    /**
+     * Create the specified resource in storage.
+     *
+     * @param  Request  $request
+     * @return Response
+     */
+    public function getNewsByID(Request $request){
+        try {
+            $news = News::find($request->id);
+            return view('admin.news.edit', compact('news'));
+        } catch (\Exception $e) {
+            session()->flash('msg_fail', trans('message.edit.fail'));
+            return redirect(route('news.index'));
+        }        
+    }
+
+    /**
+     * Create the specified resource in storage.
+     *
+     * @param  Request  $request
+     * @return Response
+     */
+    public function update(Request $request)
+    {
+        try {
+            $data = $request->all();
+            $news = News::find($request->id);
+
+            foreach ($data['news'] as $key => $value) 
+            {
+                $news[$key] = $value;
+            }
+       
+            if ($files = $request->file('image')) 
+            {
+                $destinationPath = 'public/images/news';
+                $profileImage = date('d-m-Y-His') . "_" . $files->getClientOriginalName();
+                $path = $files->storeAs($destinationPath, $profileImage);
+                $url = Storage::url($path);
+                $news->img_dir_path = asset($url);
+            }
+            $news->slug = Str::slug($data['news']['title_name']);
+            $news->num_sort = 1;
+            $news->save();
+            session()->flash('msg_success', trans('message.add.success'));
+            return redirect(route('news.index'));
+        } catch (\Exception $e) {
+            session()->flash('msg_fail', trans('message.add.fail'));
+            return redirect(route('news.index'));
+        }
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -179,18 +140,17 @@ class NewsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request,$id)
     {
-        $deleted = $this->repository->delete($id);
-
-        if (request()->wantsJson()) {
-
-            return response()->json([
-                'message' => 'News deleted.',
-                'deleted' => $deleted,
-            ]);
+        try {
+            $slide = News::find($id);
+            return Request::root();
+            Storage::disk('public')->delete($slide['img_dir_path']);
+            $slide->delete();
+        } catch (\Exception $e) {
+            return $e;
+            session()->flash('msg_fail', trans('message.remove.fail'));
+            return redirect()->back();
         }
-
-        return redirect()->back()->with('message', 'News deleted.');
     }
 }
