@@ -40,10 +40,6 @@
                                     <h2 class="headtitle">LIÊN HỆ</h2>
                                 </div>
                             </div>
-
-                            <style scope="scope">
-
-                            </style>
                         </div>
                         <div class="row row-collapse" id="row-371835647">
                             <div class="col medium-5 small-12 large-5" data-animate="fadeInLeft">
@@ -62,51 +58,50 @@
                                 <div class="col-inner">
                                     <div role="form" class="wpcf7" id="wpcf7-f5-p20-o1" lang="vi" dir="ltr">
                                         <div class="screen-reader-response"></div>
-                                        <form action="/lien-he" method="post" class="wpcf7-form" novalidate="novalidate">
-                                            <div style="display: none;">
-                                                <input type="hidden" name="_wpcf7" value="5" />
-                                                <input type="hidden" name="_wpcf7_version" value="4.9.2" />
-                                                <input type="hidden" name="_wpcf7_locale" value="vi" />
-                                                <input type="hidden" name="_wpcf7_unit_tag" value="wpcf7-f5-p20-o1" />
-                                                <input type="hidden" name="_wpcf7_container_post" value="20" />
-                                            </div>
+                                        <form action="lien-he" method="POST" >
+                                            {{ csrf_field() }}
                                             <p>
                                                 <label> Tên của bạn (*)
                                                     <br />
-                                                    <span  class="wpcf7-form-control-wrap your-name"><input type="text" name="contact[f'ull_name"]" value="" size="40" class="wpcf7-form-control wpcf7-text wpcf7-validates-as-required" aria-required="true" aria-invalid="false" /></span> </label>
+                                                    <span  class="wpcf7-form-control-wrap your-name"><input type="text" name="contact[full_name]"  /></span> 
+                                                </label>
                                             </p>
                                             <p>
                                                 <label> Email (*)
                                                     <br />
-                                                    <span class="wpcf7-form-control-wrap your-email"><input type="email" name="contact['email']" value="" size="40" class="wpcf7-form-control wpcf7-text wpcf7-email wpcf7-validates-as-required wpcf7-validates-as-email" aria-required="true" aria-invalid="false" /></span> </label>
+                                                    <span class="wpcf7-form-control-wrap your-email"><input type="email" name="contact[email]" /></span> 
+                                                </label>
+                                            </p>
+                                            <p>
+                                                <label> Phone (*)
+                                                    <br />
+                                                    <span class="wpcf7-form-control-wrap your-email"><input type="text" name="contact[phone]" /></span> 
+                                                </label>
                                             </p>
                                             <p>
                                                 <label> Tiêu đề
                                                     <br />
-                                                    <span class="wpcf7-form-control-wrap your-subject"><input type="text" name="contact[title]" value="" size="40" class="wpcf7-form-control wpcf7-text" aria-invalid="false" /></span> </label>
+                                                    <span class="wpcf7-form-control-wrap your-subject"><input type="text" name="contact[title]" /></span> 
+                                                </label>
                                             </p>
                                             <p>
                                                 <label> Nội dung
                                                     <br />
-                                                    <span class="wpcf7-form-control-wrap your-message"><textarea name="contact['content']" cols="40" rows="10" class="wpcf7-form-control wpcf7-textarea" aria-invalid="false"></textarea></span> </label>
+                                                    <span class="wpcf7-form-control-wrap your-message"><textarea name="contact[content]"></textarea></span> 
+                                                </label>
                                             </p>
                                             <p>
-                                                <input type="submit" value="Gửi liên hệ" class="wpcf7-form-control wpcf7-submit" />
+                                                <input type="submit" value="Gửi liên hệ" />
                                             </p>
                                             <div class="wpcf7-response-output wpcf7-display-none"></div>
                                         </form>
                                     </div>
                                 </div>
                             </div>
-
-                            <style scope="scope">
-
-                            </style>
                         </div>
                         <div class="gap-element" style="display:block; height:auto; padding-top:30px" class="clearfix"></div>
                     </div>
                     <!-- .section-content -->
-
                     <style scope="scope">
                         #section_1476062529 {
                             padding-top: 0px;
@@ -115,14 +110,11 @@
                         }
                     </style>
                 </section>
-
             </div>
-
         </main>
         {{--footer--}}
             @include('public.layout.footer')
         {{--endfooter--}}
-
     </div>
     <!-- #wrapper -->
     <!-- Mobile Sidebar -->   
@@ -132,59 +124,13 @@
 @endsection
 
 @section('scripts')
-
-    <script type='text/javascript'>
-        /* <![CDATA[ */
-        var wpcf7 = {
-            "apiSettings": {
-                "root": "",
-                "namespace": "contact-form-7\/v1"
-            },
-            "recaptcha": {
-                "messages": {
-                    "empty": "H\u00e3y x\u00e1c nh\u1eadn r\u1eb1ng b\u1ea1n kh\u00f4ng ph\u1ea3i l\u00e0 robot."
-                }
-            },
-            "cached": "1"
-        };
-        /* ]]> */
-    </script>
     <script type='text/javascript' src='{{asset('assets/public/styles/js/scripts.js?ver=4.9.2')}}'></script>
     <script type='text/javascript' src='{{asset('assets/public/styles/js/index.js?ver=4.9.12')}}'></script>
     <script type='text/javascript' src='{{asset('assets/public/styles/js/ot-vertical-menu.js?ver=1.1.0')}}'></script>
-    <script type='text/javascript'>
-        /* <![CDATA[ */
-        var wc_add_to_cart_params = {
-            "ajax_url": "",
-            "wc_ajax_url": "",
-            "i18n_view_cart": "Xem gi\u1ecf h\u00e0ng",
-            "cart_url": "",
-            "is_cart": "",
-            "cart_redirect_after_add": "no"
-        };
-        /* ]]> */
-    </script>
     <script type='text/javascript' src='{{asset('assets/public/styles/js/add-to-cart.min.js?ver=3.2.6')}}'></script>
     <script type='text/javascript' src='{{asset('assets/public/styles/js/jquery.blockUI.min.js?ver=2.70')}}'></script>
     <script type='text/javascript' src='{{asset('assets/public/styles/js/js.cookie.min.js?ver=2.1.4')}}'></script>
-    <script type='text/javascript'>
-        /* <![CDATA[ */
-        var woocommerce_params = {
-            "ajax_url": "",
-            "wc_ajax_url": ""
-        };
-        /* ]]> */
-    </script>
     <script type='text/javascript' src='{{asset('assets/public/styles/js/woocommerce.min.js?ver=3.2.6')}}'></script>
-    <script type='text/javascript'>
-        /* <![CDATA[ */
-        var wc_cart_fragments_params = {
-            "ajax_url": "",
-            "wc_ajax_url": "",
-            "fragment_name": "wc_fragments_f340db6c982dd1f6c26ce105424bd6dc"
-        };
-        /* ]]> */
-    </script>
     <script type='text/javascript' src='{{asset('assets/public/styles/js/cart-fragments.min.js?ver=3.2.6')}}'></script>
     <script type='text/javascript' src='{{asset('assets/public/styles/js/flatsome-live-search.js?ver=3.4.2')}}'></script>
     <script type='text/javascript' src='{{asset('assets/public/styles/js/hoverIntent.min.js?ver=1.8.1')}}'></script>
@@ -200,36 +146,6 @@
     <script type='text/javascript' src='{{asset('assets/public/styles/js/flatsome.js?ver=3.4.2')}}'></script>
     <script type='text/javascript' src='{{asset('assets/public/styles/js/woocommerce.js?ver=3.4.2')}}'></script>
     <script type='text/javascript' src='{{asset('assets/public/styles/js/wp-embed.min.js?ver=4.9.12')}}'></script>
-    <script type='text/javascript'>
-        /* <![CDATA[ */
-        var _zxcvbnSettings = {
-            "src": ""
-        };
-        /* ]]> */
-    </script>
     <script type='text/javascript' src='{{asset('assets/public/styles/js/zxcvbn-async.min.js?ver=1.0')}}'></script>
-    <script type='text/javascript'>
-        /* <![CDATA[ */
-        var pwsL10n = {
-            "unknown": "M\u1eadt kh\u1ea9u m\u1ea1nh kh\u00f4ng x\u00e1c \u0111\u1ecbnh",
-            "short": "R\u1ea5t y\u1ebfu",
-            "bad": "Y\u1ebfu",
-            "good": "Trung b\u00ecnh",
-            "strong": "M\u1ea1nh",
-            "mismatch": "M\u1eadt kh\u1ea9u kh\u00f4ng kh\u1edbp"
-        };
-        /* ]]> */
-    </script>
-    <script type='text/javascript' src='{{asset('assets/public/styles/js/password-strength-meter.min.js?ver=4.9.12')}}'></script>
-    <script type='text/javascript'>
-        /* <![CDATA[ */
-        var wc_password_strength_meter_params = {
-            "min_password_strength": "3",
-            "i18n_password_error": "Vui l\u00f2ng nh\u1eadp m\u1eadt kh\u1ea9u kh\u00f3 h\u01a1n.",
-            "i18n_password_hint": "G\u1ee3i \u00fd: M\u1eadt kh\u1ea9u ph\u1ea3i c\u00f3 \u00edt nh\u1ea5t 12 k\u00fd t\u1ef1. \u0110\u1ec3 n\u00e2ng cao \u0111\u1ed9 b\u1ea3o m\u1eadt, s\u1eed d\u1ee5ng ch\u1eef in hoa, in th\u01b0\u1eddng, ch\u1eef s\u1ed1 v\u00e0 c\u00e1c k\u00fd t\u1ef1 \u0111\u1eb7c bi\u1ec7t nh\u01b0 ! \" ? $ % ^ & )."
-        };
-        /* ]]> */
-    </script>
     <script type='text/javascript' src='{{asset('assets/public/styles/js/password-strength-meter.min.js?ver=3.2.6')}}'></script>
-
 @endsection

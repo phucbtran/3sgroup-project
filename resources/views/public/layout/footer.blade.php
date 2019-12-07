@@ -69,27 +69,13 @@
                         <div class="col medium-3 small-6 large-3">
                             <div class="col-inner">
 
-                                <h3>ĐĂNG KÝ NHẬN BẢN TIN</h3>
+                                <h3>BẢN ĐỒ CÔNG TY</h3>
                                 <div role="form" class="wpcf7" id="wpcf7-f210-o1" lang="vi" dir="ltr">
                                     <div class="screen-reader-response"></div>
                                     <form action="/anphuoc/#wpcf7-f210-o1" method="post" class="wpcf7-form" novalidate="novalidate">
-                                        <div style="display: none;">
-                                            <input type="hidden" name="_wpcf7" value="210" />
-                                            <input type="hidden" name="_wpcf7_version" value="4.9.2" />
-                                            <input type="hidden" name="_wpcf7_locale" value="vi" />
-                                            <input type="hidden" name="_wpcf7_unit_tag" value="wpcf7-f210-o1" />
-                                            <input type="hidden" name="_wpcf7_container_post" value="0" />
-                                        </div>
-                                        <p><span class="wpcf7-form-control-wrap email-dangky"><input type="email" name="email-dangky" value="" size="40" class="wpcf7-form-control wpcf7-text wpcf7-email wpcf7-validates-as-required wpcf7-validates-as-email form_dang_ky" id="email-dangky" aria-required="true" aria-invalid="false" placeholder="Địa chỉ email" /></span>
-                                            <br />
-                                            <input type="submit" value="Gửi" class="wpcf7-form-control wpcf7-submit form_dang_ky" id="bt-gui" />
-                                        </p>
-                                        <div class="wpcf7-response-output wpcf7-display-none"></div>
+                                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3833.9038983784358!2d108.18955331457482!3d16.070475988880215!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31421855960f7dfd%3A0x114e37562d3e9efb!2zMzg4LCAyNCBIw6AgSHV5IFThuq1wLCBYdcOibiBIw6AsIFRoYW5oIEtow6osIMSQw6AgTuG6tW5nIDU1MDAwMCwgVmnhu4d0IE5hbQ!5e0!3m2!1svi!2s!4v1575680821657!5m2!1svi!2s" width="300" height="300" frameborder="0" style="border:0;" allowfullscreen=""></iframe>
                                     </form>
                                 </div>
-
-                                <p>Đăng ký với chúng tôi để nhận email về sản phẩm mới, khuyến mại đặc biệt và các sự kiện độc đáo.</p>
-
                             </div>
                         </div>
 

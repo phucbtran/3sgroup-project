@@ -13,8 +13,7 @@
         "laravel/framework": "5.8.*",
         "laravel/tinker": "^1.0",
         "prettus/l5-repository": "^2.6",
-        "yajra/laravel-datatables-oracle": "^9.7",
-        "ext-http": "*"
+        "yajra/laravel-datatables-oracle": "^9.7"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",

@@ -1,12 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use Exception;
-
 use App\Repositories\ContactsRepository;
-use GuzzleHttp\Psr7\Request;
 use App\Entities\Contacts;
+use Illuminate\Http\Request;
 
 
 /**
@@ -68,7 +65,7 @@ class ContactsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param  Request [$request]
      *
      * @return \Illuminate\Http\Response
      */
@@ -78,10 +75,12 @@ class ContactsController extends Controller
             $data = $request->all();
             $contact = new Contacts();
             foreach($data['contact'] as $key => $value){
-                $data[$key] = $value;
+                $contact[$key] = $value;
             }
             $contact->save();
+            return "ok";
         } catch (\Exception $e) {
+            return $e;
             session()->flash('msg_fail', trans('message.add.fail'));
             return redirect()->back();
         }
