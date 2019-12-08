@@ -40,4 +40,18 @@ class Comments extends Model implements Transformable
         'user_id'
     ];
 
+    public function product()
+    {
+        return $this->belongsTo(Products::class, 'post_id');
+    }
+
+    public function news()
+    {
+        return $this->belongsTo(News::class, 'post_id');
+    }
+
+    public function cooperation()
+    {
+        return $this->belongsTo(Cooperations::class, 'post_id');
+    }
 }
