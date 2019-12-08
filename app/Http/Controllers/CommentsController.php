@@ -113,8 +113,7 @@ class CommentsController extends Controller
     public function destroyAll(Request $request)
     {
         try {
-
-//            $this->repository->delete($id);
+            $this->repository->deleteList($request->id);
         } catch (Exception $e) {
             session()->flash('msg_fail', trans('message.remove.fail'));
             return redirect()->back();

@@ -40,10 +40,10 @@
                                             <p>Bạn có chắc chắn muốn xoá không?</p>
                                         </div>
                                         <div class="modal-footer">
-                                            <form action="{{ route('comments.remove_all') }}" method="POST">
+                                            <form action="{{ route('comments.remove_all') }}" method="POST"">
                                                 {{ csrf_field() }}
                                                 {{ method_field('DELETE') }}
-                                                <input type="hidden" name="id[]" id="txt-list-id">
+                                                <div id="group-id-del"></div>
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Huỷ</button>
                                                 <button class="btn btn-danger">Đồng ý</button>
                                             </form>
@@ -129,7 +129,7 @@
 @section('scripts')
     <script>
         $(function () {
-            $('#data-tables-list').DataTable({
+            var table = $('#data-tables-list').DataTable({
                 'paging'      : true,
                 'lengthChange': true,
                 'searching'   : false,
@@ -143,6 +143,18 @@
                     }
                 ],
                 'order': [[1, 'asc']]
+            });
+
+            $('#btn-delete-all').click(function () {
+                var rows_selected = table.column(0).checkboxes.selected();
+                var idComment = '';
+
+                // Iterate over all selected checkboxes
+                $('#group-id-del').html('');
+                $.each(rows_selected, function(index, rowId){
+                    idComment = $(this).parent('.check-del').attr('data-row');
+                    $('#group-id-del').append('<input type="hidden" name="id[]" value="'+ rowId +'">');
+                });
             });
         });
 
@@ -170,14 +182,5 @@
                 }
             });
         }
-        
-        $('#btn-delete-all').click(function () {
-            var rows_selected = $('#detail-data-table').column(0).checkboxes.selected();
-
-            // Iterate over all selected checkboxes
-            $.each(rows_selected, function(index, rowId){
-
-            });
-        });
     </script>
 @endsection

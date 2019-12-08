@@ -39,4 +39,10 @@ class CommentsRepositoryEloquent extends BaseRepository implements CommentsRepos
             ->get();
         return $query;
     }
+
+    public function deleteList($listId) {
+        $query = Comments::whereIn('id', $listId)
+            ->delete();
+        return $query;
+    }
 }
