@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="{{asset('assets/adminlte/bower_components/Ionicons/css/ionicons.min.css')}}">
     <!-- DataTables -->
     <link rel="stylesheet" href="{{asset('assets/adminlte/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css')}}">
+    <!-- DataTables Checkboxes-->
+    <link rel="stylesheet" href="{{asset('assets/adminlte/bower_components/dataTables.checkboxes/css/dataTables.checkboxes.css')}}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{asset('assets/adminlte/dist/css/AdminLTE.min.css')}}">
     <!-- AdminLTE Skins. Choose a skin from the css/skins
@@ -63,6 +65,8 @@
 <script src="{{asset('assets/adminlte/bower_components/bootstrap/dist/js/bootstrap.min.js')}}"></script>
 <!-- DataTables -->
 <script src="{{asset('assets/adminlte/bower_components/datatables.net/js/jquery.dataTables.min.js')}}"></script>
+<!-- DataTables Checkboxes-->
+<script src="{{asset('assets/adminlte/bower_components/dataTables.checkboxes/js/dataTables.checkboxes.min.js')}}"></script>
 <script src="{{asset('assets/adminlte/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js')}}"></script>
 <!-- SlimScroll -->
 <script src="{{asset('assets/adminlte/bower_components/jquery-slimscroll/jquery.slimscroll.min.js')}}"></script>

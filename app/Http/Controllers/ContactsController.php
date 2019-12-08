@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use http\Exception;
 
 use App\Repositories\ContactsRepository;
+use Illuminate\Http\Request;
 
 /**
  * Class ContactsController.
@@ -52,6 +53,26 @@ class ContactsController extends Controller
         try {
             $this->repository->delete($id);
         } catch (\Exception $e) {
+            session()->flash('msg_fail', trans('message.remove.fail'));
+            return redirect()->back();
+        }
+
+        session()->flash('msg_success', trans('message.remove.success'));
+        return redirect()->back();
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  Request $request
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function destroyAll(Request $request)
+    {
+        try {
+            $this->repository->deleteList($request->id);
+        } catch (Exception $e) {
             session()->flash('msg_fail', trans('message.remove.fail'));
             return redirect()->back();
         }
