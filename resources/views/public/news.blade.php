@@ -12,6 +12,7 @@
     <link rel='stylesheet' id='flatsome-shop-css' href='{{asset('assets/public/styles/css/flatsome-shop.css?ver=3.4.2')}}' type='text/css' media='all' />
     <link rel='stylesheet' id='flatsome-style-css' href='{{asset('assets/public/styles/css/style.css?ver=3.4.2')}}' type='text/css' media='all' />
     <link rel='stylesheet' id='flatsome-style-css' href='{{asset('assets/public/styles/css/custom-menu.css')}}' type='text/css' media='all' />
+    <link rel='stylesheet' id='flatsome-style-css' href='{{asset('assets/public/styles/css/comment.css')}}' type='text/css' media='all' />
 @endsection
 
 @section('content')
@@ -55,6 +56,19 @@
                         <!-- .article-inner -->
                     </article>
                     <!-- #-84 -->
+                    <section class="comment_news">
+                        <h3 id="reply-title" class="comment-reply-title">Bình Luận <small><a rel="nofollow" id="cancel-comment-reply-link" href="/anphuoc/dau-an-20-nam-thuong-hieu-thoi-trang-an-phuoc/#respond" style="display:none;">Hủy</a></small></h3>
+                        @foreach ($comments as $item)
+                            <article class="comment_news">
+                                <div class="comment_news-body">
+                                <div class="text">
+                                    <p>{{ $item['content'] }}</p>
+                                </div>
+                                <p class="attribution">by <a href="#non">{{ $item['full_name'] }}</a> {{ $item['created_at'] }}</p>
+                                </div>
+                            </article>                            
+                        @endforeach
+                    </section>
                     <div id="comments" class="comments-area">
                         <div id="respond" class="comment-respond">
                             <h3 id="reply-title" class="comment-reply-title">Trả lời <small><a rel="nofollow" id="cancel-comment-reply-link" href="/anphuoc/dau-an-20-nam-thuong-hieu-thoi-trang-an-phuoc/#respond" style="display:none;">Hủy</a></small></h3>

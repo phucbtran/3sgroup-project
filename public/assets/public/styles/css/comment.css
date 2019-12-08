@@ -1,0 +1,62 @@
+.comment_news {
+    overflow: hidden;
+    padding: 0 0 1em;
+    border-bottom: 1px solid #ddd;
+    margin: 0 0 1em;
+    *zoom: 1;
+}
+
+.comment_news-img {
+    float: left;
+    margin-right: 33px;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.comment_news-img img {
+    display: block;
+}
+
+.comment_news-body {
+    overflow: hidden;
+}
+
+.comment_news .text {
+    padding: 10px;
+    border: 1px solid #e5e5e5;
+    border-radius: 5px;
+    background: #fff;
+}
+
+.comment_news .text p:last-child {
+    margin: 0;
+}
+
+.comment_news .attribution {
+    margin: 0.5em 0 0;
+    font-size: 14px;
+    color: #666;
+}
+
+/* Decoration */
+
+.comment_newss,
+.comment_news {
+    position: relative;
+}
+
+.comment_newss:before,
+.comment_news:before,
+.comment_news .text:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 65px;
+}
+
+.comment_newss:before {
+    width: 3px;
+    top: -20px;
+    bottom: -20px;
+    background: rgba(0,0,0,0.1);
+}

@@ -169,7 +169,7 @@ class NewsController extends Controller
                                     ->orderBy('id','desc')
                                     ->take(5)
                                     ->get();
-        $comments = Comments::where('status', '1')->get();
+        $comments = Comments::where([['status', '=', '0'], ['post_id', '=', $news['id']]])->get();
         return view('public.news', ['news' => $news, 'newsTopFile' => $newsTopFile, 'comments' => $comments]);
     }
 }
