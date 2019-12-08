@@ -23,13 +23,41 @@
                 <div class="col-xs-12">
                     <div class="box">
                         <div class="box-header">
-                            <h3 class="box-title">Danh sách liên hệ</h3>
+                            <h3 class="box-title pull-left">Danh sách liên hệ</h3>
+                            <a href="#" data-toggle="modal" data-target="#confirm-delete-all"
+                               class="btn btn-danger pull-right"
+                               id="btn-delete-all">
+                                <i class="fa fa-trash-o"></i>&nbsp;Xóa
+                            </a>
+                            <div class="modal fade" id="confirm-delete-all" role="dialog" tabindex="-1">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h3 class="modal-title">Xác nhận</h3>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Bạn có chắc chắn muốn xoá không?</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <form action="{{ route('contact.remove_all') }}" method="POST">
+                                                {{ csrf_field() }}
+                                                {{ method_field('DELETE') }}
+                                                <div id="group-id-del"></div>
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Huỷ</button>
+                                                <button class="btn btn-danger">Đồng ý</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
                             <table id="data-tables-list" class="table table-bordered table-striped">
                                 <thead>
                                 <tr>
+                                    <th></th>
                                     <th>Thời gian</th>
                                     <th>Họ tên</th>
                                     <th>Email</th>
@@ -40,41 +68,42 @@
                                 </tr>
                                 </thead>
                                 <tbody id="detail-data-table">
-                                    @foreach($contacts as $contact)
-                                        <tr>
-                                            <td>{{ $contact->created_at->format('Y/m/d H:i:s') }}</td>
-                                            <td>{{ $contact->full_name }}</td>
-                                            <td>{{ $contact->email }}</td>
-                                            <td>{{ $contact->phone }}</td>
-                                            <td>{{ $contact->title }}</td>
-                                            <td>{{ $contact->content }}</td>
-                                            <td>
-                                                <button href="#" data-toggle="modal" data-target="#confirmDelete{{ $contact->id }}" class="btn btn-danger btn-xs btn-delete-user"><i class="fa fa-remove"></i></button>
-                                                <!-- Modal -->
-                                                <div class="modal fade" id="confirmDelete{{ $contact->id }}" role="dialog" tabindex="-1">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                <h3 class="modal-title">Xác nhận</h3>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <p>Bạn có chắc chắn muốn xoá không?</p>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <form action="{{ route('contact.remove', $contact->id) }}" method="POST">
-                                                                    {{ csrf_field() }}
-                                                                    {{ method_field('DELETE') }}
-                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Huỷ</button>
-                                                                    <button class="btn btn-danger">Đồng ý</button>
-                                                                </form>
-                                                            </div>
+                                @foreach($contacts as $contact)
+                                    <tr>
+                                        <td>{{ $contact->id }}</td>
+                                        <td>{{ $contact->created_at->format('Y/m/d H:i:s') }}</td>
+                                        <td>{{ $contact->full_name }}</td>
+                                        <td>{{ $contact->email }}</td>
+                                        <td>{{ $contact->phone }}</td>
+                                        <td>{{ $contact->title }}</td>
+                                        <td>{{ $contact->content }}</td>
+                                        <td>
+                                            <button href="#" data-toggle="modal" data-target="#confirmDelete{{ $contact->id }}" class="btn btn-danger btn-xs btn-delete-user"><i class="fa fa-remove"></i></button>
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="confirmDelete{{ $contact->id }}" role="dialog" tabindex="-1">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                            <h3 class="modal-title">Xác nhận</h3>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <p>Bạn có chắc chắn muốn xoá không?</p>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <form action="{{ route('contact.remove', $contact->id) }}" method="POST">
+                                                                {{ csrf_field() }}
+                                                                {{ method_field('DELETE') }}
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Huỷ</button>
+                                                                <button class="btn btn-danger">Đồng ý</button>
+                                                            </form>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </td>
-                                        </tr>
-                                    @endforeach
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -92,14 +121,31 @@
 @section('scripts')
     <script>
         $(function () {
-            $('#data-tables-list').DataTable({
+            var table = $('#data-tables-list').DataTable({
                 'paging'      : true,
                 'lengthChange': true,
                 'searching'   : false,
                 'ordering'    : true,
                 'info'        : true,
-                'autoWidth'   : false
-            })
-        })
+                'autoWidth'   : false,
+                'columnDefs': [
+                    {
+                        'targets': 0,
+                        'checkboxes': true
+                    }
+                ],
+                'order': [[1, 'asc']]
+            });
+
+            $('#btn-delete-all').click(function () {
+                var rows_selected = table.column(0).checkboxes.selected();
+
+                // Iterate over all selected checkboxes
+                $('#group-id-del').html('');
+                $.each(rows_selected, function(index, rowId){
+                    $('#group-id-del').append('<input type="hidden" name="id[]" value="'+ rowId +'">');
+                });
+            });
+        });
     </script>
 @endsection

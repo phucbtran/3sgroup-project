@@ -37,7 +37,10 @@ Route::prefix('admin')->group(function () {
         });
 
         // contact
-        Route::get('lien-he', 'ContactsController@index')->name('contact.index');
+        Route::prefix('lien-he')->group(function(){
+            Route::get('', 'ContactsController@index')->name('contact.index');
+            Route::delete('/xoa-tat-ca', 'ContactsController@destroyAll')->name('contact.remove_all');
+        });
         // remove contact
         Route::delete('lien-he/{id}', 'ContactsController@destroy')->name('contact.remove');
 

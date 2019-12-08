@@ -40,7 +40,7 @@
                                             <p>Bạn có chắc chắn muốn xoá không?</p>
                                         </div>
                                         <div class="modal-footer">
-                                            <form action="{{ route('comments.remove_all') }}" method="POST"">
+                                            <form action="{{ route('comments.remove_all') }}" method="POST">
                                             {{ csrf_field() }}
                                             {{ method_field('DELETE') }}
                                             <div id="group-id-del"></div>
@@ -147,12 +147,10 @@
 
             $('#btn-delete-all').click(function () {
                 var rows_selected = table.column(0).checkboxes.selected();
-                var idComment = '';
 
                 // Iterate over all selected checkboxes
                 $('#group-id-del').html('');
                 $.each(rows_selected, function(index, rowId){
-                    idComment = $(this).parent('.check-del').attr('data-row');
                     $('#group-id-del').append('<input type="hidden" name="id[]" value="'+ rowId +'">');
                 });
             });
