@@ -3,13 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
-use App\Http\Requests;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
 use App\Http\Requests\CommentsCreateRequest;
 use App\Http\Requests\CommentsUpdateRequest;
 use App\Repositories\CommentsRepository;
+use App\Entities\Comments;
 
 /**
  * Class CommentsController.
@@ -54,42 +53,28 @@ class CommentsController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Create the specified resource in storage.
      *
-     * @param  CommentsCreateRequest $request
-     *
-     * @return \Illuminate\Http\Response
-     *
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
+     * @param  Request  $request
+     * @return Response
      */
-    public function store(CommentsCreateRequest $request)
+    public function store(Request $request)
     {
         try {
+            $data = $request->all();
+            $comment = new Comments();
 
-            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
-
-            $comment = $this->repository->create($request->all());
-
-            $response = [
-                'message' => 'Comments created.',
-                'data'    => $comment->toArray(),
-            ];
-
-            if ($request->wantsJson()) {
-
-                return response()->json($response);
+            foreach ($data['comment'] as $key => $value) 
+            {
+                $comment[$key] = $value;
             }
-
-            return redirect()->back()->with('message', $response['message']);
-        } catch (ValidatorException $e) {
-            if ($request->wantsJson()) {
-                return response()->json([
-                    'error'   => true,
-                    'message' => $e->getMessageBag()
-                ]);
-            }
-
-            return redirect()->back()->withErrors($e->getMessageBag())->withInput();
+            $comment['status'] = 1;
+            $comment->save();
+            session()->flash('msg_success', trans('message.add.success'));
+            return redirect()->back();
+        } catch (\Exception $e) {
+            session()->flash('msg_fail', trans('message.add.fail'));
+            return redirect()->back();
         }
     }
 

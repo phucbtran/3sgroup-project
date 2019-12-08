@@ -6,6 +6,14 @@ Route::get('/', function(){
     return view('public.home');
 })->where('any', '.*');
 
+Route::get('/tin-tuc', function(){
+    return view('public.news');
+});
+
+Route::get('/tin-tuc/{id}', 'NewsController@show');
+
+Route::post('/commnets/create', 'CommentsController@store');
+
 //====admin=====
 Route::prefix('admin')->group(function () {
 

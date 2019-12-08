@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Repositories\NewsRepository;
 use Illuminate\Support\Facades\Storage;
 use App\Entities\News;
+use App\Entities\Comments;
 use Illuminate\Support\Str;
 
 
@@ -143,14 +144,32 @@ class NewsController extends Controller
     public function destroy(Request $request,$id)
     {
         try {
-            $slide = News::find($id);
-            return Request::root();
-            Storage::disk('public')->delete($slide['img_dir_path']);
-            $slide->delete();
+            $news = News::find($id);
+            Storage::disk('public')->delete($news['img_dir_path']);
+            $news->delete();
         } catch (\Exception $e) {
-            return $e;
             session()->flash('msg_fail', trans('message.remove.fail'));
             return redirect()->back();
         }
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int $id
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $news = News::where('status', '1')->find($id);
+        if($news)
+        $newsTopFile = News::select('id', 'title_name', 'slug', 'meta_title', 'img_dir_path')
+                                    ->where('status','1')
+                                    ->orderBy('id','desc')
+                                    ->take(5)
+                                    ->get();
+        $comments = Comments::where('status', '1')->get();
+        return view('public.news', ['news' => $news, 'newsTopFile' => $newsTopFile, 'comments' => $comments]);
     }
 }
