@@ -4,8 +4,12 @@ namespace App\Http\Controllers;
 
 use http\Exception;
 use Illuminate\Http\Request;
-
+use Prettus\Validator\Contracts\ValidatorInterface;
+use Prettus\Validator\Exceptions\ValidatorException;
+use App\Http\Requests\CommentsCreateRequest;
+use App\Http\Requests\CommentsUpdateRequest;
 use App\Repositories\CommentsRepository;
+use App\Entities\Comments;
 
 /**
  * Class CommentsController.
@@ -39,6 +43,32 @@ class CommentsController extends Controller
         $comments = $this->repository->getListComment('0');
 
         return view('admin.comments.product', compact('comments'));
+    }
+
+    /**
+     * Create the specified resource in storage.
+     *
+     * @param  Request  $request
+     * @return Response
+     */
+    public function store(Request $request)
+    {
+        try {
+            $data = $request->all();
+            $comment = new Comments();
+
+            foreach ($data['comment'] as $key => $value) 
+            {
+                $comment[$key] = $value;
+            }
+            $comment['status'] = 1;
+            $comment->save();
+            session()->flash('msg_success', trans('message.add.success'));
+            return redirect()->back();
+        } catch (\Exception $e) {
+            session()->flash('msg_fail', trans('message.add.fail'));
+            return redirect()->back();
+        }
     }
 
     /**

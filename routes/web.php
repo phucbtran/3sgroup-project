@@ -12,6 +12,14 @@ Route::get('/lien-he', function(){
 
 Route::post('/lien-he', 'ContactsController@create');
 
+Route::get('/tin-tuc', function(){
+    return view('public.news');
+});
+
+Route::get('/tin-tuc/{id}', 'NewsController@show');
+
+Route::post('/commnets/create', 'CommentsController@store');
+
 //====admin=====
 Route::prefix('admin')->group(function () {
 
