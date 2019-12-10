@@ -1,5 +1,5 @@
 @extends('admin.template')
-@section('title', 'Danh sách user')
+@section('title', 'User')
 @section('content')
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -42,32 +42,32 @@
                             @foreach ($users as $item)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $item['full_name'] }}</td>
-                                    <td>{{ $item['email'] }}</td>
+                                    <td>{{ $item->full_name }}</td>
+                                    <td>{{ $item->email }}</td>
                                     <td>
-                                        @if($item['role'] == 0)
+                                        @if($item->role == 0)
                                             <span class="label label-success" title="view">{{ config('const.role.admin') }}</span>
                                         @else
                                             <span class="label label-warning">{{ config('const.role.sub_admin') }}</span>
                                         @endif
                                     </td>
                                     <td>
-                                        @if($item['status'] == 0)
+                                        @if($item->status == 0)
                                             <span class="label label-success">{{ config('const.status_name.active') }}</span>
-                                        @elseif($item['status'] == 1)
+                                        @elseif($item->status == 1)
                                             <span class="label label-danger">{{ config('const.status_name.inactive') }}</span>
                                         @endif
                                     </td>
                                     <td class="btn-act">
                                         <button href="#" onclick="showDialogUpdate('{{ $item->id }}', '{{ $item->full_name }}', '{{ $item->email }}', '{{ $item->role }}', '{{ $item->status }}');"
-                                                class="btn btn-primary edit-record">
+                                                class="btn btn-primary btn-xs edit-record">
                                             <i class="fa fa-edit"></i>
                                         </button>
-                                        <button href="#" onclick="showDialogDelete({{ $item->id }});" class="btn btn-danger btn-delete-user"><i class="fa fa-remove"></i></button>
+                                        <button href="#" onclick="showDialogDelete({{ $item->id }});" class="btn btn-danger btn-xs btn-delete-user"><i class="fa fa-remove"></i></button>
                                     </td>
                                 </tr>
                             @endforeach
-                            </tfoot>
+                            </tbody>
                         </table>
                         <!-- Modal confirm delete -->
                         <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
@@ -295,6 +295,7 @@
             $('#form-role').val('');
             $('#form-status').val('');
             $('#form-update').attr('action', '');
+            $('#modal-update-user').find('em.invalid').remove();
         }
     </script>
 @endsection

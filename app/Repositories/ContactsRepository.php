@@ -13,4 +13,6 @@ interface ContactsRepository extends RepositoryInterface
 {
     // get list contact
     public function getListContacts();
+
+    public function deleteList($listId);
 }

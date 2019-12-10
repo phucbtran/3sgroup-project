@@ -2,13 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use http\Exception;
 use Illuminate\Http\Request;
 
-use App\Http\Requests;
-use Prettus\Validator\Contracts\ValidatorInterface;
-use Prettus\Validator\Exceptions\ValidatorException;
-use App\Http\Requests\CommentsCreateRequest;
-use App\Http\Requests\CommentsUpdateRequest;
 use App\Repositories\CommentsRepository;
 
 /**
@@ -38,137 +34,52 @@ class CommentsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function indexProductComment()
     {
-        $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
-        $comments = $this->repository->all();
+        $comments = $this->repository->getListComment('0');
 
-        if (request()->wantsJson()) {
-
-            return response()->json([
-                'data' => $comments,
-            ]);
-        }
-
-        return view('comments.index', compact('comments'));
+        return view('admin.comments.product', compact('comments'));
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  CommentsCreateRequest $request
+     * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
-     *
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
-    public function store(CommentsCreateRequest $request)
+    public function indexCooperationComment()
     {
-        try {
+        $comments = $this->repository->getListComment('2');
 
-            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
-
-            $comment = $this->repository->create($request->all());
-
-            $response = [
-                'message' => 'Comments created.',
-                'data'    => $comment->toArray(),
-            ];
-
-            if ($request->wantsJson()) {
-
-                return response()->json($response);
-            }
-
-            return redirect()->back()->with('message', $response['message']);
-        } catch (ValidatorException $e) {
-            if ($request->wantsJson()) {
-                return response()->json([
-                    'error'   => true,
-                    'message' => $e->getMessageBag()
-                ]);
-            }
-
-            return redirect()->back()->withErrors($e->getMessageBag())->withInput();
-        }
+        return view('admin.comments.cooperation', compact('comments'));
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int $id
+     * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function indexNewComment()
     {
-        $comment = $this->repository->find($id);
+        $comments = $this->repository->getListComment('1');
 
-        if (request()->wantsJson()) {
-
-            return response()->json([
-                'data' => $comment,
-            ]);
-        }
-
-        return view('comments.show', compact('comment'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $comment = $this->repository->find($id);
-
-        return view('comments.edit', compact('comment'));
+        return view('admin.comments.new', compact('comments'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  CommentsUpdateRequest $request
-     * @param  string            $id
+     * @param  Request $request
      *
      * @return Response
-     *
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
-    public function update(CommentsUpdateRequest $request, $id)
+    public function update(Request $request, $id)
     {
         try {
-
-            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
-
-            $comment = $this->repository->update($request->all(), $id);
-
-            $response = [
-                'message' => 'Comments updated.',
-                'data'    => $comment->toArray(),
-            ];
-
-            if ($request->wantsJson()) {
-
-                return response()->json($response);
-            }
-
-            return redirect()->back()->with('message', $response['message']);
-        } catch (ValidatorException $e) {
-
-            if ($request->wantsJson()) {
-
-                return response()->json([
-                    'error'   => true,
-                    'message' => $e->getMessageBag()
-                ]);
-            }
-
-            return redirect()->back()->withErrors($e->getMessageBag())->withInput();
+            $this->repository->update($request->only('status'), $id);
+        } catch (Exception $e) {
+            return response(['msg' => 'fail']);
         }
+        return response(['msg' => 'success']);
     }
 
 
@@ -181,16 +92,34 @@ class CommentsController extends Controller
      */
     public function destroy($id)
     {
-        $deleted = $this->repository->delete($id);
-
-        if (request()->wantsJson()) {
-
-            return response()->json([
-                'message' => 'Comments deleted.',
-                'deleted' => $deleted,
-            ]);
+        try {
+            $this->repository->delete($id);
+        } catch (Exception $e) {
+            session()->flash('msg_fail', trans('message.remove.fail'));
+            return redirect()->back();
         }
 
-        return redirect()->back()->with('message', 'Comments deleted.');
+        session()->flash('msg_success', trans('message.remove.success'));
+        return redirect()->back();
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  Request $request
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function destroyAll(Request $request)
+    {
+        try {
+            $this->repository->deleteList($request->id);
+        } catch (Exception $e) {
+            session()->flash('msg_fail', trans('message.remove.fail'));
+            return redirect()->back();
+        }
+
+        session()->flash('msg_success', trans('message.remove.success'));
+        return redirect()->back();
     }
 }
