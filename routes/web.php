@@ -6,6 +6,12 @@ Route::get('/', function(){
     return view('public.home');
 })->where('any', '.*');
 
+Route::get('/lien-he', function(){
+    return view('public.contact');
+});
+
+Route::post('/lien-he', 'ContactsController@create');
+
 Route::get('/tin-tuc', function(){
     return view('public.news');
 });
@@ -47,9 +53,21 @@ Route::prefix('admin')->group(function () {
         });
 
         // contact
-        Route::get('lien-he', 'ContactsController@index')->name('contact.index');
+        Route::prefix('lien-he')->group(function(){
+            Route::get('', 'ContactsController@index')->name('contact.index');
+            Route::delete('/xoa-tat-ca', 'ContactsController@destroyAll')->name('contact.remove_all');
+        });
         // remove contact
         Route::delete('lien-he/{id}', 'ContactsController@destroy')->name('contact.remove');
+
+        //slides
+        Route::prefix('slides')->group(function(){
+            Route::get('', 'SlidesController@index')->name('slides.index');
+            Route::post('/them-moi', 'SlidesController@create')->name('slides.create');
+            Route::post('/cap-nhat/{id}', 'SlidesController@update')->name('slides.update');
+            Route::get('/cap-nhat/{id}', 'SlidesController@getUpdate')->name('slides.update');
+            Route::delete('/xoa/{id}', 'SlidesController@destroy')->name('slides.remove');
+        });
 
         //categories
         Route::prefix('danh-muc')->group(function(){
@@ -69,6 +87,17 @@ Route::prefix('admin')->group(function () {
             Route::get('/cap-nhat/{id}', 'NewsController@getNewsByID')->name('news.detail');
             Route::post('/cap-nhat/{id}', 'NewsController@update')->name('news.update');
             Route::delete('/xoa/{id}', 'NewsController@destroy')->name('news.remove');
+        });
+
+        //comment
+        Route::prefix('binh-luan')->group(function(){
+            Route::get('san-pham', 'CommentsController@indexProductComment')->name('comments.product');
+            Route::get('hop-tac', 'CommentsController@indexCooperationComment')->name('comments.cooperation');
+            Route::get('tin-tuc', 'CommentsController@indexNewComment')->name('comments.new');
+            Route::post('/them-moi', 'CommentsController@store')->name('comments.store');
+            Route::post('/cap-nhat/{id}', 'CommentsController@update')->name('comments.update');
+            Route::delete('/xoa/{id}', 'CommentsController@destroy')->name('comments.remove');
+            Route::delete('/xoa-tat-ca', 'CommentsController@destroyAll')->name('comments.remove_all');
         });
     });
 });

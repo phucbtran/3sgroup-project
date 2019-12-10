@@ -40,4 +40,10 @@ class ContactsRepositoryEloquent extends BaseRepository implements ContactsRepos
         return $query;
     }
 
+    public function deleteList($listId) {
+        $query = Contacts::whereIn('id', $listId)
+            ->delete();
+        return $query;
+    }
+
 }

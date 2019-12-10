@@ -54,10 +54,10 @@
                                     </td>
                                     <td class="btn-act">
                                         <button href="#" onclick="showDialogUpdate('{{ $item->id }}', '{{ $item->name }}', '{{ isset($item->parent) ? $item->parent->id : '' }}', '{{ $item->num_sort }}', '{{ $item->status }}');"
-                                                class="btn btn-primary edit-record">
+                                                class="btn btn-primary btn-xs edit-record">
                                             <i class="fa fa-edit"></i>
                                         </button>
-                                        <button href="#" onclick="showDialogDelete({{ $item->id }});" class="btn btn-danger btn-delete-user"><i class="fa fa-remove"></i></button>
+                                        <button href="#" onclick="showDialogDelete({{ $item->id }});" class="btn btn-danger btn-xs btn-delete-user"><i class="fa fa-remove"></i></button>
                                     </td>
                                 </tr>
                             @endforeach
