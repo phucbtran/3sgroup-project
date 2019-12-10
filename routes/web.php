@@ -52,6 +52,15 @@ Route::prefix('admin')->group(function () {
         // remove contact
         Route::delete('lien-he/{id}', 'ContactsController@destroy')->name('contact.remove');
 
+        //slides
+        Route::prefix('slides')->group(function(){
+            Route::get('', 'SlidesController@index')->name('slides.index');
+            Route::post('/them-moi', 'SlidesController@create')->name('slides.create');
+            Route::post('/cap-nhat/{id}', 'SlidesController@update')->name('slides.update');
+            Route::get('/cap-nhat/{id}', 'SlidesController@getUpdate')->name('slides.update');
+            Route::delete('/xoa/{id}', 'SlidesController@destroy')->name('slides.remove');
+        });
+
         //categories
         Route::prefix('danh-muc')->group(function(){
             Route::get('', 'CategoriesController@index')->name('categories.index');
