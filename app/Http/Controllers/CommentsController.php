@@ -76,6 +76,18 @@ class CommentsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function indexCooperationComment()
+    {
+        $comments = $this->repository->getListComment('2');
+
+        return view('admin.comments.cooperation', compact('comments'));
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function indexNewComment()
     {
         $comments = $this->repository->getListComment('1');
