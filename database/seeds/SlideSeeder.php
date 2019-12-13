@@ -28,7 +28,6 @@ class SlideSeeder extends Seeder
                 'sort_num' => $i,
                 'alt_description' => $faker->name,
                 'img_dir_path' => $faker->imageUrl(),
-                'alt_description' => $faker->name,
                 'status' => "1",
             ]);
         }

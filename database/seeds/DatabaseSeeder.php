@@ -19,5 +19,6 @@ class DatabaseSeeder extends Seeder
         $this->call(CooperationSeeder::class);
         $this->call(CommentSeeder::class);
         $this->call(SlideSeeder::class);
+        $this->call(CompanySeeder::class);
     }
 }
