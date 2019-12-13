@@ -6,7 +6,6 @@ use Faker\Factory as Faker;
 
 class SlideSeeder extends Seeder
 {
-
     protected $slidesRepository;
 
     public function __construct(SlidesRepository $slidesRepository)
@@ -22,14 +21,11 @@ class SlideSeeder extends Seeder
     public function run()
     {
         $faker = Faker::create();
-
-        for ($i = 0; $i < 20; $i++) {
-            $this->slidesRepository->updateOrCreate([
-                'sort_num' => $i,
-                'alt_description' => $faker->name,
-                'img_dir_path' => $faker->imageUrl(),
-                'status' => "1",
-            ]);
-        }
+        $this->slidesRepository->create([
+            'alt_description' => $faker->name,
+            'img_dir_path' => $faker->url,
+            'sort_num' => $faker->numberBetween(1,10),
+            'status' => '1',
+        ]);
     }
 }
