@@ -16,7 +16,7 @@ Route::get('/tin-tuc', function(){
     return view('public.news');
 });
 
-Route::get('/tin-tuc/{id}', 'NewsController@show');
+Route::get('/tin-tuc/{slug}-{id}.html', 'NewsController@show')->where('slug', '[A-Za-z0-9_\-]+');;
 
 Route::post('/commnets/create', 'CommentsController@store');
 

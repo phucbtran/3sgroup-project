@@ -24,7 +24,7 @@
         {{--endheader--}}
         <div class="page-title blog-featured-title featured-title no-overflow">
             <div class="page-title-bg fill">
-                <div class="title-bg fill bg-fill bg-top" style="background-image: url('http://mauweb.monamedia.net/anphuoc/wp-content/uploads/2018/01/20namthuonghieu.jpg');" data-parallax-fade="true" data-parallax="-2" data-parallax-background data-parallax-container=".page-title"></div>
+            <div class="title-bg fill bg-fill bg-top" style="background-image: url('{{$news['img_dir_path']}}')"></div>
                 <div class="title-overlay fill" style="background-color: rgba(0,0,0,.5)"></div>
             </div>
             <div class="page-title-inner container  flex-row  dark is-large" style="min-height: 300px">
@@ -48,45 +48,78 @@
                                 <div>
                                     <h2>{{ $news['meta_title'] }}</h2>
                                 </div>
-                                <div><img class="aligncenter" src="{{ $news['img_dir_path'] }}" alt="" /></div>
+                                {{-- <div><img class="aligncenter" src="{{ $news['img_dir_path'] }}" alt="" /></div> --}}
                                 {!! $news['content'] !!}
+                                <div class="mic-info">
+                                Người đăng: <a style="color: #428bca;" href="#">{{$news['user']['full_name']}}</a>  Thời gian: <a herf="#" style="color: #428bca;">{{$news['created_at']}}</a>
+                                </div>
                             </div>
+
                             <!-- .entry-content2 -->
                         </div>
                         <!-- .article-inner -->
                     </article>
                     <!-- #-84 -->
-                    <section class="comment_news">
-                        <h3 id="reply-title" class="comment-reply-title">Bình Luận <small><a rel="nofollow" id="cancel-comment-reply-link" href="/anphuoc/dau-an-20-nam-thuong-hieu-thoi-trang-an-phuoc/#respond" style="display:none;">Hủy</a></small></h3>
-                        @foreach ($comments as $item)
-                            <article class="comment_news">
-                                <div class="comment_news-body">
-                                <div class="text">
-                                    <p>{{ $item['content'] }}</p>
-                                </div>
-                                <p class="attribution">by <a href="#non">{{ $item['full_name'] }}</a> {{ $item['created_at'] }}</p>
-                                </div>
-                            </article>                            
-                        @endforeach
-                    </section>
+
                     <div id="comments" class="comments-area">
-                        <div id="respond" class="comment-respond">
-                            <h3 id="reply-title" class="comment-reply-title">Trả lời <small><a rel="nofollow" id="cancel-comment-reply-link" href="/anphuoc/dau-an-20-nam-thuong-hieu-thoi-trang-an-phuoc/#respond" style="display:none;">Hủy</a></small></h3>
-                            <form action="/commnets/create" method="post" id="commentform" class="comment-form">
-                            {{ csrf_field() }}
-                            <input type="hidden" value="{{ $news['id'] }}" name="comment[post_id]"/>
-                            <input type="hidden" value="1" name="comment[type_cmt_flg]"/>
-                            <p class="comment-notes"><span id="email-notes">Email của bạn sẽ không được hiển thị công khai.</span> Các trường bắt buộc được đánh dấu <span class="required">*</span></p>
-                            <p class="comment-form-comment"><label for="content">Bình luận</label> <textarea id="content" name="comment[content]" cols="45" rows="8" maxlength="65525" required="required"></textarea></p>
-                            <p class="comment-form-author"><label for="content">Tên <span class="required">*</span></label> <input name="comment[full_name]" id="content" type="text" value="" size="30" maxlength="245" required='required' /></p>
-                            <p class="comment-form-email"><label for="email">Email <span class="required">*</span></label> <input id="email" name="comment[email]" type="email" value="" size="30" maxlength="100" aria-describedby="email-notes" required='required' /></p>
-                            <p class="comment-form-url"><label for="phone">Số điện thoại</label> <input id="phone" name="comment[phone]" type="text" value="" size="30" maxlength="200" /></p>
-                            <p class="form-submit"><input name="submit" type="submit" id="submit" class="submit" value="Phản hồi" /></p>
-                            </form>
+
+                        <div class="container">
+                            <div class="panel panel-default widget">
+                                <div class="panel-heading">
+                                    <span class="glyphicon glyphicon-comment"></span>
+                                    <h3 class="panel-title">Bình Luận</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <ul class="list-group">
+                                        @foreach($comments as $comment)
+                                        <li class="list-group-item">
+                                            <div class="row">
+                                                <div class="col-xs-2 col-md-1">
+                                                    <img width="100px" height="100px" src="{{ $comment['avatar'] }}" class="img-circle img-responsive" alt="" />
+                                                </div>
+                                                <div class="col-xs-10 col-md-11">
+                                                    <div>
+                                                        <a style="color: #428bca;" href="#">
+                                                            {{ $comment['full_name'] }}
+                                                        </a>
+                                                        <div class="mic-info">
+                                                            Thời gian: <a style="color: #428bca;" href="#"> {{ $comment['created_at'] }} </a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="comment-text">
+                                                        {{ $comment['content'] }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div id="respond" class="comment-respond">
+                                <div class="panel panel-default widget">
+                                    <div class="panel-heading">
+                                        <span class="glyphicon glyphicon-comment"></span>
+                                        <h3 class="panel-title">Trả lời</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <form action="/commnets/create" method="post" id="commentform" class="comment-form">
+                                            {{ csrf_field() }}
+                                            <input type="hidden" value="{{ $news['id'] }}" name="comment[post_id]"/>
+                                            <input type="hidden" value="1" name="comment[type_cmt_flg]"/>
+                                            <p class="comment-notes"><span id="email-notes">Email của bạn sẽ không được hiển thị công khai.</span> Các trường bắt buộc được đánh dấu <span class="required">*</span></p>
+                                            <p class="comment-form-comment"><label for="content">Bình luận</label> <textarea id="content" name="comment[content]" cols="45" rows="8" maxlength="65525" required="required"></textarea></p>
+                                            <p class="comment-form-author"><label for="content">Tên <span class="required">*</span></label> <input name="comment[full_name]" id="content" type="text" value="" size="30" maxlength="245" required='required' /></p>
+                                            <p class="comment-form-email"><label for="email">Email <span class="required">*</span></label> <input id="email" name="comment[email]" type="email" value="" size="30" maxlength="100" aria-describedby="email-notes" required='required' /></p>
+                                            <p class="comment-form-url"><label for="phone">Số điện thoại</label> <input id="phone" name="comment[phone]" type="text" value="" size="30" maxlength="200" /></p>
+                                            <p class="form-submit"><input name="submit" type="submit" id="submit" class="submit" value="Phản hồi" /></p>
+                                        </form>                    
+                                    </div>
+                                </div>
+                            </div>                            
                         </div>
-                        <!-- #respond -->
                     </div>
-                    <!-- #comments -->
                 </div>
                 <!-- .large-9 -->
                 <div class="post-sidebar large-3 col">
@@ -139,6 +172,9 @@
 @endsection
 
 @section('scripts')
+{{-- <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script> --}}
     <script type='text/javascript' src='{{asset('assets/public/styles/js/scripts.js?ver=4.9.2')}}'></script>
     <script type='text/javascript' src='{{asset('assets/public/styles/js/index.js?ver=4.9.12')}}'></script>
     <script type='text/javascript' src='{{asset('assets/public/styles/js/ot-vertical-menu.js?ver=1.1.0')}}'></script>
