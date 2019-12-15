@@ -160,16 +160,35 @@ class NewsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($slug,$id)
     {
-        $news = News::where('status', '1')->find($id);
-        if($news)
-        $newsTopFile = News::select('id', 'title_name', 'slug', 'meta_title', 'img_dir_path')
-                                    ->where('status','1')
-                                    ->orderBy('id','desc')
-                                    ->take(5)
-                                    ->get();
-        $comments = Comments::where([['status', '=', '0'], ['post_id', '=', $news['id']]])->get();
-        return view('public.news', ['news' => $news, 'newsTopFile' => $newsTopFile, 'comments' => $comments]);
+        try {
+            $news = News::with('user')->where('status', '1')->find($id);
+            // return $news;
+            if($news){
+                $avatar = array(
+                    "/assets/img/default_1.png",
+                    "/assets/img/default_2.jpeg",
+                    "/assets/img/default_3.png",
+                    "/assets/img/default_4.png",
+                    "/assets/img/defaul_5.jpeg"
+                );
+                $newsTopFile = News::select('id', 'title_name', 'slug', 'meta_title', 'img_dir_path')
+                                        ->where('status','1')
+                                        ->orderBy('id','desc')
+                                        ->take(5)
+                                        ->get();
+                $comments = Comments::where([['status', '=', '0'], ['post_id', '=', $news['id']]])->get();
+                if($comments){
+                    foreach($comments as $obj){
+                        $rand = rand(0,4);
+                        $obj['avatar'] = $avatar[$rand];
+                    }
+                }
+            }
+            return view('public.news', ['news' => $news, 'newsTopFile' => $newsTopFile, 'comments' => $comments]);
+        } catch (\Throwable $th) {
+            return abort(404);
+        }
     }
 }

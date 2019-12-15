@@ -7,10 +7,10 @@
                 <div class="section-content relative">
                     <div class="gap-element" style="display:block; height:auto; padding-top:50px" class="clearfix"></div>
                     <div class="row row-collapse" id="row-1698217703">
-                        <div class="col medium-3 small-6 large-3">
-                            <div class="col-inner" style="padding:0px 50px 0px 0px;">
+                        <div class="col medium-6 small-12 large-3">
+                            <div class="col-inner" style="padding:0px 20px 0px 10px;">
                                 <div class="img has-hover x md-x lg-x y md-y lg-y" id="image_462241326">
-                                    <div class="img-inner dark">
+                                    <div class="img-inner dark" >
                                         <img width="462" height="271" src="{{asset('assets/public/styles/images/mona-logo-anphuoc.png')}}" class="attachment-original size-original" alt="" srcset="{{asset('assets/public/styles/images/mona-logo-anphuoc.png')}} 462w, {{asset('assets/public/styles/images/mona-logo-anphuoc.png')}} 300w, {{asset('assets/public/styles/images/mona-logo-anphuoc.png')}} 24w,{{asset('assets/public/styles/images/mona-logo-anphuoc.png')}} 36w, {{asset('assets/public/styles/images/mona-logo-anphuoc.png')}} 48w" sizes="(max-width: 462px) 100vw, 462px" />
                                     </div>
 
@@ -29,7 +29,7 @@
                                 <div class="social-icons follow-icons "><a href="#" target="_blank" data-label="Facebook" rel="nofollow" class="icon plain facebook tooltip" title="Follow on Facebook"><i class="icon-facebook" ></i></a><a href="#" target="_blank" rel="nofollow" data-label="Google+" class="icon plain  google-plus tooltip" title="Follow on Google+"><i class="icon-google-plus" ></i></a></div>
                             </div>
                         </div>
-                        <div class="col medium-3 small-6 large-3">
+                        <div class="col medium-6 small-12 large-3">
                             <div class="col-inner">
 
                                 <ul class="sidebar-wrapper ul-reset ">
@@ -48,7 +48,7 @@
 
                             </div>
                         </div>
-                        <div class="col medium-3 small-6 large-3">
+                        <div class="col medium-6 small-12 large-3">
                             <div class="col-inner">
 
                                 <ul class="sidebar-wrapper ul-reset ">
@@ -66,8 +66,8 @@
 
                             </div>
                         </div>
-                        <div class="col medium-3 small-6 large-3">
-                            <div class="col-inner">
+                        <div class="col medium-6 small-12 large-3">
+                            <div class="col-inner" style="padding-right:10px;">
 
                                 <h3>BẢN ĐỒ CÔNG TY</h3>
                                 <div role="form" class="wpcf7" id="wpcf7-f210-o1" lang="vi" dir="ltr">
@@ -78,9 +78,7 @@
                                 </div>
                             </div>
                         </div>
-
                         <style scope="scope">
-
                         </style>
                     </div>
                     <div class="gap-element" style="display:block; height:auto; padding-top:50px" class="clearfix"></div>
