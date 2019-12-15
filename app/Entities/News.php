@@ -40,4 +40,9 @@ class News extends Model implements Transformable
         'user_id'
     ];
 
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
+
 }
