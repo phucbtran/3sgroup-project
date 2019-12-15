@@ -208,7 +208,21 @@
         .header-main .nav > li > a {
             line-height: 16px
         }
-        
+
+        @media (max-width: 855px) {
+            img.attachment-original.size-original{
+                display: none;
+            }
+            #row-1698217703 .col-inner{
+                padding-right: 20px !important;
+                padding-left: 20px !important;
+            } 
+            #row-1698217703 .social-icons{
+                display: none;
+            }
+        }
+
+
         @media (max-width: 549px) {
             .header-main {
                 height: 70px
@@ -216,6 +230,7 @@
             #logo img {
                 max-height: 70px
             }
+
         }
         
         .nav-dropdown {
@@ -750,7 +765,8 @@
         }
         /*--------end footer-------*/
     </style>
-   
+    <script type='text/javascript' src='{{asset('assets/public/css/custom-footer.css')}}'></script>
+
 </head>
 
     {{--content--}}
