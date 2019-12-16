@@ -99,5 +99,10 @@ Route::prefix('admin')->group(function () {
             Route::delete('/xoa/{id}', 'CommentsController@destroy')->name('comments.remove');
             Route::delete('/xoa-tat-ca', 'CommentsController@destroyAll')->name('comments.remove_all');
         });
+
+        //company
+        Route::prefix('gioi-thieu')->group(function(){
+            Route::get('tong-quan-ve-cong-ty', 'CompaniesController@overview')->name('company.overview');
+        });
     });
 });

@@ -38,19 +38,11 @@ class CompaniesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function overview()
     {
-        $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
-        $companies = $this->repository->all();
+        $company = $this->repository->first();
 
-        if (request()->wantsJson()) {
-
-            return response()->json([
-                'data' => $companies,
-            ]);
-        }
-
-        return view('companies.index', compact('companies'));
+        return view('admin.company.overview', compact('company'));
     }
 
     /**
