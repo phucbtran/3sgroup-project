@@ -24,7 +24,7 @@ class CreateCompaniesTable extends Migration
             $table->string('phone', 50);
             $table->string('skype', 500)->nullable(true);
             $table->string('facebook', 1024)->nullable(true);
-            $table->string('map_api', 1024)->nullable(true);
+            $table->string('map_api', 1024);
             // basic introduce
             $table->text('head_description');
             $table->text('detail_description');

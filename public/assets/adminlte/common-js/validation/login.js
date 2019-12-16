@@ -1,3 +1,4 @@
+"use strict";
 $("#form-login").validate({
     rules: {
         email: {
@@ -18,6 +19,6 @@ $("#form-login").validate({
         }
     },
     highlight: function (element) {
-        $(element).parent().addClass('message-error')
+        $(element).parent().addClass('message-error');
     },
 });

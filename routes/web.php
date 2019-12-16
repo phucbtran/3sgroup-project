@@ -104,5 +104,8 @@ Route::prefix('admin')->group(function () {
         Route::prefix('gioi-thieu')->group(function(){
             Route::get('tong-quan-ve-cong-ty', 'CompaniesController@overview')->name('company.overview');
         });
+        Route::prefix('gioi-thieu')->group(function(){
+            Route::post('tong-quan-ve-cong-ty/{id}', 'CompaniesController@overviewUpdate')->name('company.overview.update');
+        });
     });
 });

@@ -1,3 +1,4 @@
+"use strict";
 $("#form-update").validate({
     rules: {
         full_name: {
@@ -24,7 +25,7 @@ $("#form-update").validate({
         }
     },
     highlight: function (element) {
-        $(element).parent().addClass('message-error')
+        $(element).parent().addClass('message-error');
     },
 });
 
@@ -62,6 +63,6 @@ $("#form-add").validate({
         }
     },
     highlight: function (element) {
-        $(element).parent().addClass('message-error')
+        $(element).parent().addClass('message-error');
     },
 });

@@ -8,7 +8,7 @@ use App\Http\Requests;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
 use App\Http\Requests\CompanyCreateRequest;
-use App\Http\Requests\CompanyUpdateRequest;
+use App\Http\Requests\CompanyOverviewRequest;
 use App\Repositories\CompanyRepository;
 
 /**
@@ -42,147 +42,42 @@ class CompaniesController extends Controller
     {
         $company = $this->repository->first();
 
+        if ($indexNameLogo = strrpos($company->logo_dir_path, '/')) {
+            $company->logo_name = substr($company->logo_dir_path, $indexNameLogo + 1);
+        }
+
+        if ($indexNameDetail = strrpos($company->img_detail_dir_path, '/')) {
+            $company->img_detail_name = substr($company->img_detail_dir_path, $indexNameDetail + 1);
+        }
+
         return view('admin.company.overview', compact('company'));
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  CompanyCreateRequest $request
-     *
-     * @return \Illuminate\Http\Response
-     *
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
-     */
-    public function store(CompanyCreateRequest $request)
-    {
-        try {
-
-            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
-
-            $company = $this->repository->create($request->all());
-
-            $response = [
-                'message' => 'Company created.',
-                'data'    => $company->toArray(),
-            ];
-
-            if ($request->wantsJson()) {
-
-                return response()->json($response);
-            }
-
-            return redirect()->back()->with('message', $response['message']);
-        } catch (ValidatorException $e) {
-            if ($request->wantsJson()) {
-                return response()->json([
-                    'error'   => true,
-                    'message' => $e->getMessageBag()
-                ]);
-            }
-
-            return redirect()->back()->withErrors($e->getMessageBag())->withInput();
-        }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $company = $this->repository->find($id);
-
-        if (request()->wantsJson()) {
-
-            return response()->json([
-                'data' => $company,
-            ]);
-        }
-
-        return view('companies.show', compact('company'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $company = $this->repository->find($id);
-
-        return view('companies.edit', compact('company'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  CompanyUpdateRequest $request
+     * @param  CompanyOverviewRequest $request
      * @param  string            $id
      *
      * @return Response
-     *
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
-    public function update(CompanyUpdateRequest $request, $id)
+    public function overviewUpdate(CompanyOverviewRequest $request, $id)
     {
+        dd($request);
         try {
-
-            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
-
-            $company = $this->repository->update($request->all(), $id);
-
-            $response = [
-                'message' => 'Company updated.',
-                'data'    => $company->toArray(),
-            ];
-
-            if ($request->wantsJson()) {
-
-                return response()->json($response);
+            $id = Auth::id();
+            if (empty($request->password)) {
+                $this->usersRepository->update($request->only('full_name'), $id);
+            } else {
+                $password = bcrypt($request->password);
+                $request->offsetSet('password', $password);
+                $this->usersRepository->update($request->only('full_name', 'password'), $id);
             }
-
-            return redirect()->back()->with('message', $response['message']);
-        } catch (ValidatorException $e) {
-
-            if ($request->wantsJson()) {
-
-                return response()->json([
-                    'error'   => true,
-                    'message' => $e->getMessageBag()
-                ]);
-            }
-
-            return redirect()->back()->withErrors($e->getMessageBag())->withInput();
+            session()->flash('msg_success', trans('message.edit.success'));
+            return redirect()->back();
+        } catch (\Exception $e) {
+            session()->flash('msg_fail', trans('message.edit.fail'));
+            return redirect()->back();
         }
-    }
-
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        $deleted = $this->repository->delete($id);
-
-        if (request()->wantsJson()) {
-
-            return response()->json([
-                'message' => 'Company deleted.',
-                'deleted' => $deleted,
-            ]);
-        }
-
-        return redirect()->back()->with('message', 'Company deleted.');
     }
 }

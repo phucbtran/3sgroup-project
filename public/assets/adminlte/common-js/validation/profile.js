@@ -1,3 +1,4 @@
+"use strict";
 $("#form-profile").validate({
     rules: {
         full_name: {
@@ -10,6 +11,6 @@ $("#form-profile").validate({
         }
     },
     highlight: function (element) {
-        $(element).parent().addClass('message-error')
+        $(element).parent().addClass('message-error');
     },
 });

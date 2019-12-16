@@ -1,5 +1,9 @@
 @extends('admin.template')
 @section('title', 'Tổng quan về công ty')
+@section('styles')
+    <!-- bootstrap wysihtml5 - text editor -->
+    <link rel="stylesheet" href="{{asset("assets/adminlte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css")}}">
+@endsection
 @section('content')
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -14,78 +18,121 @@
           </ol>
       </section>
 
-    <!-- Main content -->
+      <!-- Main content -->
       <section class="content">
-          <!-- /.box-header -->
-          <div class="box box-info">
-              <div class="box-body">
-                  <fieldset>
-                      <div id="legend">
-                          <legend class="">Cập nhật</legend>
+          <form role="form" action="{{ route('company.overview.update', $company->id) }}" method="post" enctype="multipart/form-data">
+              {{ csrf_field() }}
+              {{ method_field('POST') }}
+              <div class="row">
+                  <!-- left column -->
+                  <div class="col-md-6">
+                      <!-- general form elements -->
+                      <div class="box box-primary">
+                          <div class="box-header with-border">
+                              <h3 class="box-title">Thông tin liên hệ</h3>
+                          </div>
+                          <!-- /.box-header -->
+                          <!-- form start -->
+                          <div class="box-body">
+                              <div class="form-group">
+                                  <label for="email">Email<span class="lbl-required">*</span></label>
+                                  <input type="email" class="form-control" id="email" name="email" placeholder="Email" value="{{ old('email', $company->email) }}">
+                              </div>
+                              <div class="form-group">
+                                  <label for="phone">Số điện thoại<span class="lbl-required">*</span></label>
+                                  <input type="text" class="form-control" id="phone" name="phone" placeholder="Số điện thoại" value="{{ old('phone', $company->phone) }}">
+                              </div>
+                              <div class="form-group">
+                                  <label for="facebook">Facebook</label>
+                                  <input type="text" class="form-control" id="facebook" name="facebook" placeholder="Facebook" value="{{ old('facebook', $company->facebook) }}">
+                              </div>
+                              <div class="form-group">
+                                  <label for="address">Địa chỉ<span class="lbl-required">*</span></label>
+                                  <input type="text" class="form-control" id="address" name="address" placeholder="Địa chỉ" value="{{ old('address', $company->address) }}">
+                              </div>
+                              <div class="form-group">
+                                  <label for="map_api">Google map<span class="lbl-required">*</span></label>
+                                  <input type="text" class="form-control" id="map_api" name="map_api" placeholder="Google map" value="{{ old('map_api', $company->map_api) }}">
+                              </div>
+                              <div class="form-group">
+                                  <label for="logo_dir_path">Logo<span class="lbl-required">*</span></label>
+                                  <div class="input-group input-image" name="logo_dir_path">
+                                      <input type="text" class="form-control" placeholder='Chọn hình ảnh...' value="{{ old('logo_name', $company->logo_name) }}"/>
+                                      <span class="input-group-btn">
+                                          <button class="btn btn-default btn-choose" type="button">Choose</button>
+                                      </span>
+                                  </div>
+                                  <input type="hidden" name="old_logo_dir_path" value="{{ old('old_logo_dir_path', $company->logo_dir_path) }}">
+                                  <img class="img-responsive pad" src="{{ asset($company->logo_dir_path) }}" alt="Logo" >
+                              </div>
+                          </div>
+                          <!-- /.box-body -->
                       </div>
-                      <form id="form-record" action="/admin/tin-tuc/them-moi" method="post" enctype="multipart/form-data" class="form-horizontal">
-                          {{ csrf_field() }}
-                          {{ method_field('POST') }}
-
-                          <div class="form-group row">
-                              <!-- Date Time Start -->
-                              <label class="control-label col-md-3 required " for="datetime_start">Tên tin tức:</label>
-                              <div class="controls controlsDisplay col-md-7">
-                                  <div>
-                                      <input type="text" name="news[title_name]" placeholder="" class="form-control">
+                      <!-- /.box -->
+                  </div>
+                  <!--/.col (left) -->
+                  <!-- right column -->
+                  <div class="col-md-6">
+                      <!-- Horizontal Form -->
+                      <div class="box box-info">
+                          <div class="box-header with-border">
+                              <h3 class="box-title">Thông tin giới thiệu</h3>
+                          </div>
+                          <!-- /.box-header -->
+                          <!-- form start -->
+                          <div class="box-body pad">
+                              <div class="form-group">
+                                  <label for="head_description">Mô tả 1<span class="lbl-required">*</span></label>
+                                  <textarea class="textarea" placeholder="Mô tả 1" name="head_description" id="head_description"
+                                            style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;">
+                                      {{ old('head_description', $company->head_description) }}
+                                  </textarea>
+                              </div>
+                              <div class="form-group">
+                                  <label for="detail_description">Mô tả 2<span class="lbl-required">*</span></label>
+                                  <textarea class="textarea" placeholder="Mô tả 2" name="detail_description" id="detail_description"
+                                            style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;">
+                                      {{ old('detail_description', $company->detail_description) }}
+                                  </textarea>
+                              </div>
+                              <div class="form-group">
+                                  <label for="logo_dir_path">Hình ảnh<span class="lbl-required">*</span></label>
+                                  <div class="input-group input-image" name="img_detail_dir_path">
+                                      <input type="text" class="form-control" placeholder='Chọn hình ảnh...' value="{{ old('img_detail_name', $company->img_detail_name) }}"/>
+                                      <span class="input-group-btn">
+                                          <button class="btn btn-default btn-choose" type="button">Choose</button>
+                                      </span>
                                   </div>
+                                  <input type="hidden" name="old_logo_dir_path" value="{{ old('old_img_detail_dir_path', $company->img_detail_dir_path) }}">
+                                  <img class="img-responsive pad" src="{{ asset($company->img_detail_dir_path) }}" alt="Logo" >
                               </div>
                           </div>
-
-
-                          <div class="form-group row">
-                              <!-- Date Time Start -->
-                              <label class="control-label col-md-3 required " for="datetime_start">Tiêu đề:</label>
-                              <div class="controls controlsDisplay col-md-7">
-                                  <div>
-                                      <input type="text" name="news[meta_title]" placeholder="" class="form-control">
-                                  </div>
-                              </div>
+                          <!-- /.box-body -->
+                          <div class="box-footer">
+                              <button type="submit" class="btn btn-primary pull-right">Cập nhật</button>
                           </div>
-
-                          <div class="form-group">
-                              <!-- Avata -->
-                              <label class="control-label col-md-3" for="avata">Hình ảnh</label>
-                              <div class="controls col-md-7">
-                                  <input type="file" id="avata" name="image" placeholder="" class="form-control">
-                              </div>
-                          </div>
-
-                          <div class="form-group row">
-                              <!-- Date Time Start -->
-                              <label class="control-label col-md-3" for="datetime_start">Nội dung :</label>
-                              <div class="controls controlsDisplay col-md-7">
-                                  <textarea id="content_ckeditor" name="news[content]" class="form-control" rows="3" placeholder="Enter ..."></textarea></div>
-                          </div>
-
-                          <div class="form-group row">
-                              <label class="control-label col-md-3">Trạng thái: </label>
-                              <div class="controls controlsDisplay col-md-7">
-                                  <select class="form-control" name="news[status]">
-                                      <option value="1">Active</option>
-                                      <option value="0">Inactive</option>
-                                  </select>
-                              </div>
-                          </div>
-
-                          <div class="form-group row">
-                              <div class="controls col-md-10">
-                                  <a style="margin-left:10px;" href="/admin/tin-tuc" class="btn btn-info cancelBtt pull-right">Huỷ bỏ</a>
-                                  <input class="btn btn-success pull-right" type="submit" name="btn_submit" value="Thêm mới">
-                              </div>
-                          </div>
-                      </form>
-                  </fieldset>
+                          <!-- /.box-footer -->
+                      </div>
+                      <!-- /.box -->
+                  </div>
+                  <!--/.col (right) -->
               </div>
-              <!-- /.box-body -->
-          </div>
+              </form>
           <!-- /.box-body -->
       </section>
     <!-- /.content -->
   </div>
+@endsection
+@section('scripts')
+    <!-- CK Editor -->
+    <script src="{{asset("assets/adminlte/bower_components/ckeditor/ckeditor.js")}}"></script>
+    <!-- Bootstrap WYSIHTML5 -->
+    <script src="{{asset("assets/adminlte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js")}}"></script>
+    <!-- Common form upload -->
+    <script src="{{asset("assets/adminlte/common-js/upload.js")}}"></script>
+    <script>
+        $(function () {
+            $('.textarea').wysihtml5()
+        })
+    </script>
 @endsection
