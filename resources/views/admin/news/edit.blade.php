@@ -28,7 +28,7 @@
                 <div id="legend">
                     <legend class="">Thêm mới</legend>
                 </div>
-                <form id="form-record" action="/admin/tin-tuc/cap-nhat/{{ $news['id'] }}" method="post" enctype="multipart/form-data" class="form-horizontal">
+                <form id="form-record" action="/admin/tin-tuc/cap-nhat/{{ $news['id'] }}?page={{$page}}" method="post" enctype="multipart/form-data" class="form-horizontal">
                     {{ csrf_field() }}
                     {{ method_field('POST') }}
 
@@ -59,7 +59,7 @@
                       <div class="controls col-md-7">
                         <img class="img-responsive pad" src="{{$news['img_dir_path']}}" alt="Photo" >
                         <input type="hidden" value="{{$news['img_dir_path']}}" name="image_old">
-                        <input type="file" id="avata" name="image" placeholder="" class="form-control">
+                        <input type="file" accept="image/*" id="avata" name="image" placeholder="" class="form-control">
                       </div>
                   </div>   
    
@@ -69,7 +69,6 @@
                         <div class="controls controlsDisplay col-md-7">
                         <textarea id="content_ckeditor" name="news[content]" class="form-control" rows="3" placeholder="Enter ...">{{ $news['content'] }}</textarea></div>
                     </div>
-
                     <div class="form-group row">
                       <label class="control-label col-md-3">Trạng thái: </label>
                       <div class="controls controlsDisplay col-md-7">
