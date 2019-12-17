@@ -20,7 +20,7 @@
 
       <!-- Main content -->
       <section class="content">
-          <form role="form" action="{{ route('company.overview.update', $company->id) }}" method="post" enctype="multipart/form-data">
+          <form role="form" action="{{ route('company.overview.update', $company->id) }}" method="post" enctype="multipart/form-data" id="form-update-overview">
               {{ csrf_field() }}
               {{ method_field('POST') }}
               <div class="row">
@@ -36,28 +36,28 @@
                           <div class="box-body">
                               <div class="form-group">
                                   <label for="email">Email<span class="lbl-required">*</span></label>
-                                  <input type="email" class="form-control" id="email" name="email" placeholder="Email" value="{{ old('email', $company->email) }}">
+                                  <input type="email" class="form-control" id="email" name="email" placeholder="Email" value="{{ old('email', $company->email) }}" maxlength="500">
                               </div>
                               <div class="form-group">
                                   <label for="phone">Số điện thoại<span class="lbl-required">*</span></label>
-                                  <input type="text" class="form-control" id="phone" name="phone" placeholder="Số điện thoại" value="{{ old('phone', $company->phone) }}">
+                                  <input type="text" class="form-control" id="phone" name="phone" placeholder="Số điện thoại" value="{{ old('phone', $company->phone) }}" maxlength="50">
                               </div>
                               <div class="form-group">
                                   <label for="facebook">Facebook</label>
-                                  <input type="text" class="form-control" id="facebook" name="facebook" placeholder="Facebook" value="{{ old('facebook', $company->facebook) }}">
+                                  <input type="text" class="form-control" id="facebook" name="facebook" placeholder="Facebook" value="{{ old('facebook', $company->facebook) }}" maxlength="1024">
                               </div>
                               <div class="form-group">
                                   <label for="address">Địa chỉ<span class="lbl-required">*</span></label>
-                                  <input type="text" class="form-control" id="address" name="address" placeholder="Địa chỉ" value="{{ old('address', $company->address) }}">
+                                  <input type="text" class="form-control" id="address" name="address" placeholder="Địa chỉ" value="{{ old('address', $company->address) }}" maxlength="500">
                               </div>
                               <div class="form-group">
                                   <label for="map_api">Google map<span class="lbl-required">*</span></label>
-                                  <input type="text" class="form-control" id="map_api" name="map_api" placeholder="Google map" value="{{ old('map_api', $company->map_api) }}">
+                                  <input type="text" class="form-control" id="map_api" name="map_api" placeholder="Google map" value="{{ old('map_api', $company->map_api) }}" maxlength="1024">
                               </div>
                               <div class="form-group">
                                   <label for="logo_dir_path">Logo<span class="lbl-required">*</span></label>
                                   <div class="input-group input-image" name="logo_dir_path">
-                                      <input type="text" class="form-control" placeholder='Chọn hình ảnh...' value="{{ old('logo_name', $company->logo_name) }}"/>
+                                      <input type="text" class="form-control" placeholder='Chọn hình ảnh...' value="{{ old('logo_name', $company->logo_name) }}" name="logo_name">
                                       <span class="input-group-btn">
                                           <button class="btn btn-default btn-choose" type="button">Choose</button>
                                       </span>
@@ -130,9 +130,11 @@
     <script src="{{asset("assets/adminlte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js")}}"></script>
     <!-- Common form upload -->
     <script src="{{asset("assets/adminlte/common-js/upload.js")}}"></script>
+    <!-- Validation -->
+    <script src="{{asset("assets/adminlte/common-js/validation/introduce.js")}}"></script>
     <script>
         $(function () {
             $('.textarea').wysihtml5()
-        })
+        });
     </script>
 @endsection
