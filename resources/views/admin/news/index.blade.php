@@ -59,16 +59,24 @@
                                         @endif
                                     </td>
                                     <td class="btn-act">
-                                    <a href="/admin/tin-tuc/cap-nhat/{{ $item['id'] }}" class="btn btn-primary edit-record">
+                                    <a href="/admin/tin-tuc/cap-nhat/{{ $item['id'] }}?page={{$curentPage}}" class="btn btn-primary edit-record">
                                             <i class="fa fa-edit"></i>
                                         </a>
                                         <button href="#" onclick="showDialogDelete({{ $item->id }});" class="btn btn-danger btn-delete-user"><i class="fa fa-remove"></i></button>
                                     </td>
                                 </tr>
-   
                             @endforeach
-                            </tfoot>
+                            </tbody>
                         </table>
+                            <div  style="float:right" class="dataTables_paginate paging_simple_numbers" id="data-tables-list_paginate">
+                                <ul class="pagination">
+                                    <li class="paginate_button previous @if($curentPage == 1) disabled @endif" id="data-tables-list_previous"><a href="@if($curentPage == 1)javascript:void(0)@else{{$prePage}}@endif" aria-controls="data-tables-list" data-dt-idx="0" tabindex="0">Previous</a></li>
+                                    @for($i=1; $i<=$totalPage; $i++)
+                                <li class="paginate_button @if($curentPage == $i) active @endif"><a href="/admin/tin-tuc?page={{$i}}" aria-controls="data-tables-list" data-dt-idx="1" tabindex="0">{{ $i }}</a></li>
+                                    @endfor
+                                <li class="paginate_button next @if($curentPage == $totalPage) disabled @endif" id="data-tables-list_next"><a href="@if($curentPage == $totalPage)javascript:void(0)@else{{$nextPage}}@endif" aria-controls="data-tables-list" data-dt-idx="4" tabindex="0">Next</a></li>
+                                </ul>
+                            </div>
                         <!-- Modal confirm delete -->
                         <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
@@ -105,12 +113,13 @@
     <script>
         $(function () {
             $('#data-tables-list').DataTable({
-                'paging'      : true,
-                'lengthChange': true,
+                'paging'      : false,
+                'lengthChange': false,
                 'searching'   : false,
-                'ordering'    : true,
-                'info'        : true,
-                'autoWidth'   : false
+                'ordering'    : false,
+                'info'        : false,
+                'autoWidth'   : false,
+                'orderable'   :false
             })
         })
     </script>

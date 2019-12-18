@@ -57,7 +57,7 @@
                         <!-- Avata -->
                         <label class="control-label col-md-3" for="avata">Hình ảnh</label>
                         <div class="controls col-md-7">
-                            <input type="file" id="avata" name="image" placeholder="" class="form-control">
+                            <input type="file" accept="image/*" id="avata" name="image" placeholder="" class="form-control">
                         </div>
                     </div>    
    

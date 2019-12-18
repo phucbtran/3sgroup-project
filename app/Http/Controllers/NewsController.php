@@ -42,8 +42,14 @@ class NewsController extends Controller
      */
     public function index()
     {
-        $news = $this->repository->all();
-        return view('admin.news.index', compact('news'));
+        $news = $this->repository->paginate(10);
+        return view('admin.news.index', [
+            'news' => $news,
+            'totalPage' => $news->lastPage(),
+            'curentPage' => $news->currentPage(),
+            'nextPage' => $news->nextPageUrl(),
+            'prePage' => $news->previousPageUrl(),
+        ]);
     }
 
     /**
@@ -57,6 +63,9 @@ class NewsController extends Controller
         try {
             $data = $request->all();
             $news = new News();
+            if(!$news){
+                abort(404);
+            }
 
             foreach ($data['news'] as $key => $value) 
             {
@@ -91,7 +100,11 @@ class NewsController extends Controller
     public function getNewsByID(Request $request){
         try {
             $news = News::find($request->id);
-            return view('admin.news.edit', compact('news'));
+            if(!$news){
+                abort(404);
+            }
+            $page = $request->page ? $request->page : 1;
+            return view('admin.news.edit', ['news' => $news, 'page' => $page]);
         } catch (\Exception $e) {
             session()->flash('msg_fail', trans('message.edit.fail'));
             return redirect(route('news.index'));
@@ -109,6 +122,9 @@ class NewsController extends Controller
         try {
             $data = $request->all();
             $news = News::find($request->id);
+            if(!$news){
+                abort(404);
+            }
 
             foreach ($data['news'] as $key => $value) 
             {
@@ -126,10 +142,11 @@ class NewsController extends Controller
             $news->slug = Str::slug($data['news']['title_name']);
             $news->num_sort = 1;
             $news->save();
-            session()->flash('msg_success', trans('message.add.success'));
-            return redirect(route('news.index'));
+            session()->flash('msg_success', trans('message.edit.success'));
+            $page = $request->page ? $request->page : 1;
+            return redirect(route('news.index',['page' => $page]));
         } catch (\Exception $e) {
-            session()->flash('msg_fail', trans('message.add.fail'));
+            session()->flash('msg_fail', trans('message.edit.fail'));
             return redirect(route('news.index'));
         }
     }
@@ -145,6 +162,9 @@ class NewsController extends Controller
     {
         try {
             $news = News::find($id);
+            if(!$news){
+                abort(404);
+            }
             Storage::disk('public')->delete($news['img_dir_path']);
             $news->delete();
         } catch (\Exception $e) {
